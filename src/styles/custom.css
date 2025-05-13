@@ -1,0 +1,22 @@
+:root {
+  /* color */
+  --color-primary: #ff6f3f;
+  --color-hover: #ffe6d6;
+  --color-background: #fffaf5;
+  --color-text: #2e2e2e;
+  --color-white: #fff;
+
+  /* text */
+  --font-family: 'Pretendard', sans-serif;
+  --font-size-base: 1rem;
+
+  --font-weight-regular: 400;
+  --font-weight-bold: 700;
+
+  /* spacing */
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+
+  /* radius */
+  --radius-md: 0.5rem;
+}
