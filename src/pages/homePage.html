@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="ko-KR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/src/pages/homePage.css" />
+    <title>룰렛홈피</title>
+  </head>
+  <body>
+    <div class="container">
+      <h2>오늘의 점심메뉴 룰렛</h2>
+      <p>점심 메뉴 고민을 덜어줄 룰렛을 돌려 점심을 골라보세요</p>
+      <div class="categories">
+        <input
+          type="radio"
+          id="category1"
+          name="category"
+          class="check"
+          hidden
+        />
+        <label for="category1" class="categoryButton">한식</label>
+        <input
+          type="radio"
+          id="category2"
+          name="category"
+          class="check"
+          hidden
+        />
+        <label for="category2" class="categoryButton">중식</label>
+        <input
+          type="radio"
+          id="category3"
+          name="category"
+          class="check"
+          hidden
+        />
+        <label for="category3" class="categoryButton">일식</label>
+        <input
+          type="radio"
+          id="category4"
+          name="category"
+          class="check"
+          hidden
+        />
+        <label for="category4" class="categoryButton">양식</label>
+        <input
+          type="radio"
+          id="category5"
+          name="category"
+          class="check"
+          hidden
+        />
+        <label for="category5" class="categoryButton">분식</label>
+        <input
+          type="radio"
+          id="category6"
+          name="category"
+          class="check"
+          hidden
+        />
+        <label for="category6" class="categoryButton">디저트</label>
+      </div>
+      <div class="menuButtons">
+        <button id="#">메뉴 섞기</button>
+        <button id="#">룰렛 돌리기</button>
+        <button id="#">날씨별 메뉴 추천</button>
+      </div>
+      <ul id="menuList"></ul>
+      <div class="addMenu">
+        <input type="text" id="menuInput" placeholder="메뉴 입력" />
+        <button id="#">추가</button>
+        <button id="#">초기화</button>
+      </div>
+    </div>
+  </body>
+</html>
