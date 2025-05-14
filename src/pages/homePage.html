@@ -8,36 +8,52 @@
   </head>
   <body>
     <div class="container">
-      <h2>오늘의 점심메뉴 룰렛</h2>
-      <p>점심 메뉴 고민을 덜어줄 룰렛을 돌려 점심을 골라보세요</p>
+      <div class="header">
+        <h2>오늘의 점심메뉴 룰렛</h2>
+      </div>
+      <p class="sub-header">
+        점심 메뉴 고민을 덜어줄 룰렛을 돌려 <br />점심을 골라보세요
+      </p>
+
       <div class="categories">
-        <button type="button" id="category-korean" class="category-button">한식</button>
-        <button type="button" id="category-chinese" class="category-button">중식</button>
-        <button type="button" id="category-japanese" class="category-button">일식</button>
-        <button type="button" id="category-western" class="category-button">양식</button>
-        <button type="button" id="category-snack" class="category-button">분식</button>
-        <button type="button" id="category-dessert" class="category-button">디저트</button>
+        <button type="button" id="category-korean" class="category-button">
+          한식
+        </button>
+        <button type="button" id="category-chinese" class="category-button">
+          중식
+        </button>
+        <button type="button" id="category-japanese" class="category-button">
+          일식
+        </button>
+        <button type="button" id="category-western" class="category-button">
+          양식
+        </button>
+        <button type="button" id="category-snack" class="category-button">
+          분식
+        </button>
+        <button type="button" id="category-dessert" class="category-button">
+          디저트
+        </button>
       </div>
       <div class="menu-buttons">
-        <button id="mix">메뉴 섞기</button>
+        <button id="#">메뉴 섞기</button>
         <button id="#">룰렛 돌리기</button>
         <button id="#">날씨별 메뉴 추천</button>
       </div>
-
       <div class="menu-box">
-        <div id="menu-entries" class="menuEntries"></div>
         <div class="menu-container">
           <div class="input-wrapper">
             <input type="text" id="menu-input" placeholder="메뉴 입력" />
-            <button class="input-remove" type="button" aria-label="입력 지우기">x</button>
+            <button class="input-remove" type="button" aria-label="입력 지우기">
+              x
+            </button>
           </div>
         </div>
         <div class="add-menu">
-          <button id="addMenu" type="button">추가</button>
-          <button id="resetMenu" type="button">초기화</button>
+          <button id="#" type="button">추가</button>
+          <button id="#" type="button">초기화</button>
         </div>
       </div>
     </div>
-    <script type="module" src="/src/components/menuManager.ts"></script>
   </body>
 </html>
