@@ -39,6 +39,7 @@ body {
   display: flex;
   padding: 26px;
   align-items: center;
+  cursor: pointer;
 }
 
 .category-button:hover {
@@ -153,4 +154,8 @@ body {
 .add-menu button:hover {
   background: gray;
   color: var(--color-text);
+}
+.category-button.active {
+  background: var(--color-primary);
+  color: var(--color-white);
 }
