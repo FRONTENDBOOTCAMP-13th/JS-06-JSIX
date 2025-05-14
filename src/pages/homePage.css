@@ -1,0 +1,93 @@
+@import url(../styles/custom.css);
+
+body {
+  background: var(--color-background);
+  font-family: var(--font-family);
+  margin: var(--space-md);
+}
+.container {
+  max-width: 1024px;
+  margin: var(--space-md) auto;
+  background: var(--color-white);
+  border-radius: var(--radius-md);
+  box-shadow: 0 var(--space-sm) var(--space-md) black;
+  padding: var(--space-md);
+  text-align: center;
+}
+.categories {
+  display: flex;
+  gap: var(--space-sm);
+  justify-content: center;
+  margin: var(--space-md) 0;
+}
+.categoryButton {
+  background: var(--color-background);
+  border: 1px solid var(--color-primary);
+  color: var(--color-text);
+  border-radius: var(--radius-md);
+  padding: var(--space-sm) var(--space-md);
+  font-weight: var(--font-weight-bold);
+  cursor: pointer;
+}
+
+.categoryButton:hover {
+  background: var(--color-hover);
+  color: var(--color-text);
+}
+.menuButtons {
+  margin: var(--space-md);
+  display: flex;
+  gap: var(--space-md);
+  justify-content: center;
+}
+.menuButtons button {
+  background: var(--color-primary);
+  color: var(--color-white);
+  border: none;
+  border-radius: var(--radius-md);
+  padding: var(--space-sm) var(--space-md);
+  font-weight: var(--font-weight-bold);
+  cursor: pointer;
+  text-decoration: none;
+}
+.menuButtons button:hover {
+  background: var(--color-hover);
+  color: var(--color-text);
+}
+#menuList {
+  list-style: none;
+  padding: 0;
+  margin: var(--space-md);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+  justify-content: center;
+}
+.addMenu {
+  display: flex;
+  gap: var(--space-sm);
+  justify-content: center;
+  margin-top: var(--space-md);
+}
+.addMenu input {
+  border: 1px solid var(--color-primary);
+  background: var(--color-background);
+  border-radius: var(--radius-md);
+  padding: var(--space-sm) var(--space-md);
+  font-size: var(--font-size-base);
+  color: var(--color-text);
+  font-weight: var(--font-weight-regular);
+}
+.addMenu button {
+  border: none;
+  border-radius: var(--radius-md);
+  background: var(--color-primary);
+  color: var(--color-white);
+  padding: var(--space-sm) var(--space-md);
+  font-weight: var(--font-weight-bold);
+  cursor: pointer;
+}
+.addMenu button:hover {
+  background: var(--color-hover);
+  color: var(--color-text);
+}

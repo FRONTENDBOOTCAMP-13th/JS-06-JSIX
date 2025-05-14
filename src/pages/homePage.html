@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="ko-KR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/src/pages/homePage.css" />
+    <title>룰렛홈피</title>
+  </head>
+  <body>
+    <div class="container">
+      <h2>오늘의 점심메뉴 룰렛</h2>
+      <p>점심 메뉴 고민을 덜어줄 룰렛을 돌려 점심을 골라보세요</p>
+      <div class="categories">
+        <button type="button" id="category-korean" class="categoryButton">
+          한식
+        </button>
+        <button type="button" id="category-chinese" class="categoryButton">
+          중식
+        </button>
+        <button type="button" id="category-japanese" class="categoryButton">
+          일식
+        </button>
+        <button type="button" id="category-western" class="categoryButton">
+          양식
+        </button>
+        <button type="button" id="category-snack" class="categoryButton">
+          분식
+        </button>
+        <button type="button" id="category-dessert" class="categoryButton">
+          디저트
+        </button>
+      </div>
+      <div class="menuButtons">
+        <button id="#">메뉴 섞기</button>
+        <button id="#">룰렛 돌리기</button>
+        <button id="#">날씨별 메뉴 추천</button>
+      </div>
+      <ul id="menuList"></ul>
+      <div class="addMenu">
+        <input type="text" id="menuInput" placeholder="메뉴 입력" />
+        <button id="#">추가</button>
+        <button id="#">초기화</button>
+      </div>
+    </div>
+  </body>
+</html>
