@@ -29,10 +29,7 @@ body {
   font-weight: var(--font-weight-bold);
   cursor: pointer;
 }
-.check:checked + .categoryButton {
-  background: var(--color-primary);
-  color: var(--color-white);
-}
+
 .categoryButton:hover {
   background: var(--color-hover);
   color: var(--color-text);
