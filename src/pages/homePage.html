@@ -36,11 +36,24 @@
         </button>
       </div>
       <div class="menu-buttons">
-        <button id="#">메뉴 섞기</button>
+        <button id="mix">메뉴 섞기</button>
         <button id="#">룰렛 돌리기</button>
         <button id="#">날씨별 메뉴 추천</button>
       </div>
+
       <div class="menu-box">
+        <!--이부분으로 한식을 누르면 한식 리스트 8개가 생김 -->
+        <ul id="menu-entries">
+          <li class="menu-item">
+            <div class="input-wrapper">
+              <input class="menu-input" placeholder="메뉴 입력" />
+              <button class="input-remove" type="button" aria-label="입력 지우기">
+                x
+              </button>
+            </div>
+          </li>
+        </ul>
+        <!--  -->
         <div class="menu-container">
           <div class="input-wrapper">
             <input type="text" id="menu-input" placeholder="메뉴 입력" />
@@ -50,10 +63,11 @@
           </div>
         </div>
         <div class="add-menu">
-          <button id="#" type="button">추가</button>
-          <button id="#" type="button">초기화</button>
+          <button id="addMenu" type="button">추가</button>
+          <button id="resetMenu" type="button">초기화</button>
         </div>
       </div>
     </div>
+    <script type="module" src="/src/components/menuManager.ts"></script>
   </body>
 </html>
