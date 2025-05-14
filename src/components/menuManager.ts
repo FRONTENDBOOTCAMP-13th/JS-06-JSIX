@@ -14,23 +14,37 @@ function renderMenu() {
     const li = document.createElement('li');
     li.className = 'menu-item';
 
-    li.innerHTML = `
-      <input class="menu-input" type="text" placeholder="메뉴 입력" value="${item}" />
-      <button class="deleteBtn">✕</button>
-    `;
+    // li 안에 .input-wrapper 구조를 넣음
+    const wrapper = document.createElement('div');
+    wrapper.className = 'input-wrapper';
 
-    // 삭제 버튼
-    li.querySelector('.deleteBtn')?.addEventListener('click', () => {
-      currentMenu.splice(index, 1);
-      renderMenu();
-    });
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.className = 'menu-input';
+    input.placeholder = '메뉴 입력';
+    input.value = item;
 
-    // input 수정 시 currentMenu 값 동기화
-    li.querySelector('.menu-input')?.addEventListener('input', e => {
+    const clearBtn = document.createElement('button');
+    clearBtn.className = 'input-remove';
+    clearBtn.type = 'button';
+    clearBtn.innerText = 'x';
+    clearBtn.setAttribute('aria-label', '입력 지우기');
+
+    // input 수정 동기화
+    input.addEventListener('input', e => {
       const target = e.target as HTMLInputElement;
       currentMenu[index] = target.value;
     });
 
+    // x 버튼 클릭 해당 input삭제
+    clearBtn.addEventListener('click', () => {
+      currentMenu.splice(index, 1);
+      renderMenu();
+    });
+
+    wrapper.appendChild(input);
+    wrapper.appendChild(clearBtn);
+    li.appendChild(wrapper); // ✅ wrapper를 li 안에 삽입
     ul.appendChild(li);
   });
 }
@@ -42,17 +56,14 @@ function loadCategory(category: keyof typeof menuList) {
 
   currentCategory = category;
 
-  // currentMenu가 비어 있다면  8개 기본 생성
   if (currentMenu.length === 0) {
     currentMenu = Array(8).fill('');
   }
 
-  // 2. currentMenu 길이만큼 메뉴를 채움
   const newMenu = shuffle(list).slice(0, currentMenu.length);
 
-  // 3. 각 줄에 메뉴 채워넣기
   for (let i = 0; i < currentMenu.length; i++) {
-    currentMenu[i] = newMenu[i] || ''; // 혹시 모자라면 빈칸
+    currentMenu[i] = newMenu[i] || '';
   }
 
   renderMenu();
@@ -74,12 +85,24 @@ window.addEventListener('DOMContentLoaded', () => {
     renderMenu();
   }
 
-  document.getElementById('category-korean')?.addEventListener('click', () => loadCategory('korean'));
-  document.getElementById('category-chinese')?.addEventListener('click', () => loadCategory('chinese'));
-  document.getElementById('category-japanese')?.addEventListener('click', () => loadCategory('japanese'));
-  document.getElementById('category-western')?.addEventListener('click', () => loadCategory('western'));
-  document.getElementById('category-snack')?.addEventListener('click', () => loadCategory('snack'));
-  document.getElementById('category-dessert')?.addEventListener('click', () => loadCategory('dessert'));
+  document
+    .getElementById('category-korean')
+    ?.addEventListener('click', () => loadCategory('korean'));
+  document
+    .getElementById('category-chinese')
+    ?.addEventListener('click', () => loadCategory('chinese'));
+  document
+    .getElementById('category-japanese')
+    ?.addEventListener('click', () => loadCategory('japanese'));
+  document
+    .getElementById('category-western')
+    ?.addEventListener('click', () => loadCategory('western'));
+  document
+    .getElementById('category-snack')
+    ?.addEventListener('click', () => loadCategory('snack'));
+  document
+    .getElementById('category-dessert')
+    ?.addEventListener('click', () => loadCategory('dessert'));
 
   document.getElementById('mix')?.addEventListener('click', () => {
     if (!currentCategory) return; // 아무 카테고리도 선택 안 된 상태라면 무시
