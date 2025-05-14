@@ -6,32 +6,34 @@ body {
   font-family: var(--font-family);
   color: var(--color-text);
 }
+
 .header {
   text-align: center;
-  margin-top: 34px;
+  margin-top: var(--space-md);
   font-size: 55px;
 }
+
 .sub-header {
   text-align: center;
   font-size: 29px;
   margin-top: var(--space-sm);
 }
+
 .categories {
   display: flex;
   width: 730px;
   height: 74px;
   gap: var(--space-sm);
-  justify-content: space-around;
-  margin: 0 auto;
   justify-content: center;
+  margin: 0 auto;
   text-align: center;
 }
+
 .category-button {
   font-size: 26px;
   background: var(--color-background);
   border: 1px solid var(--color-primary);
   color: var(--color-text);
-  margin: 0 auto;
   border-radius: var(--radius-md);
   font-weight: var(--font-weight-regular);
   display: flex;
@@ -43,10 +45,10 @@ body {
   background: var(--color-hover);
   color: var(--color-text);
 }
+
 .menu-box {
   width: 678px;
   height: 100%;
-  justify-content: center;
   display: flex;
   gap: var(--space-sm);
   border-radius: var(--radius-md);
@@ -59,6 +61,7 @@ body {
   text-decoration: none;
   flex-flow: column;
 }
+
 .menu-buttons {
   display: flex;
   gap: var(--space-md);
@@ -78,12 +81,13 @@ body {
   padding: var(--space-sm) var(--space-md);
   font-weight: var(--font-weight-bold);
   cursor: pointer;
-  text-decoration: none;
 }
+
 .menu-buttons button:hover {
   background: var(--color-hover);
   color: var(--color-text);
 }
+
 .menu-container {
   display: flex;
   flex-direction: column;
@@ -140,6 +144,7 @@ body {
   font-weight: var(--font-weight-bold);
   cursor: pointer;
 }
+
 .add-menu button:hover {
   background: gray;
   color: var(--color-text);
