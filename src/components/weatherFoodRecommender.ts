@@ -3,6 +3,7 @@ export interface WeatherData {
   main: {
     temp: number;
     feels_like: number;
+    humidity: number;
   };
   weather: Array<{
     main: string;
@@ -31,6 +32,7 @@ interface FoodCategory {
   condition: (data: WeatherData) => boolean;
   foods: string[]; //카테고리별로 음식 들어갈 array
   message?: (food: string) => string; // 카테고리별로 띄워줄 멘트 커스텀
+  imageMap?: Record<string, string>; // food 이름에 따른 이미지 URL
 }
 
 export class WeatherFoodRecommender {
@@ -62,7 +64,7 @@ export class WeatherFoodRecommender {
           '순두부찌개',
           '잔치국수',
         ],
-        message: food => `비도 오고 그래서.... ${food}은(는) 어떠세요?`,
+        message: food => `비도 오고 그래서.... <br>${food} 어떠세요?`,
       },
       {
         name: '무더위에 시원하게 즐기는 음식',
@@ -81,7 +83,7 @@ export class WeatherFoodRecommender {
           '팥빙수',
           '수박주스',
         ],
-        message: food => `오늘 같은 더운 날엔 시원한 ${food}이(가) 최고!`,
+        message: food => `오늘 같은 더운 날엔 시원한 ${food} 최고!`,
       },
       {
         name: '쌀쌀한 날 따뜻하게 먹는 음식',
@@ -104,7 +106,7 @@ export class WeatherFoodRecommender {
           '샤브샤브',
         ],
         message: food =>
-          `오늘처럼 으슬으슬 추운 날씨엔 뜨끈한 ${food} 만 한 게 없죠!`,
+          `오늘처럼 으슬으슬 추운 날씨엔 뜨끈한 ${food}만 한 게 없죠!`,
       },
       {
         name: '눈 오는 날 어울리는 음식',
@@ -128,7 +130,7 @@ export class WeatherFoodRecommender {
           '뱅쇼',
         ],
         message: food =>
-          `함박눈이 소복소복 내리는 날엔 따뜻하고 얼큰한 ${food} 먹으면서 창밖 풍경 감상하는 낭만, 놓칠 수 없죠!`,
+          `함박눈이 소복소복 내리는 날엔<br> 따뜻하고 얼큰한 ${food} 못참지!`,
       },
       {
         name: '맑은 날 야외에서 먹기 좋은 음식',
@@ -148,7 +150,7 @@ export class WeatherFoodRecommender {
           '컵밥',
         ],
         message: food =>
-          `햇살 좋은 날, 살랑이는 바람 맞으며 즐기는 ${food}! 돗자리 펴고 앉아서 드셔보세요!`,
+          `살랑이는 바람 맞으며 즐기는 ${food}!<br> 돗자리 펴고 앉아서 드셔보세요!`,
       },
       {
         name: '봄 제철 음식',
@@ -166,8 +168,16 @@ export class WeatherFoodRecommender {
           '미나리 비빔국수',
           '취나물 밥',
         ],
-        message: food =>
-          `싱그러운 봄기운 가득 담은 ${food} 맛보세요! 입안 가득 퍼지는 봄 향기가 기분까지 산뜻하게 만들어 줄 거예요.`,
+        message: food => `봄기운 가득 담은 ${food} 어때요?`,
+        imageMap: {
+          '달래 비빔밥': 'https://picsum.photos/id/1015/400/300',
+          '냉이 된장국': 'https://picsum.photos/id/1025/400/300',
+          '바지락 칼국수': 'https://picsum.photos/id/1035/400/300',
+          '쭈꾸미 볶음': 'https://picsum.photos/id/1045/400/300',
+          '도다리 회': 'https://picsum.photos/id/1055/400/300',
+          '미나리 비빔국수': 'https://picsum.photos/id/1065/400/300',
+          '취나물 밥': 'https://picsum.photos/id/1075/400/300',
+        },
       },
       {
         name: '가을 제철 음식',
@@ -178,87 +188,98 @@ export class WeatherFoodRecommender {
         },
         foods: ['전어구이', '새우튀김', '꽃게탕', '고구마 맛탕', '대하 구이'],
         message: food =>
-          `풍요로운 가을, 놓칠 수 없는 맛! 제철 맞아 더욱 깊어진 풍미의 ${food} 맛보시면서 가을의 정취를 느껴보세요.`,
+          `가을 제철 맞아 더욱 깊어진 풍미의<br> ${food} 어때요?`,
       },
     ];
     //바로 밑에 있는 createModalElement 메서드 호출
-    this.createModalElement();
+    // this.createModalElement();
   }
 
-  //html 모달 요소를 동적으로 생성하고 DOM에 추가하는 메서드
-  private createModalElement(): void {
-    // 모달 컨테이너 생성. 모달 컨테이너 css 수정 필요시 여기 수정하면 됨
-    this.modalElement = document.createElement('div');
-    this.modalElement.style.display = 'none';
-    this.modalElement.style.position = 'fixed';
-    this.modalElement.style.zIndex = '1000';
-    this.modalElement.style.left = '0';
-    this.modalElement.style.top = '0';
-    this.modalElement.style.width = '100%';
-    this.modalElement.style.height = '100%';
-    this.modalElement.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
-    // this.modalElement.style.display = 'flex';  --> 이거키면 초기 로딩시에도 모달 뜸
-    this.modalElement.style.justifyContent = 'center';
-    this.modalElement.style.alignItems = 'center';
+  private showModalWithImageLoaded(
+    recommendation: {
+      food: string;
+      message: string;
+      image: string;
+    },
+    weatherData: WeatherData,
+  ): void {
+    // 기존 모달 제거
+    const existingModal = document.getElementById('food-modal');
+    if (existingModal) existingModal.remove();
 
-    // 모달 내용 생성
-    const modalContent = document.createElement('div');
-    modalContent.style.backgroundColor = '#fff';
-    modalContent.style.padding = '20px';
-    modalContent.style.borderRadius = '5px';
-    modalContent.style.maxWidth = '500px';
-    modalContent.style.width = '80%';
-    modalContent.style.textAlign = 'center';
+    // 새로운 모달 생성
+    const modalElement = document.createElement('div');
+    modalElement.id = 'food-modal';
+    modalElement.style.position = 'fixed';
+    modalElement.style.top = '0';
+    modalElement.style.left = '0';
+    modalElement.style.width = '100%';
+    modalElement.style.height = '100%';
+    modalElement.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+    modalElement.style.display = 'flex';
+    modalElement.style.justifyContent = 'center';
+    modalElement.style.alignItems = 'center';
+    modalElement.style.zIndex = '1000';
 
-    // 닫기 버튼 생성
-    const closeButton = document.createElement('button');
-    closeButton.textContent = '닫기';
-    closeButton.style.marginTop = '20px';
-    closeButton.style.padding = '8px 16px';
-    closeButton.style.backgroundColor = '#e0e0e0';
-    closeButton.style.border = 'none';
-    closeButton.style.borderRadius = '4px';
-    closeButton.style.cursor = 'pointer';
+    const image = new Image();
+    image.src = recommendation.image;
+    image.style.width = '150px';
+    image.style.height = '150px';
+    image.style.objectFit = 'contain';
+    image.style.margin = '1rem 0';
 
-    closeButton.addEventListener('click', () => {
-      if (this.modalElement) {
-        this.modalElement.style.display = 'none';
+    image.onload = () => {
+      modalElement.innerHTML = `
+      <div style="background: white; padding: 2rem; border-radius: 12px; width: 300px; text-align: center; font-family: sans-serif;">
+        <div style="font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem;">🌤️ ${weatherData.name}</div>
+        <div style="font-size: 0.9rem; margin-bottom: 1rem;">${weatherData.main.temp}°C / 체감 ${weatherData.main.feels_like}°C / 습도 ${weatherData.clouds.all}%</div>
+        <div style="font-size: 1rem; font-weight: bold; margin-bottom: 1rem;">${recommendation.message}</div>
+      </div>
+    `;
+
+      const innerBox = modalElement.querySelector('div');
+      if (innerBox) {
+        innerBox.appendChild(image);
+
+        const foodName = document.createElement('div');
+        foodName.textContent = recommendation.food;
+        foodName.style.fontWeight = '600';
+        foodName.style.marginBottom = '1rem';
+        innerBox.appendChild(foodName);
+
+        const buttonWrapper = document.createElement('div');
+        buttonWrapper.style.display = 'flex';
+        buttonWrapper.style.justifyContent = 'center';
+        buttonWrapper.style.gap = '10px';
+
+        const retryBtn = document.createElement('button');
+        retryBtn.textContent = '다시 추천 받기';
+        retryBtn.style.backgroundColor = '#FF5722';
+        retryBtn.style.color = 'white';
+        retryBtn.style.border = 'none';
+        retryBtn.style.padding = '10px 20px';
+        retryBtn.style.borderRadius = '8px';
+        retryBtn.addEventListener('click', () => {
+          this.recommendFoodByCurrentLocation();
+          modalElement.remove(); // 이전 모달 제거
+        });
+
+        const closeBtn = document.createElement('button');
+        closeBtn.textContent = '닫기';
+        closeBtn.style.backgroundColor = 'white';
+        closeBtn.style.color = '#FF5722';
+        closeBtn.style.border = '1px solid #FF5722';
+        closeBtn.style.padding = '10px 20px';
+        closeBtn.style.borderRadius = '8px';
+        closeBtn.addEventListener('click', () => modalElement.remove());
+
+        buttonWrapper.appendChild(retryBtn);
+        buttonWrapper.appendChild(closeBtn);
+        innerBox.appendChild(buttonWrapper);
       }
-    });
 
-    modalContent.appendChild(document.createElement('div')).id =
-      'modal-content';
-    modalContent.appendChild(closeButton);
-
-    this.modalElement.appendChild(modalContent);
-    document.body.appendChild(this.modalElement);
-  }
-
-  private showModal(title: string, content: string): void {
-    if (!this.modalElement) return;
-
-    const modalContentEl = this.modalElement.querySelector(
-      '#modal-content',
-    ) as HTMLDivElement;
-    if (!modalContentEl) return;
-
-    // 제목 생성
-    const titleEl = document.createElement('h2');
-    titleEl.textContent = title;
-    titleEl.style.marginBottom = '15px';
-
-    // 내용 생성
-    const contentEl = document.createElement('p');
-    contentEl.textContent = content;
-    contentEl.style.fontSize = '18px';
-
-    // 이전 내용 지우고 새 내용 추가
-    modalContentEl.innerHTML = '';
-    modalContentEl.appendChild(titleEl);
-    modalContentEl.appendChild(contentEl);
-
-    // 모달 표시
-    this.modalElement.style.display = 'flex';
+      document.body.appendChild(modalElement);
+    };
   }
 
   // 위치 가져오기 함수
@@ -308,6 +329,7 @@ export class WeatherFoodRecommender {
     category: string;
     food: string;
     message?: (food: string) => string;
+    image: string;
   } | null {
     // 조건에 맞는 모든 카테고리 찾기
     const matchingCategories = this.categories.filter(category =>
@@ -329,6 +351,7 @@ export class WeatherFoodRecommender {
       category: randomCategory.name,
       food: randomFood,
       message: randomCategory.message, // ✅ 여기 추가!
+      image: randomCategory.imageMap?.[randomFood] ?? '', // 여기 추가
     };
   }
 
@@ -372,7 +395,34 @@ export class WeatherFoodRecommender {
       errorMessage = `오류: ${error.message}`;
     }
 
-    this.showModal('위치 정보 오류', errorMessage);
+    this.showModalWithImageLoaded(
+      {
+        food: '위치 정보 오류',
+        message: errorMessage,
+        image: '',
+      },
+      {
+        name: '알 수 없음',
+        main: {
+          temp: 0,
+          feels_like: 0,
+          humidity: 0,
+        },
+        weather: [
+          {
+            main: 'Unknown',
+            description: '정보 없음',
+          },
+        ],
+        wind: {
+          speed: 0,
+        },
+        clouds: {
+          all: 0,
+        },
+        dt: 0,
+      },
+    );
   }
 
   // 현재 위치 기반 음식 추천 함수
@@ -380,33 +430,38 @@ export class WeatherFoodRecommender {
     this.showLoading();
 
     try {
-      // 1. 현재 위치 가져오기
       const position = await this.getCurrentPosition();
       const { latitude, longitude } = position.coords;
 
-      // 2. 현재 위치의 날씨 데이터 가져오기
       const weatherData = await this.fetchWeatherDataByCoords(
         latitude,
         longitude,
       );
 
-      // 3. 날씨에 맞는 음식 추천
       const recommendation = this.getFoodRecommendation(weatherData);
 
       if (recommendation) {
-        const temp = weatherData.main.temp;
-        const weatherDesc = weatherData.weather[0].description;
-
         const message = recommendation.message
           ? recommendation.message(recommendation.food)
           : `${recommendation.category}으로 ${recommendation.food}을(를) 추천합니다!`;
 
-        this.showModal(
-          `오늘의 음식 추천: ${recommendation.food}`,
-          `지역: ${weatherData.name}\n현재 날씨: ${temp.toFixed(1)}°C, ${weatherDesc}\n${message}`,
+        this.showModalWithImageLoaded(
+          {
+            food: recommendation.food,
+            message,
+            image: recommendation.image,
+          },
+          weatherData,
         );
       } else {
-        this.showModal('음식 추천', '현재 날씨에 맞는 추천 음식이 없습니다.');
+        this.showModalWithImageLoaded(
+          {
+            food: '음식 추천',
+            message: '현재 날씨에 맞는 추천 음식이 없습니다.',
+            image: '',
+          },
+          weatherData,
+        );
       }
     } catch (error) {
       this.showLocationError(error as GeolocationPositionError | Error);
