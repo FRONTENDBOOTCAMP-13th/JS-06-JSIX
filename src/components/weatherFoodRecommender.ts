@@ -8,8 +8,14 @@ import f from '../assets/foods/kr/kr_06_꼬리곰탕.jpg';
 import g from '../assets/foods/kr/kr_07_꼬막비빔밥.jpg';
 
 //kakao 역 지오코딩 코드
-const KAKAO_REST_API_KEY = '61f80463fae89f6dc7c27a7e85696eb1';
+const KAKAO_REST_API_KEY = import.meta.env.VITE_KAKAO_MAP_API_KEY;
+// 환경 변수가 제대로 로드되었는지 확인
+console.log('API Key:', KAKAO_REST_API_KEY);
 
+// 키가 비어있는지 확인
+if (!KAKAO_REST_API_KEY) {
+  console.error('Kakao API Key is missing!');
+}
 async function fetchKakaoAddress(lat: number, lon: number): Promise<string> {
   const url = `https://dapi.kakao.com/v2/local/geo/coord2address.json?x=${lon}&y=${lat}&input_coord=WGS84`;
   const response = await fetch(url, {
