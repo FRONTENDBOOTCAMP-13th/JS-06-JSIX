@@ -28,6 +28,7 @@ ul {
   padding: 0 1.625rem;
   font-size: 1.25rem;
   cursor: pointer;
+  appearance: none;
 
   &.btn-outlined {
     --btn-background: var(--color-white);
@@ -123,6 +124,26 @@ ul {
   @media screen and (min-width: 1280px) {
     width: 37.5rem;
   }
+}
+
+/* 룰렛 */
+.roulette-container {
+  position: relative;
+  width: fit-content;
+  .btn-pointer {
+    width: 20px;
+    height: 50px;
+    background: var(--color-text);
+    position: absolute;
+    left: 50%;
+    translate: -50% 0;
+    z-index: 1;
+  }
+}
+
+.btn-spin {
+  width: 200px;
+  height: 100px;
 }
 
 /* 반응형 */
