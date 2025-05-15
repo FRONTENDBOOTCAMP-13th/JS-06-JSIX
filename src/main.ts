@@ -1,29 +1,41 @@
 import './styles/global.css';
-import { drawRoulette, spinRoulette } from './components/RouletteWheel.ts';
+import { spinRoulette } from './components/RouletteWheel';
 
+// DOM 생성
 document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
-    <div id="roulette-container" class="roulette-container">
-      <button class="btn-pointer"></button>
-      <canvas id="roulette-canvas" width="500" height="500"></canvas>
-      </div>
-      <button id="spin" class="btn-spin">spin</button>
+  <div id="roulette-container" class="roulette-container">
+    <button class="btn-pointer"></button>
+    <canvas id="roulette-canvas" width="500" height="500"></canvas>
+  </div>
+  <button id="spin" class="btn-spin">spin</button>
 `;
 
 const canvas = document.querySelector('#roulette-canvas') as HTMLCanvasElement;
 const spinButton = document.querySelector('#spin') as HTMLButtonElement;
-const food: string[] = ['떡볶이', '돈가스', '초밥', '피자', '냉면', '치킨', '족발', '피자'];
+let currentMenu: string[] = []; // 음식 리스트 저장소
 
-drawRoulette(canvas);
-spinButton?.addEventListener('click', function () {
-  const selectedIndex = spinRoulette(canvas);
+//
+export function setCurrentMenu(menu: string[]) {
+  currentMenu = menu;
+}
 
-  // 룰렛이 돌아가는 동안에 버튼 비활성화
+spinButton?.addEventListener('click', () => {
+  // 메뉴가 2개 미만이거나 모두 비어있을 경우
+  if (currentMenu.length < 2 || currentMenu.every(item => item.trim() === '')) {
+    alert('메뉴를 입력해주세요.');
+    return;
+  }
+  // currentMenu에 하나라도 빈 칸이 있는 경우
+  if (currentMenu.some(item => item.trim() === '')) {
+    alert('메뉴를 모두 입력해주세요.');
+    return;
+  }
+
+  const selectedIndex = spinRoulette(canvas, currentMenu);
   spinButton.disabled = true;
 
-  // 회전이 끝나면 결과를 보여줌
   canvas.addEventListener('transitionend', function handler() {
-    alert(food[selectedIndex]);
-    // transitionend 이벤트 중복 방지
+    alert(currentMenu[selectedIndex]);
     canvas.removeEventListener('transitionend', handler);
     spinButton.disabled = false;
   });
