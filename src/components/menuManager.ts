@@ -38,13 +38,17 @@ function renderMenu() {
 
     // x 버튼 클릭 해당 input삭제
     clearBtn.addEventListener('click', () => {
+      if (currentMenu.length <= 2) {
+        alert('메뉴는 최소 2개 이상이어야 합니다.');
+        return;
+      }
       currentMenu.splice(index, 1);
       renderMenu();
     });
 
     wrapper.appendChild(input);
     wrapper.appendChild(clearBtn);
-    li.appendChild(wrapper); // ✅ wrapper를 li 안에 삽입
+    li.appendChild(wrapper);
     ul.appendChild(li);
   });
 }
@@ -56,15 +60,7 @@ function loadCategory(category: keyof typeof menuList) {
 
   currentCategory = category;
 
-  if (currentMenu.length === 0) {
-    currentMenu = Array(8).fill('');
-  }
-
-  const newMenu = shuffle(list).slice(0, currentMenu.length);
-
-  for (let i = 0; i < currentMenu.length; i++) {
-    currentMenu[i] = newMenu[i] || '';
-  }
+  currentMenu = shuffle(list).slice(0, 8);
 
   renderMenu();
 }
@@ -121,6 +117,10 @@ window.addEventListener('DOMContentLoaded', () => {
   document.getElementById('addMenu')?.addEventListener('click', () => {
     // 빈 문자열로 새로운 메뉴 추가
     currentMenu.push('');
+    if (currentMenu.length >= 20) {
+      alert('메뉴는 최대 20개까지 추가할 수 있습니다.');
+      return;
+    }
     renderMenu();
   });
 
