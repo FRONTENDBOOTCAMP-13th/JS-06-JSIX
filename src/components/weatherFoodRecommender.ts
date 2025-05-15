@@ -1,3 +1,27 @@
+//kakao 역 지오코딩 코드
+const KAKAO_REST_API_KEY = '61f80463fae89f6dc7c27a7e85696eb1';
+
+async function fetchKakaoAddress(lat: number, lon: number): Promise<string> {
+  const url = `https://dapi.kakao.com/v2/local/geo/coord2address.json?x=${lon}&y=${lat}&input_coord=WGS84`;
+  const response = await fetch(url, {
+    headers: {
+      Authorization: `KakaoAK ${KAKAO_REST_API_KEY}`,
+    },
+  });
+
+  if (!response.ok) throw new Error('Kakao 주소 정보를 가져오지 못했습니다.');
+
+  const data = await response.json();
+  // 행정동, 도로명, 지번 등에서 원하는 정보 추출
+  const address = data.documents?.[0]?.address;
+  if (address) {
+    // 예: '서울특별시 마포구 상암동'
+    return `${address.region_1depth_name} ${address.region_2depth_name} ${address.region_3depth_name}`;
+  } else {
+    return '주소 정보 없음';
+  }
+}
+
 //openweather currentweather API로 받아오는 값 interface
 export interface WeatherData {
   main: {
@@ -48,22 +72,9 @@ export class WeatherFoodRecommender {
       {
         name: '비오는 날 생각나는 음식',
         condition: (data: WeatherData) => {
-          return (
-            data.weather[0].main === 'Rain' && (data.rain?.['1h'] ?? 0) >= 0.5
-          );
+          return data.weather[0].main === 'Rain' && (data.rain?.['1h'] ?? 0) >= 0.5;
         },
-        foods: [
-          '김치찌개',
-          '해물파전',
-          '수제비',
-          '칼국수',
-          '부대찌개',
-          '감자전',
-          '닭볶음탕',
-          '뼈해장국',
-          '순두부찌개',
-          '잔치국수',
-        ],
+        foods: ['김치찌개', '해물파전', '수제비', '칼국수', '부대찌개', '감자전', '닭볶음탕', '뼈해장국', '순두부찌개', '잔치국수'],
         message: food => `비도 오고 그래서.... <br>${food} 어떠세요?`,
       },
       {
@@ -71,86 +82,32 @@ export class WeatherFoodRecommender {
         condition: (data: WeatherData) => {
           return data.main.temp >= 30 || data.main.feels_like >= 35;
         },
-        foods: [
-          '냉면',
-          '물회',
-          '콩국수',
-          '오이냉국',
-          '열무김치국수',
-          '비빔냉면',
-          '묵사발',
-          '화채',
-          '팥빙수',
-          '수박주스',
-        ],
+        foods: ['냉면', '물회', '콩국수', '오이냉국', '열무김치국수', '비빔냉면', '묵사발', '화채', '팥빙수', '수박주스'],
         message: food => `오늘 같은 더운 날엔 시원한 ${food} 최고!`,
       },
       {
         name: '쌀쌀한 날 따뜻하게 먹는 음식',
         condition: (data: WeatherData) => {
-          return (
-            data.main.temp <= 15 &&
-            (data.wind.speed >= 4 || data.main.temp - data.main.feels_like >= 3)
-          );
+          return data.main.temp <= 15 && (data.wind.speed >= 4 || data.main.temp - data.main.feels_like >= 3);
         },
-        foods: [
-          '된장찌개',
-          '갈비탕',
-          '삼계탕',
-          '어묵탕',
-          '만두국',
-          '순대국',
-          '곰탕',
-          '추어탕',
-          '해물탕',
-          '샤브샤브',
-        ],
-        message: food =>
-          `오늘처럼 으슬으슬 추운 날씨엔 뜨끈한 ${food}만 한 게 없죠!`,
+        foods: ['된장찌개', '갈비탕', '삼계탕', '어묵탕', '만두국', '순대국', '곰탕', '추어탕', '해물탕', '샤브샤브'],
+        message: food => `오늘처럼 으슬으슬 추운 날씨엔 뜨끈한 ${food}만 한 게 없죠!`,
       },
       {
         name: '눈 오는 날 어울리는 음식',
         condition: (data: WeatherData) => {
-          return (
-            data.weather[0].main === 'Snow' &&
-            (data.snow?.['1h'] ?? 0) >= 1 &&
-            data.main.temp <= 5
-          );
+          return data.weather[0].main === 'Snow' && (data.snow?.['1h'] ?? 0) >= 1 && data.main.temp <= 5;
         },
-        foods: [
-          '곱창전골',
-          '닭한마리',
-          '오뎅',
-          '군고구마',
-          '호빵',
-          '떡볶이',
-          '라면',
-          '팥죽',
-          '어묵국수',
-          '뱅쇼',
-        ],
-        message: food =>
-          `함박눈이 소복소복 내리는 날엔<br> 따뜻하고 얼큰한 ${food} 못참지!`,
+        foods: ['곱창전골', '닭한마리', '오뎅', '군고구마', '호빵', '떡볶이', '라면', '팥죽', '어묵국수', '뱅쇼'],
+        message: food => `함박눈이 소복소복 내리는 날엔<br> 따뜻하고 얼큰한 ${food} 못참지!`,
       },
       {
         name: '맑은 날 야외에서 먹기 좋은 음식',
         condition: (data: WeatherData) => {
           return data.weather[0].main === 'Clear' && data.clouds.all <= 20;
         },
-        foods: [
-          '김밥',
-          '주먹밥',
-          '샌드위치',
-          '샐러드',
-          '유부초밥',
-          '닭강정',
-          '과일',
-          '또띠아롤',
-          '치킨',
-          '컵밥',
-        ],
-        message: food =>
-          `살랑이는 바람 맞으며 즐기는 ${food}!<br> 돗자리 펴고 앉아서 드셔보세요!`,
+        foods: ['김밥', '주먹밥', '샌드위치', '샐러드', '유부초밥', '닭강정', '과일', '또띠아롤', '치킨', '컵밥'],
+        message: food => `살랑이는 바람 맞으며 즐기는 ${food}!<br> 돗자리 펴고 앉아서 드셔보세요!`,
       },
       {
         name: '봄 제철 음식',
@@ -159,15 +116,7 @@ export class WeatherFoodRecommender {
           const month = date.getMonth() + 1; // getMonth()는 0부터 시작
           return month >= 3 && month <= 5;
         },
-        foods: [
-          '달래 비빔밥',
-          '냉이 된장국',
-          '바지락 칼국수',
-          '쭈꾸미 볶음',
-          '도다리 회',
-          '미나리 비빔국수',
-          '취나물 밥',
-        ],
+        foods: ['달래 비빔밥', '냉이 된장국', '바지락 칼국수', '쭈꾸미 볶음', '도다리 회', '미나리 비빔국수', '취나물 밥'],
         message: food => `봄기운 가득 담은 ${food} 어때요?`,
         imageMap: {
           '달래 비빔밥': 'https://picsum.photos/id/1015/400/300',
@@ -187,8 +136,7 @@ export class WeatherFoodRecommender {
           return month >= 9 && month <= 11;
         },
         foods: ['전어구이', '새우튀김', '꽃게탕', '고구마 맛탕', '대하 구이'],
-        message: food =>
-          `가을 제철 맞아 더욱 깊어진 풍미의<br> ${food} 어때요?`,
+        message: food => `가을 제철 맞아 더욱 깊어진 풍미의<br> ${food} 어때요?`,
       },
     ];
     //바로 밑에 있는 createModalElement 메서드 호출
@@ -202,6 +150,7 @@ export class WeatherFoodRecommender {
       image: string;
     },
     weatherData: WeatherData,
+    regionName: string,
   ): void {
     // 기존 모달 제거
     const existingModal = document.getElementById('food-modal');
@@ -231,7 +180,7 @@ export class WeatherFoodRecommender {
     image.onload = () => {
       modalElement.innerHTML = `
       <div style="background: white; padding: 2rem; border-radius: 12px; width: 300px; text-align: center; font-family: sans-serif;">
-        <div style="font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem;">🌤️ ${weatherData.name}</div>
+        <div style="font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem;">🌤️ ${regionName}</div>
         <div style="font-size: 0.9rem; margin-bottom: 1rem;">${weatherData.main.temp}°C / 체감 ${weatherData.main.feels_like}°C / 습도 ${weatherData.clouds.all}%</div>
         <div style="font-size: 1rem; font-weight: bold; margin-bottom: 1rem;">${recommendation.message}</div>
       </div>
@@ -299,18 +248,13 @@ export class WeatherFoodRecommender {
   }
 
   // 현재 위치의 날씨 데이터 가져오기
-  private async fetchWeatherDataByCoords(
-    lat: number,
-    lon: number,
-  ): Promise<WeatherData> {
+  private async fetchWeatherDataByCoords(lat: number, lon: number): Promise<WeatherData> {
     const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${this.apiKey}&units=metric&lang=kr`;
 
     try {
       const response = await fetch(url);
       if (!response.ok) {
-        throw new Error(
-          `날씨 정보를 가져오는데 실패했습니다. 상태 코드: ${response.status}`,
-        );
+        throw new Error(`날씨 정보를 가져오는데 실패했습니다. 상태 코드: ${response.status}`);
       }
 
       return (await response.json()) as WeatherData;
@@ -332,17 +276,14 @@ export class WeatherFoodRecommender {
     image: string;
   } | null {
     // 조건에 맞는 모든 카테고리 찾기
-    const matchingCategories = this.categories.filter(category =>
-      category.condition(weatherData),
-    );
+    const matchingCategories = this.categories.filter(category => category.condition(weatherData));
 
     if (matchingCategories.length === 0) {
       return null;
     }
 
     // 일치하는 카테고리 중 하나를 무작위로 선택
-    const randomCategory =
-      matchingCategories[Math.floor(Math.random() * matchingCategories.length)];
+    const randomCategory = matchingCategories[Math.floor(Math.random() * matchingCategories.length)];
 
     // 선택된 카테고리에서 무작위 음식 선택
     const randomFood = this.getRandomFood(randomCategory.foods);
@@ -359,9 +300,7 @@ export class WeatherFoodRecommender {
   private showLoading(): void {
     if (!this.modalElement) return;
 
-    const modalContentEl = this.modalElement.querySelector(
-      '#modal-content',
-    ) as HTMLDivElement;
+    const modalContentEl = this.modalElement.querySelector('#modal-content') as HTMLDivElement;
     if (!modalContentEl) return;
 
     modalContentEl.innerHTML = '';
@@ -381,8 +320,7 @@ export class WeatherFoodRecommender {
     if (error instanceof GeolocationPositionError) {
       switch (error.code) {
         case error.PERMISSION_DENIED:
-          errorMessage =
-            '위치 정보 접근 권한이 거부되었습니다. 브라우저 설정에서 위치 권한을 허용해주세요.';
+          errorMessage = '위치 정보 접근 권한이 거부되었습니다. 브라우저 설정에서 위치 권한을 허용해주세요.';
           break;
         case error.POSITION_UNAVAILABLE:
           errorMessage = '현재 위치 정보를 사용할 수 없습니다.';
@@ -422,6 +360,7 @@ export class WeatherFoodRecommender {
         },
         dt: 0,
       },
+      '위치 정보 오류',
     );
   }
 
@@ -433,17 +372,18 @@ export class WeatherFoodRecommender {
       const position = await this.getCurrentPosition();
       const { latitude, longitude } = position.coords;
 
-      const weatherData = await this.fetchWeatherDataByCoords(
-        latitude,
-        longitude,
-      );
-
+      const weatherData = await this.fetchWeatherDataByCoords(latitude, longitude);
+      // 2. Kakao 주소 정보 요청
+      let regionName = '';
+      try {
+        regionName = await fetchKakaoAddress(latitude, longitude);
+      } catch (e) {
+        regionName = weatherData.name; // 실패 시 기존 도시명 fallback
+      }
       const recommendation = this.getFoodRecommendation(weatherData);
 
       if (recommendation) {
-        const message = recommendation.message
-          ? recommendation.message(recommendation.food)
-          : `${recommendation.category}으로 ${recommendation.food}을(를) 추천합니다!`;
+        const message = recommendation.message ? recommendation.message(recommendation.food) : `${recommendation.category}으로 ${recommendation.food}을(를) 추천합니다!`;
 
         this.showModalWithImageLoaded(
           {
@@ -452,6 +392,7 @@ export class WeatherFoodRecommender {
             image: recommendation.image,
           },
           weatherData,
+          regionName,
         );
       } else {
         this.showModalWithImageLoaded(
@@ -461,6 +402,7 @@ export class WeatherFoodRecommender {
             image: '',
           },
           weatherData,
+          regionName,
         );
       }
     } catch (error) {
@@ -472,9 +414,7 @@ export class WeatherFoodRecommender {
   public attachToButton(buttonId: string): void {
     const button = document.getElementById(buttonId);
     if (button) {
-      button.addEventListener('click', () =>
-        this.recommendFoodByCurrentLocation(),
-      );
+      button.addEventListener('click', () => this.recommendFoodByCurrentLocation());
     } else {
       console.error(`ID가 '${buttonId}'인 버튼을 찾을 수 없습니다.`);
     }
