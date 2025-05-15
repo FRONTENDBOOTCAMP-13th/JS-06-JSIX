@@ -1,11 +1,73 @@
 //빌드 타임에 이미지를 해시가 붙은 url로 변환해서 번들에 포함시키기 위한 이미지 import 영역(이거 경로로 쓰면 배포 폴더에 경로 없어서 에러 뜰 확률 높음 )
-import a from '../assets/foods/kr/kr_01_갈비탕.jpg';
-import b from '../assets/foods/kr/kr_02_감자탕.jpg';
-import c from '../assets/foods/kr/kr_03_곱창전골.jpg';
-import d from '../assets/foods/kr/kr_04_김치볶음밥.jpg';
-import e from '../assets/foods/kr/kr_05_김치찌개.jpg';
-import f from '../assets/foods/kr/kr_06_꼬리곰탕.jpg';
-import g from '../assets/foods/kr/kr_07_꼬막비빔밥.jpg';
+//비오는날 이미지 asset import
+import rain_1 from '../assets/foods/kr/kr_05_김치찌개.jpg';
+import rain_2 from '../assets/foods/kr/kr_39_해물파전.jpg';
+import rain_3 from '../assets/foods/kr/kr_25_수제비.jpg';
+import rain_4 from '../assets/foods/kr/kr_36_칼국수.jpg';
+import rain_5 from '../assets/foods/kr/kr_40_부대찌개.jpg';
+import rain_6 from '../assets/foods/kr/kr_41_감자전.jpg';
+import rain_7 from '../assets/foods/kr/kr_11_닭볶음탕.jpg';
+import rain_8 from '../assets/foods/kr/kr_21_뼈해장국.jpg';
+import rain_9 from '../assets/foods/kr/kr_27_순두부찌개.jpg';
+import rain_10 from '../assets/foods/kr/kr_42_잔치국수.jpg';
+//무더위 이미지 asset import
+import hot_1 from '../assets/foods/kr/kr_09_냉면.jpg';
+import hot_2 from '../assets/foods/jp/jp_30_물회.jpg';
+import hot_3 from '../assets/foods/kr/kr_43_콩국수.jpg';
+import hot_4 from '../assets/foods/kr/kr_44_오이냉국.jpg';
+import hot_5 from '../assets/foods/kr/kr_45_열무김치국수.jpg';
+import hot_6 from '../assets/foods/kr/kr_46_비빔냉면.jpg';
+import hot_7 from '../assets/foods/kr/kr_47_묵사발.jpg';
+import hot_8 from '../assets/foods/kr/kr_48_화채.jpg';
+import hot_9 from '../assets/foods/kr/kr_49_팥빙수.jpg';
+import hot_10 from '../assets/foods/kr/kr_50_수박주스.jpg';
+//쌀쌀한 날 이미지 asset import
+import cold_1 from '../assets/foods/kr/kr_13_된장찌개.jpg';
+import cold_2 from '../assets/foods/kr/kr_01_갈비탕.jpg';
+import cold_3 from '../assets/foods/kr/kr_23_삼계탕.jpg';
+import cold_4 from '../assets/foods/kr/kr_51_어묵탕.jpg';
+import cold_5 from '../assets/foods/kr/kr_52_만두국.jpg';
+import cold_6 from '../assets/foods/kr/kr_26_순대국.jpg';
+import cold_7 from '../assets/foods/kr/kr_06_꼬리곰탕.jpg';
+import cold_8 from '../assets/foods/kr/kr_35_추어탕.jpg';
+import cold_9 from '../assets/foods/kr/kr_53_해물탕.jpg';
+import cold_10 from '../assets/foods/kr/kr_54_샤브샤브.jpg';
+//눈오는 날 이미지 asset import
+import snow_1 from '../assets/foods/kr/kr_03_곱창전골.jpg';
+import snow_2 from '../assets/foods/kr/kr_12_닭한마리.jpg';
+import snow_3 from '../assets/foods/jp/jp_13_오뎅.jpg';
+import snow_4 from '../assets/foods/kr/kr_55_군고구마.jpg';
+import snow_5 from '../assets/foods/kr/kr_56_호빵.jpg';
+import snow_6 from '../assets/foods/kr/kr_57_떡볶이.jpg';
+import snow_7 from '../assets/foods/kr/kr_58_라면.jpg';
+import snow_8 from '../assets/foods/kr/kr_59_팥죽.jpg';
+import snow_9 from '../assets/foods/kr/kr_60_어묵국수.jpg';
+import snow_10 from '../assets/foods/kr/kr_61_뱅쇼.jpg';
+//맑은 날 이미지 asset import
+import sunny_1 from '../assets/foods/kr/kr_62_김밥.jpg';
+import sunny_2 from '../assets/foods/kr/kr_63_주먹밥.jpg';
+import sunny_3 from '../assets/foods/kr/kr_64_샌드위치.jpg';
+import sunny_4 from '../assets/foods/kr/kr_65_샐러드.jpg';
+import sunny_5 from '../assets/foods/jp/jp_31_유부초밥.jpg';
+import sunny_6 from '../assets/foods/kr/kr_66_닭강정.jpg';
+import sunny_7 from '../assets/foods/kr/kr_67_과일.jpg';
+import sunny_8 from '../assets/foods/kr/kr_68_또띠아롤.jpg';
+import sunny_9 from '../assets/foods/kr/kr_69_치킨.jpg';
+import sunny_10 from '../assets/foods/kr/kr_70_컵밥.jpg';
+//봄 이미지 asset import
+import spring_1 from '../assets/foods/kr/kr_71_달래비빔밥.jpg';
+import spring_2 from '../assets/foods/kr/kr_72_냉이된장국.jpg';
+import spring_3 from '../assets/foods/kr/kr_36_칼국수.jpg';
+import spring_4 from '../assets/foods/kr/kr_73_쭈꾸미볶음.jpg';
+import spring_5 from '../assets/foods/kr/kr_74_도다리회.jpg';
+import spring_6 from '../assets/foods/kr/kr_75_미나리비빔국수.jpg';
+import spring_7 from '../assets/foods/kr/kr_76_취나물밥.jpg';
+//가을 이미지 asset import
+import autumn_1 from '../assets/foods/kr/kr_77_전어구이.jpg';
+import autumn_2 from '../assets/foods/kr/kr_78_새우튀김.jpg';
+import autumn_3 from '../assets/foods/kr/kr_79_꽃게탕.jpg';
+import autumn_4 from '../assets/foods/kr/kr_80_고구마맛탕.jpg';
+import autumn_5 from '../assets/foods/kr/kr_81_대하구이.jpg';
 
 //kakao 역 지오코딩 코드
 const KAKAO_REST_API_KEY = import.meta.env.VITE_KAKAO_MAP_API_KEY;
@@ -92,6 +154,18 @@ export class WeatherFoodRecommender {
         },
         foods: ['김치찌개', '해물파전', '수제비', '칼국수', '부대찌개', '감자전', '닭볶음탕', '뼈해장국', '순두부찌개', '잔치국수'],
         message: food => `비도 오고 그래서.... <br>${food} 어떠세요?`,
+        imageMap: {
+          김치찌개: rain_1,
+          해물파전물회: rain_2,
+          수제비: rain_3,
+          칼국수: rain_4,
+          부대찌개: rain_5,
+          감자전: rain_6,
+          닭볶음탕: rain_7,
+          뼈해장국: rain_8,
+          순두부찌개: rain_9,
+          잔치국수: rain_10,
+        },
       },
       {
         name: '무더위에 시원하게 즐기는 음식',
@@ -100,6 +174,18 @@ export class WeatherFoodRecommender {
         },
         foods: ['냉면', '물회', '콩국수', '오이냉국', '열무김치국수', '비빔냉면', '묵사발', '화채', '팥빙수', '수박주스'],
         message: food => `오늘 같은 더운 날엔 시원한 ${food} 최고!`,
+        imageMap: {
+          냉면: hot_1,
+          물회: hot_2,
+          콩국수: hot_3,
+          오이냉국: hot_4,
+          열무김치국수: hot_5,
+          비빔냉면: hot_6,
+          묵사발: hot_7,
+          화채: hot_8,
+          팥빙수: hot_9,
+          수박주스: hot_10,
+        },
       },
       {
         name: '쌀쌀한 날 따뜻하게 먹는 음식',
@@ -108,6 +194,18 @@ export class WeatherFoodRecommender {
         },
         foods: ['된장찌개', '갈비탕', '삼계탕', '어묵탕', '만두국', '순대국', '곰탕', '추어탕', '해물탕', '샤브샤브'],
         message: food => `오늘처럼 으슬으슬 추운 날씨엔 뜨끈한 ${food}만 한 게 없죠!`,
+        imageMap: {
+          된장찌개: cold_1,
+          갈비탕: cold_2,
+          삼계탕: cold_3,
+          어묵탕: cold_4,
+          만두국: cold_5,
+          순대국: cold_6,
+          곰탕: cold_7,
+          추어탕: cold_8,
+          해물탕: cold_9,
+          샤브샤브: cold_10,
+        },
       },
       {
         name: '눈 오는 날 어울리는 음식',
@@ -116,6 +214,18 @@ export class WeatherFoodRecommender {
         },
         foods: ['곱창전골', '닭한마리', '오뎅', '군고구마', '호빵', '떡볶이', '라면', '팥죽', '어묵국수', '뱅쇼'],
         message: food => `함박눈이 소복소복 내리는 날엔<br> 따뜻하고 얼큰한 ${food} 못참지!`,
+        imageMap: {
+          곱창전골: snow_1,
+          닭한마리: snow_2,
+          오뎅: snow_3,
+          군고구마: snow_4,
+          호빵: snow_5,
+          떡볶이: snow_6,
+          라면: snow_7,
+          팥죽: snow_8,
+          어묵국수: snow_9,
+          뱅쇼: snow_10,
+        },
       },
       {
         name: '맑은 날 야외에서 먹기 좋은 음식',
@@ -124,6 +234,18 @@ export class WeatherFoodRecommender {
         },
         foods: ['김밥', '주먹밥', '샌드위치', '샐러드', '유부초밥', '닭강정', '과일', '또띠아롤', '치킨', '컵밥'],
         message: food => `살랑이는 바람 맞으며 즐기는 ${food}!<br> 돗자리 펴고 앉아서 드셔보세요!`,
+        imageMap: {
+          김밥: sunny_1,
+          주먹밥: sunny_2,
+          샌드위치: sunny_3,
+          샐러드: sunny_4,
+          유부초밥: sunny_5,
+          닭강정: sunny_6,
+          과일: sunny_7,
+          또띠아롤: sunny_8,
+          치킨: sunny_9,
+          컵밥: sunny_10,
+        },
       },
       {
         name: '봄 제철 음식',
@@ -135,13 +257,13 @@ export class WeatherFoodRecommender {
         foods: ['달래 비빔밥', '냉이 된장국', '바지락 칼국수', '쭈꾸미 볶음', '도다리 회', '미나리 비빔국수', '취나물 밥'],
         message: food => `봄기운 가득 담은 ${food} 어때요?`,
         imageMap: {
-          '달래 비빔밥': a,
-          '냉이 된장국': b,
-          '바지락 칼국수': c,
-          '쭈꾸미 볶음': d,
-          '도다리 회': e,
-          '미나리 비빔국수': f,
-          '취나물 밥': g,
+          '달래 비빔밥': spring_1,
+          '냉이 된장국': spring_2,
+          '바지락 칼국수': spring_3,
+          '쭈꾸미 볶음': spring_4,
+          '도다리 회': spring_5,
+          '미나리 비빔국수': spring_6,
+          '취나물 밥': spring_7,
         },
       },
       {
@@ -153,6 +275,13 @@ export class WeatherFoodRecommender {
         },
         foods: ['전어구이', '새우튀김', '꽃게탕', '고구마 맛탕', '대하 구이'],
         message: food => `가을 제철 맞아 더욱 깊어진 풍미의<br> ${food} 어때요?`,
+        imageMap: {
+          전어구이: autumn_1,
+          새우튀김: autumn_2,
+          꽃게탕: autumn_3,
+          '고구마 맛탕': autumn_4,
+          '대하 구이': autumn_5,
+        },
       },
     ];
     //바로 밑에 있는 createModalElement 메서드 호출
