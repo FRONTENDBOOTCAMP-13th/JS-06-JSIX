@@ -10,7 +10,7 @@ let currentCategory: keyof typeof menuList | null = null;
 const canvas = document.getElementById('roulette-canvas') as HTMLCanvasElement;
 
 // 메뉴 리스트 출력하는 함수
-function renderMenu() {
+export function renderMenu() {
   const ul = document.getElementById('menu-entries');
   if (!ul) return;
   ul.innerHTML = '';
@@ -76,13 +76,44 @@ function loadCategory(category: keyof typeof menuList) {
 }
 
 // 배열 무작위로 섞는 함수
-function shuffle<T>(array: T[]): T[] {
+export function shuffle<T>(array: T[]): T[] {
   const copied = [...array];
   for (let i = copied.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [copied[i], copied[j]] = [copied[j], copied[i]];
   }
   return copied;
+}
+
+// 메뉴섞기 버튼
+export function mixMenu() {
+  if (!currentCategory) return; // 아무 카테고리도 선택 안 된 상태라면 무시
+
+  const list = menuList[currentCategory];
+  const newMenu = shuffle(list).slice(0, currentMenu.length);
+
+  for (let i = 0; i < currentMenu.length; i++) {
+    currentMenu[i] = newMenu[i] || '';
+  }
+
+  renderMenu();
+}
+
+// 추가 버튼
+export function addMenu() {
+  currentMenu.push('');
+  if (currentMenu.length >= 20) {
+    alert('메뉴는 최대 20개까지 추가할 수 있습니다.');
+    return;
+  }
+  renderMenu();
+}
+
+// 초기화 버튼
+export function resetMenu() {
+  // currentMenu 내부의 텍스트만 모두 빈 문자열로 바꿈
+  currentMenu = currentMenu.map(() => '');
+  renderMenu();
 }
 
 window.addEventListener('DOMContentLoaded', () => {
@@ -110,33 +141,4 @@ window.addEventListener('DOMContentLoaded', () => {
   document.getElementById('category-western')?.addEventListener('click', () => loadCategory('western'));
   document.getElementById('category-snack')?.addEventListener('click', () => loadCategory('snack'));
   document.getElementById('category-dessert')?.addEventListener('click', () => loadCategory('dessert'));
-
-  document.getElementById('mix')?.addEventListener('click', () => {
-    if (!currentCategory) return; // 아무 카테고리도 선택 안 된 상태라면 무시
-
-    const list = menuList[currentCategory];
-    const newMenu = shuffle(list).slice(0, currentMenu.length);
-
-    for (let i = 0; i < currentMenu.length; i++) {
-      currentMenu[i] = newMenu[i] || '';
-    }
-
-    renderMenu();
-  });
-
-  document.getElementById('addMenu')?.addEventListener('click', () => {
-    // 빈 문자열로 새로운 메뉴 추가
-    currentMenu.push('');
-    if (currentMenu.length >= 20) {
-      alert('메뉴는 최대 20개까지 추가할 수 있습니다.');
-      return;
-    }
-    renderMenu();
-  });
-
-  document.getElementById('resetMenu')?.addEventListener('click', () => {
-    // currentMenu 내부의 텍스트만 모두 빈 문자열로 바꿈
-    currentMenu = currentMenu.map(() => '');
-    renderMenu();
-  });
 });
