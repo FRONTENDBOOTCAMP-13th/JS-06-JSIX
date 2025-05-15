@@ -1,3 +1,12 @@
+//빌드 타임에 이미지를 해시가 붙은 url로 변환해서 번들에 포함시키기 위한 이미지 import 영역(이거 경로로 쓰면 배포 폴더에 경로 없어서 에러 뜰 확률 높음 )
+import a from '../assets/foods/kr/kr_01_갈비탕.jpg';
+import b from '../assets/foods/kr/kr_02_감자탕.jpg';
+import c from '../assets/foods/kr/kr_03_곱창전골.jpg';
+import d from '../assets/foods/kr/kr_04_김치볶음밥.jpg';
+import e from '../assets/foods/kr/kr_05_김치찌개.jpg';
+import f from '../assets/foods/kr/kr_06_꼬리곰탕.jpg';
+import g from '../assets/foods/kr/kr_07_꼬막비빔밥.jpg';
+
 //kakao 역 지오코딩 코드
 const KAKAO_REST_API_KEY = '61f80463fae89f6dc7c27a7e85696eb1';
 
@@ -119,13 +128,13 @@ export class WeatherFoodRecommender {
         foods: ['달래 비빔밥', '냉이 된장국', '바지락 칼국수', '쭈꾸미 볶음', '도다리 회', '미나리 비빔국수', '취나물 밥'],
         message: food => `봄기운 가득 담은 ${food} 어때요?`,
         imageMap: {
-          '달래 비빔밥': 'https://picsum.photos/id/1015/400/300',
-          '냉이 된장국': 'https://picsum.photos/id/1025/400/300',
-          '바지락 칼국수': 'https://picsum.photos/id/1035/400/300',
-          '쭈꾸미 볶음': 'https://picsum.photos/id/1045/400/300',
-          '도다리 회': 'https://picsum.photos/id/1055/400/300',
-          '미나리 비빔국수': 'https://picsum.photos/id/1065/400/300',
-          '취나물 밥': 'https://picsum.photos/id/1075/400/300',
+          '달래 비빔밥': a,
+          '냉이 된장국': b,
+          '바지락 칼국수': c,
+          '쭈꾸미 볶음': d,
+          '도다리 회': e,
+          '미나리 비빔국수': f,
+          '취나물 밥': g,
         },
       },
       {
@@ -143,33 +152,12 @@ export class WeatherFoodRecommender {
     // this.createModalElement();
   }
 
-  private showModalWithImageLoaded(
-    recommendation: {
-      food: string;
-      message: string;
-      image: string;
-    },
-    weatherData: WeatherData,
-    regionName: string,
-  ): void {
+  private showModalWithImageLoaded(recommendation: { food: string; message: string; image: string }, weatherData: WeatherData, regionName: string): void {
     // 기존 모달 제거
     const existingModal = document.getElementById('food-modal');
     if (existingModal) existingModal.remove();
 
-    // 새로운 모달 생성
-    const modalElement = document.createElement('div');
-    modalElement.id = 'food-modal';
-    modalElement.style.position = 'fixed';
-    modalElement.style.top = '0';
-    modalElement.style.left = '0';
-    modalElement.style.width = '100%';
-    modalElement.style.height = '100%';
-    modalElement.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
-    modalElement.style.display = 'flex';
-    modalElement.style.justifyContent = 'center';
-    modalElement.style.alignItems = 'center';
-    modalElement.style.zIndex = '1000';
-
+    // 이미지 객체 준비
     const image = new Image();
     image.src = recommendation.image;
     image.style.width = '150px';
@@ -177,55 +165,134 @@ export class WeatherFoodRecommender {
     image.style.objectFit = 'contain';
     image.style.margin = '1rem 0';
 
+    // 이미지가 완전히 로드된 후 모달 생성
     image.onload = () => {
-      modalElement.innerHTML = `
-      <div style="background: white; padding: 2rem; border-radius: 12px; width: 300px; text-align: center; font-family: sans-serif;">
-        <div style="font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem;">🌤️ ${regionName}</div>
-        <div style="font-size: 0.9rem; margin-bottom: 1rem;">${weatherData.main.temp}°C / 체감 ${weatherData.main.feels_like}°C / 습도 ${weatherData.clouds.all}%</div>
-        <div style="font-size: 1rem; font-weight: bold; margin-bottom: 1rem;">${recommendation.message}</div>
-      </div>
-    `;
+      // 모달 배경
+      const modalElement = document.createElement('div');
+      modalElement.id = 'food-modal';
+      modalElement.style.position = 'fixed';
+      modalElement.style.top = '0';
+      modalElement.style.left = '0';
+      modalElement.style.width = '100%';
+      modalElement.style.height = '100%';
+      modalElement.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+      modalElement.style.display = 'flex';
+      modalElement.style.justifyContent = 'center';
+      modalElement.style.alignItems = 'center';
+      modalElement.style.zIndex = '1000';
 
-      const innerBox = modalElement.querySelector('div');
-      if (innerBox) {
-        innerBox.appendChild(image);
+      // 모달 컨텐츠 박스
+      const innerBox = document.createElement('div');
+      innerBox.style.background = 'white';
+      innerBox.style.padding = '2rem';
+      innerBox.style.borderRadius = '12px';
+      innerBox.style.width = '320px';
+      innerBox.style.textAlign = 'center';
+      innerBox.style.fontFamily = 'sans-serif';
+      innerBox.style.position = 'relative';
 
-        const foodName = document.createElement('div');
-        foodName.textContent = recommendation.food;
-        foodName.style.fontWeight = '600';
-        foodName.style.marginBottom = '1rem';
-        innerBox.appendChild(foodName);
+      // X 닫기 버튼
+      const closeX = document.createElement('span');
+      closeX.textContent = '✕';
+      closeX.style.position = 'absolute';
+      closeX.style.top = '18px';
+      closeX.style.right = '20px';
+      closeX.style.fontSize = '20px';
+      closeX.style.color = '#222';
+      closeX.style.cursor = 'pointer';
+      closeX.setAttribute('aria-label', '닫기');
+      closeX.addEventListener('click', () => modalElement.remove());
+      innerBox.appendChild(closeX);
 
-        const buttonWrapper = document.createElement('div');
-        buttonWrapper.style.display = 'flex';
-        buttonWrapper.style.justifyContent = 'center';
-        buttonWrapper.style.gap = '10px';
+      // 상단 날씨/지역 정보
+      const regionDiv = document.createElement('div');
+      regionDiv.style.fontSize = '1.1rem';
+      regionDiv.style.fontWeight = '600';
+      regionDiv.style.marginBottom = '0.5rem';
+      regionDiv.innerHTML = `🌤️ ${regionName}`;
+      innerBox.appendChild(regionDiv);
 
-        const retryBtn = document.createElement('button');
-        retryBtn.textContent = '다시 추천 받기';
-        retryBtn.style.backgroundColor = '#FF5722';
-        retryBtn.style.color = 'white';
-        retryBtn.style.border = 'none';
-        retryBtn.style.padding = '10px 20px';
-        retryBtn.style.borderRadius = '8px';
-        retryBtn.addEventListener('click', () => {
-          this.recommendFoodByCurrentLocation();
-          modalElement.remove(); // 이전 모달 제거
-        });
+      const weatherDiv = document.createElement('div');
+      weatherDiv.style.fontSize = '0.9rem';
+      weatherDiv.style.marginBottom = '1rem';
+      weatherDiv.textContent = `현재 기온 : ${weatherData.main.temp.toFixed(1)}°C / 체감 온도 : ${weatherData.main.feels_like.toFixed(1)}°C / 습도 ${weatherData.main.humidity}%`;
+      innerBox.appendChild(weatherDiv);
 
-        const closeBtn = document.createElement('button');
-        closeBtn.textContent = '닫기';
-        closeBtn.style.backgroundColor = 'white';
-        closeBtn.style.color = '#FF5722';
-        closeBtn.style.border = '1px solid #FF5722';
-        closeBtn.style.padding = '10px 20px';
-        closeBtn.style.borderRadius = '8px';
-        closeBtn.addEventListener('click', () => modalElement.remove());
+      // 추천 멘트
+      const messageDiv = document.createElement('div');
+      messageDiv.style.fontSize = '1rem';
+      messageDiv.style.fontWeight = 'bold';
+      messageDiv.style.marginBottom = '1rem';
+      messageDiv.textContent = recommendation.message;
+      innerBox.appendChild(messageDiv);
 
-        buttonWrapper.appendChild(retryBtn);
-        buttonWrapper.appendChild(closeBtn);
-        innerBox.appendChild(buttonWrapper);
-      }
+      // 음식 이미지
+      innerBox.appendChild(image);
+
+      // 음식명 + 새로고침 아이콘 한 줄로 배치
+      const foodRow = document.createElement('div');
+      foodRow.style.display = 'flex';
+      foodRow.style.alignItems = 'center';
+      foodRow.style.justifyContent = 'center';
+      foodRow.style.gap = '8px';
+      foodRow.style.margin = '1rem 0';
+
+      const foodName = document.createElement('div');
+      foodName.textContent = recommendation.food;
+      foodName.style.fontWeight = '600';
+      foodName.style.fontSize = '18px';
+
+      const refreshIcon = document.createElement('span');
+      refreshIcon.innerHTML = '🔄';
+      refreshIcon.style.cursor = 'pointer';
+      refreshIcon.title = '다시 추천받기';
+      refreshIcon.style.fontSize = '18px';
+      refreshIcon.addEventListener('click', () => {
+        this.recommendFoodByCurrentLocation();
+        modalElement.remove();
+      });
+
+      foodRow.appendChild(foodName);
+      foodRow.appendChild(refreshIcon);
+      innerBox.appendChild(foodRow);
+
+      // 버튼 컨테이너
+      const buttonWrapper = document.createElement('div');
+      buttonWrapper.style.display = 'flex';
+      buttonWrapper.style.justifyContent = 'center';
+      buttonWrapper.style.gap = '10px';
+
+      // 맛집 찾기 버튼
+      const findBtn = document.createElement('a');
+      findBtn.textContent = '맛집 찾기';
+      findBtn.href = `https://map.naver.com/p/search/${encodeURIComponent(recommendation.food)}`;
+      findBtn.target = '_blank';
+      findBtn.style.backgroundColor = '#FF5722';
+      findBtn.style.color = 'white';
+      findBtn.style.border = 'none';
+      findBtn.style.padding = '10px 20px';
+      findBtn.style.borderRadius = '8px';
+      findBtn.style.textDecoration = 'none';
+      findBtn.style.fontWeight = '500';
+      buttonWrapper.appendChild(findBtn);
+
+      // 레시피 보기 버튼
+      const recipeBtn = document.createElement('a');
+      recipeBtn.textContent = '레시피 보기';
+      recipeBtn.href = `https://www.10000recipe.com/recipe/list.html?q=${encodeURIComponent(recommendation.food)}`;
+      recipeBtn.target = '_blank';
+      recipeBtn.style.backgroundColor = 'white';
+      recipeBtn.style.color = '#FF5722';
+      recipeBtn.style.border = '1px solid #FF5722';
+      recipeBtn.style.padding = '10px 20px';
+      recipeBtn.style.borderRadius = '8px';
+      recipeBtn.style.textDecoration = 'none';
+      recipeBtn.style.fontWeight = '500';
+      buttonWrapper.appendChild(recipeBtn);
+
+      innerBox.appendChild(buttonWrapper);
+
+      modalElement.appendChild(innerBox);
 
       document.body.appendChild(modalElement);
     };
