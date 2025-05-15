@@ -47,6 +47,7 @@ export interface WeatherData {
   weather: Array<{
     main: string;
     description: string;
+    icon: string;
   }>;
   wind: {
     speed: number;
@@ -215,7 +216,12 @@ export class WeatherFoodRecommender {
       regionDiv.style.fontSize = '1.1rem';
       regionDiv.style.fontWeight = '600';
       regionDiv.style.marginBottom = '0.5rem';
-      regionDiv.innerHTML = `🌤️ ${regionName}`;
+
+      // 날씨 아이콘과 설명 추가
+      const weatherIconCode = weatherData.weather[0].icon;
+      const weatherIconUrl = `https://openweathermap.org/img/wn/${weatherIconCode}@2x.png`;
+      const weatherDesc = weatherData.weather[0].description;
+      regionDiv.innerHTML = `<img src="${weatherIconUrl}" alt="${weatherDesc}" style="width: 30px; height: 30px; vertical-align: middle;"> ${regionName} `; //(${weatherDesc}) 요거 넣으면 날씨 묘사된 거 추가됨
       innerBox.appendChild(regionDiv);
 
       const weatherDiv = document.createElement('div');
@@ -423,6 +429,7 @@ export class WeatherFoodRecommender {
           {
             main: 'Unknown',
             description: '정보 없음',
+            icon: '날씨 아이콘 정보 없음',
           },
         ],
         wind: {
@@ -498,8 +505,7 @@ export class WeatherFoodRecommender {
 // import { WeatherFoodRecommender } from './components/weatherFoodRecommender';
 
 // // OpenWeather API 키를 여기에 입력하세요
-// const OPENWEATHER_API_KEY = 'f8dfa97021ec854e4286e92c7fe3121a'; // 실제 API 키로 반드시 변경해야 합니다!
-
+// const OPENWEATHER_API_KEY = import.meta.env.VITE_WEATHER_API_URL;
 // // 페이지가 로드되면 실행
 // document.addEventListener('DOMContentLoaded', () => {
 //   // 추천 서비스 인스턴스 생성
