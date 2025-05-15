@@ -85,24 +85,25 @@ window.addEventListener('DOMContentLoaded', () => {
     renderMenu();
   }
 
-  document
-    .getElementById('category-korean')
-    ?.addEventListener('click', () => loadCategory('korean'));
-  document
-    .getElementById('category-chinese')
-    ?.addEventListener('click', () => loadCategory('chinese'));
-  document
-    .getElementById('category-japanese')
-    ?.addEventListener('click', () => loadCategory('japanese'));
-  document
-    .getElementById('category-western')
-    ?.addEventListener('click', () => loadCategory('western'));
-  document
-    .getElementById('category-snack')
-    ?.addEventListener('click', () => loadCategory('snack'));
-  document
-    .getElementById('category-dessert')
-    ?.addEventListener('click', () => loadCategory('dessert'));
+  const categoryButtons = document.querySelectorAll('.category-button');
+
+  for (let i = 0; i < categoryButtons.length; i++) {
+    const btn = categoryButtons[i] as HTMLElement;
+    btn.addEventListener('click', function (this: HTMLElement) {
+      // 버튼 클릭 해제
+      for (let j = 0; j < categoryButtons.length; j++) {
+        (categoryButtons[j] as HTMLElement).classList.remove('active');
+      }
+      // active 추가
+      this.classList.add('active');
+    });
+  }
+  document.getElementById('category-korean')?.addEventListener('click', () => loadCategory('korean'));
+  document.getElementById('category-chinese')?.addEventListener('click', () => loadCategory('chinese'));
+  document.getElementById('category-japanese')?.addEventListener('click', () => loadCategory('japanese'));
+  document.getElementById('category-western')?.addEventListener('click', () => loadCategory('western'));
+  document.getElementById('category-snack')?.addEventListener('click', () => loadCategory('snack'));
+  document.getElementById('category-dessert')?.addEventListener('click', () => loadCategory('dessert'));
 
   document.getElementById('mix')?.addEventListener('click', () => {
     if (!currentCategory) return; // 아무 카테고리도 선택 안 된 상태라면 무시
