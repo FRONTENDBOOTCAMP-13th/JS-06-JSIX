@@ -73,6 +73,11 @@ body {
   height: 72px;
 }
 
+.roulette {
+  display: flex;
+  justify-self: center;
+  margin: var(--space-md);
+}
 .menu-buttons button {
   background: var(--color-primary);
   color: var(--color-white);

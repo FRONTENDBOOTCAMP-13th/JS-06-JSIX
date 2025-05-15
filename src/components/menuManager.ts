@@ -1,8 +1,13 @@
 import { menuList } from '../data/menuList';
+import { drawRoulette } from './RouletteWheel.ts';
+import { setCurrentMenu } from '../main.ts';
 
 let currentMenu: string[] = [];
 // 현재 카테고리 저장용
 let currentCategory: keyof typeof menuList | null = null;
+
+// 룰렛
+const canvas = document.getElementById('roulette-canvas') as HTMLCanvasElement;
 
 // 메뉴 리스트 출력하는 함수
 function renderMenu() {
@@ -34,6 +39,7 @@ function renderMenu() {
     input.addEventListener('input', e => {
       const target = e.target as HTMLInputElement;
       currentMenu[index] = target.value;
+      drawRoulette(canvas, currentMenu);
     });
 
     // x 버튼 클릭 해당 input삭제
@@ -51,6 +57,10 @@ function renderMenu() {
     li.appendChild(wrapper);
     ul.appendChild(li);
   });
+
+  // 룰렛 그리기
+  drawRoulette(canvas, currentMenu);
+  setCurrentMenu(currentMenu);
 }
 
 // 카테고리 메뉴를 랜덤으로 8개선택
