@@ -1,5 +1,6 @@
 import './styles/global.css';
 import { spinRoulette } from './components/RouletteWheel';
+import { menuButtons } from './components/buttonManager';
 
 // DOM 생성
 document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
@@ -7,14 +8,14 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
     <button class="btn-pointer"></button>
     <canvas id="roulette-canvas" width="500" height="500"></canvas>
   </div>
-  <button id="spin" class="btn-spin">spin</button>
 `;
 
 const canvas = document.querySelector('#roulette-canvas') as HTMLCanvasElement;
+
 const spinButton = document.querySelector('#spin') as HTMLButtonElement;
 let currentMenu: string[] = []; // 음식 리스트 저장소
+menuButtons();
 
-//
 export function setCurrentMenu(menu: string[]) {
   currentMenu = menu;
 }
