@@ -1,4 +1,5 @@
 import './styles/global.css';
+import { menuButtons } from './components/buttonManager';
 
 // DOM 생성
 document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
@@ -7,3 +8,5 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
     <canvas id="roulette-canvas" width="500" height="500"></canvas>
   </div>
 `;
+
+menuButtons();
