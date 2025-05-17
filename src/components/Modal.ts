@@ -44,6 +44,7 @@ export function openModal(food: string, foodIndex: number, foodCategory: string)
   const closeBtn = document.createElement('button');
   closeBtn.classList.add('btn');
   closeBtn.classList.add('btn-close');
+  closeBtn.setAttribute('aria-label', '닫기');
 
   // 오늘의 메뉴는
   const rec = document.createElement('p');

@@ -331,31 +331,56 @@ export class WeatherFoodRecommender {
 
     // 닫기 버튼
     const closeBtn = document.createElement('button');
-    closeBtn.className = 'close-btn';
-    closeBtn.textContent = '✕';
+    closeBtn.classList.add('btn');
+    closeBtn.classList.add('btn-close');
     closeBtn.setAttribute('aria-label', '닫기');
     closeBtn.onclick = () => background.remove();
 
     weatherHeader.appendChild(weatherIcon);
     weatherHeader.appendChild(location);
-    weatherHeader.appendChild(closeBtn);
 
     // weather-info
     const weatherInfo = document.createElement('div');
+    const ul = document.createElement('ul');
     weatherInfo.className = 'weather-info';
-    weatherInfo.textContent = `현재 기온 : ${weatherData.main.temp.toFixed(1)}°C / 체감 온도 : ${weatherData.main.feels_like.toFixed(1)}°C / 습도 ${weatherData.main.humidity}%`;
+
+    const weatherInfoTemp = document.createElement('li');
+    const weatherInfoAppTemp = document.createElement('li');
+    const weatherInfohum = document.createElement('li');
+
+    weatherInfoTemp.textContent = `현재 기온`;
+    weatherInfoAppTemp.textContent = `체감 온도`;
+    weatherInfohum.textContent = `습도`;
+
+    const tempSpan = document.createElement('span');
+    const appTempSpan = document.createElement('span');
+    const humSpan = document.createElement('span');
+
+    tempSpan.textContent = `${weatherData.main.temp.toFixed(1)}°C`;
+    appTempSpan.textContent = `${weatherData.main.feels_like.toFixed(1)}°C`;
+    humSpan.textContent = `${weatherData.main.humidity}%`;
+
+    weatherInfoTemp.appendChild(tempSpan);
+    weatherInfoAppTemp.appendChild(appTempSpan);
+    weatherInfohum.appendChild(humSpan);
+
+    ul.appendChild(weatherInfoTemp);
+    ul.appendChild(weatherInfoAppTemp);
+    ul.appendChild(weatherInfohum);
+
+    weatherInfo.appendChild(ul);
 
     weatherArea.appendChild(weatherHeader);
     weatherArea.appendChild(weatherInfo);
 
     // message
     const message = document.createElement('div');
-    message.className = 'message';
+    message.className = 'rec';
     message.textContent = recommendation.message;
 
     // food-image
     const foodImage = document.createElement('div');
-    foodImage.className = 'food-image';
+    foodImage.className = 'food-img';
     if (recommendation.image) {
       const img = document.createElement('img');
       img.src = recommendation.image;
@@ -368,7 +393,7 @@ export class WeatherFoodRecommender {
     menuArea.className = 'menu-area';
 
     const menuName = document.createElement('span');
-    menuName.className = 'menu-name';
+    menuName.className = 'food-name';
     menuName.textContent = recommendation.food;
 
     const menuIcon = document.createElement('span');
@@ -390,7 +415,7 @@ export class WeatherFoodRecommender {
 
     // 맛집 찾기 버튼
     const findBtn = document.createElement('button');
-    findBtn.className = 'find-restaurant-btn';
+    findBtn.className = 'btn';
     findBtn.textContent = '맛집 찾기';
     findBtn.onclick = () => {
       window.open(`https://map.naver.com/p/search/${encodeURIComponent(recommendation.food)}`, '_blank');
@@ -398,7 +423,7 @@ export class WeatherFoodRecommender {
 
     // 레시피 보기 버튼
     const recipeBtn = document.createElement('button');
-    recipeBtn.className = 'view-recipe-btn';
+    recipeBtn.className = 'btn btn-outlined';
     recipeBtn.textContent = '레시피 보기';
     recipeBtn.onclick = () => {
       window.open(`https://www.10000recipe.com/recipe/list.html?q=${encodeURIComponent(recommendation.food)}`, '_blank');
@@ -408,6 +433,7 @@ export class WeatherFoodRecommender {
     buttonArea.appendChild(recipeBtn);
 
     // 모달 구조 조립
+    modal.appendChild(closeBtn);
     modal.appendChild(weatherArea);
     modal.appendChild(message);
     modal.appendChild(foodImage);

@@ -1,0 +1,177 @@
+/* 날씨 모달 CSS 영역 따로 추가했습니다  */
+/* .background {
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: 0;
+  left: 0;
+  z-index: 2;
+}
+
+.modal {
+  background: var(--color-white);
+  border-radius: var(--radius-lg);
+  width: 500px;
+  max-width: 96vw;
+  box-shadow: 0 6px 20px 0 rgba(0, 0, 0, 0.15);
+  padding: 1.5rem;
+  position: relative;
+  text-align: center;
+}
+
+/* 날씨 영역 헤더(날씨 아이콘, 위치, X아이콘) */
+.weather-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* 세 요소가 한 줄에 배치 */
+  width: 100%;
+  margin-bottom: 2px;
+  position: relative;
+  padding-bottom: 2px;
+}
+
+/* 날씨 아이콘 스타일 */
+.weather-header .weather-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* 아이콘 크기 */
+  width: 38px;
+  height: 38px;
+}
+
+/* 위치 스타일 */
+.weather-header .location {
+  flex: 1; /* 가운데 영역을 넓게 */
+  text-align: center;
+  font-size: 1.15rem;
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* X 닫기 아이콘 */
+.weather-header .close-btn {
+  background: none;
+  border: none;
+  font-size: 1.5rem; /* 버튼 크기 키움 */
+  color: var(--color-text);
+  cursor: pointer;
+  line-height: 1;
+  padding: 0 2px;
+  transition: color 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+}
+
+/* X 닫기 아이콘 hover 스타일 */
+.weather-header .close-btn:hover {
+  color: var(--color-primary);
+}
+
+/* 날씨 정보 영역 */
+.weather-info {
+  color: var(--color-gray);
+  font-size: 1rem;
+}
+
+/* 추천 멘트 영역 */
+.message {
+  font-size: 1.25rem;
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text);
+}
+
+/* 이미지 영역 */
+.food-image {
+  width: 200px;
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.food-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 0.5rem;
+  border: 1px solid #eee;
+  background: #f6f6f6;
+}
+
+/* 메뉴 결과 영역 */
+.menu-area {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin: 6px 0 10px 0; /* 위아래 마진 축소 */
+}
+
+/* 메뉴명 스타일 */
+.menu-area .menu-name {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #222;
+}
+
+/* 새로고침 아이콘 */
+.menu-area .menu-icon {
+  font-size: 1.25em;
+  cursor: pointer;
+  vertical-align: middle;
+}
+
+/* 버튼 영역 */
+.btn-area {
+  display: flex;
+  gap: var(--space-sm);
+  justify-content: center;
+}
+
+/* 맛집 찾기 버튼 */
+.btn-area .find-restaurant-btn {
+  background: var(--color-primary);
+  color: var(--color-white);
+  border: 0;
+  border-radius: var(--radius-md);
+  padding: 0 1.625rem;
+  height: 2.75rem;
+  font-size: 1.125rem;
+  font-weight: 500;
+  cursor: pointer;
+  box-shadow: none;
+}
+/* 맛집 찾기 버튼 hover */
+.btn-area .find-restaurant-btn:hover {
+  background: #e64a19; /* 버튼 호버 했을때 색상 추가*/
+}
+/* 레시피 보기 버튼 */
+.btn-area .view-recipe-btn {
+  background: var(--color-white);
+  color: var(--color-primary);
+  border: 1.5px solid var(--color-primary);
+  border-radius: 8px;
+  padding: 0 1.625rem;
+  height: 2.75rem;
+  font-size: 1.125rem;
+  font-weight: 500;
+  cursor: pointer;
+  box-shadow: none;
+}
+
+/* 레시피 보기 버튼 hover */
+.btn-area .view-recipe-btn:hover {
+  border-color: #e64a19;
+  color: #e64a19;
+}
