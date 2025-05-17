@@ -290,153 +290,132 @@ export class WeatherFoodRecommender {
 
   private showModalWithImageLoaded(recommendation: { food: string; message: string; image: string }, weatherData: WeatherData, regionName: string): void {
     // 기존 모달 제거
-    const existingModal = document.getElementById('food-modal');
+    // 기존 모달 제거 (id 대신 클래스 기반으로)
+    const existingModal = document.querySelector('.background');
     if (existingModal) existingModal.remove();
 
-    // 이미지 객체 준비
-    const image = new Image();
-    image.src = recommendation.image;
-    image.style.width = '150px';
-    image.style.height = '150px';
-    image.style.objectFit = 'contain';
-    image.style.margin = '1rem 0';
+    // 모달 배경
+    const background = document.createElement('div');
+    background.className = 'background';
 
-    // 이미지가 완전히 로드된 후 모달 생성
-    image.onload = () => {
-      // 모달 배경
-      const modalElement = document.createElement('div');
-      modalElement.id = 'food-modal';
-      modalElement.style.position = 'fixed';
-      modalElement.style.top = '0';
-      modalElement.style.left = '0';
-      modalElement.style.width = '100%';
-      modalElement.style.height = '100%';
-      modalElement.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
-      modalElement.style.display = 'flex';
-      modalElement.style.justifyContent = 'center';
-      modalElement.style.alignItems = 'center';
-      modalElement.style.zIndex = '1000';
+    // 모달 박스
+    const modal = document.createElement('div');
+    modal.className = 'modal';
 
-      // 모달 컨텐츠 박스
-      const innerBox = document.createElement('div');
-      innerBox.style.background = 'white';
-      innerBox.style.padding = '2rem';
-      innerBox.style.borderRadius = '12px';
-      innerBox.style.width = '320px';
-      innerBox.style.textAlign = 'center';
-      innerBox.style.fontFamily = 'sans-serif';
-      innerBox.style.position = 'relative';
+    // weather-area
+    const weatherArea = document.createElement('div');
+    weatherArea.className = 'weather-area';
 
-      // X 닫기 버튼
-      const closeX = document.createElement('span');
-      closeX.textContent = '✕';
-      closeX.style.position = 'absolute';
-      closeX.style.top = '18px';
-      closeX.style.right = '20px';
-      closeX.style.fontSize = '20px';
-      closeX.style.color = '#222';
-      closeX.style.cursor = 'pointer';
-      closeX.setAttribute('aria-label', '닫기');
-      closeX.addEventListener('click', () => modalElement.remove());
-      innerBox.appendChild(closeX);
+    // weather-header (아이콘 + 위치 + 닫기)
+    const weatherHeader = document.createElement('div');
+    weatherHeader.className = 'weather-header';
 
-      // 상단 날씨/지역 정보
-      const regionDiv = document.createElement('div');
-      regionDiv.style.fontSize = '1.1rem';
-      regionDiv.style.fontWeight = '600';
-      regionDiv.style.marginBottom = '0.5rem';
+    // 날씨 아이콘
+    const weatherIcon = document.createElement('span');
+    weatherIcon.className = 'weather-icon';
+    const weatherIconCode = weatherData.weather[0]?.icon;
+    // openweathermap 아이콘 사용
+    if (weatherIconCode) {
+      const iconImg = document.createElement('img');
+      iconImg.src = `https://openweathermap.org/img/wn/${weatherIconCode}@2x.png`;
+      iconImg.alt = weatherData.weather[0]?.description || '';
+      weatherIcon.appendChild(iconImg);
+    } else {
+      weatherIcon.textContent = '🌤️'; // fallback
+    }
 
-      // 날씨 아이콘과 설명 추가
-      const weatherIconCode = weatherData.weather[0].icon;
-      const weatherIconUrl = `https://openweathermap.org/img/wn/${weatherIconCode}@2x.png`;
-      const weatherDesc = weatherData.weather[0].description;
-      regionDiv.innerHTML = `<img src="${weatherIconUrl}" alt="${weatherDesc}" style="width: 30px; height: 30px; vertical-align: middle;"> ${regionName} `; //(${weatherDesc}) 요거 넣으면 날씨 묘사된 거 추가됨
-      innerBox.appendChild(regionDiv);
+    // 위치 정보
+    const location = document.createElement('span');
+    location.className = 'location';
+    location.textContent = regionName;
 
-      const weatherDiv = document.createElement('div');
-      weatherDiv.style.fontSize = '0.9rem';
-      weatherDiv.style.marginBottom = '1rem';
-      weatherDiv.textContent = `현재 기온 : ${weatherData.main.temp.toFixed(1)}°C / 체감 온도 : ${weatherData.main.feels_like.toFixed(1)}°C / 습도 ${weatherData.main.humidity}%`;
-      innerBox.appendChild(weatherDiv);
+    // 닫기 버튼
+    const closeBtn = document.createElement('button');
+    closeBtn.className = 'close-btn';
+    closeBtn.textContent = '✕';
+    closeBtn.setAttribute('aria-label', '닫기');
+    closeBtn.onclick = () => background.remove();
 
-      // 추천 멘트
-      const messageDiv = document.createElement('div');
-      messageDiv.style.fontSize = '1rem';
-      messageDiv.style.fontWeight = 'bold';
-      messageDiv.style.marginBottom = '1rem';
-      messageDiv.textContent = recommendation.message;
-      innerBox.appendChild(messageDiv);
+    weatherHeader.appendChild(weatherIcon);
+    weatherHeader.appendChild(location);
+    weatherHeader.appendChild(closeBtn);
 
-      // 음식 이미지
-      innerBox.appendChild(image);
+    // weather-info
+    const weatherInfo = document.createElement('div');
+    weatherInfo.className = 'weather-info';
+    weatherInfo.textContent = `현재 기온 : ${weatherData.main.temp.toFixed(1)}°C / 체감 온도 : ${weatherData.main.feels_like.toFixed(1)}°C / 습도 ${weatherData.main.humidity}%`;
 
-      // 음식명 + 새로고침 아이콘 한 줄로 배치
-      const foodRow = document.createElement('div');
-      foodRow.style.display = 'flex';
-      foodRow.style.alignItems = 'center';
-      foodRow.style.justifyContent = 'center';
-      foodRow.style.gap = '8px';
-      foodRow.style.margin = '1rem 0';
+    weatherArea.appendChild(weatherHeader);
+    weatherArea.appendChild(weatherInfo);
 
-      const foodName = document.createElement('div');
-      foodName.textContent = recommendation.food;
-      foodName.style.fontWeight = '600';
-      foodName.style.fontSize = '18px';
+    // message
+    const message = document.createElement('div');
+    message.className = 'message';
+    message.textContent = recommendation.message;
 
-      const refreshIcon = document.createElement('span');
-      refreshIcon.innerHTML = '🔄';
-      refreshIcon.style.cursor = 'pointer';
-      refreshIcon.title = '다시 추천받기';
-      refreshIcon.style.fontSize = '18px';
-      refreshIcon.addEventListener('click', () => {
-        this.recommendFoodByCurrentLocation();
-        modalElement.remove();
-      });
+    // food-image
+    const foodImage = document.createElement('div');
+    foodImage.className = 'food-image';
+    if (recommendation.image) {
+      const img = document.createElement('img');
+      img.src = recommendation.image;
+      img.alt = recommendation.food;
+      foodImage.appendChild(img);
+    }
 
-      foodRow.appendChild(foodName);
-      foodRow.appendChild(refreshIcon);
-      innerBox.appendChild(foodRow);
+    // 메뉴명+아이콘 flex container
+    const menuArea = document.createElement('div');
+    menuArea.className = 'menu-area';
 
-      // 버튼 컨테이너
-      const buttonWrapper = document.createElement('div');
-      buttonWrapper.style.display = 'flex';
-      buttonWrapper.style.justifyContent = 'center';
-      buttonWrapper.style.gap = '10px';
+    const menuName = document.createElement('span');
+    menuName.className = 'menu-name';
+    menuName.textContent = recommendation.food;
 
-      // 맛집 찾기 버튼
-      const findBtn = document.createElement('a');
-      findBtn.textContent = '맛집 찾기';
-      findBtn.href = `https://map.naver.com/p/search/${encodeURIComponent(recommendation.food)}`;
-      findBtn.target = '_blank';
-      findBtn.style.backgroundColor = '#FF5722';
-      findBtn.style.color = 'white';
-      findBtn.style.border = 'none';
-      findBtn.style.padding = '10px 20px';
-      findBtn.style.borderRadius = '8px';
-      findBtn.style.textDecoration = 'none';
-      findBtn.style.fontWeight = '500';
-      buttonWrapper.appendChild(findBtn);
-
-      // 레시피 보기 버튼
-      const recipeBtn = document.createElement('a');
-      recipeBtn.textContent = '레시피 보기';
-      recipeBtn.href = `https://www.10000recipe.com/recipe/list.html?q=${encodeURIComponent(recommendation.food)}`;
-      recipeBtn.target = '_blank';
-      recipeBtn.style.backgroundColor = 'white';
-      recipeBtn.style.color = '#FF5722';
-      recipeBtn.style.border = '1px solid #FF5722';
-      recipeBtn.style.padding = '10px 20px';
-      recipeBtn.style.borderRadius = '8px';
-      recipeBtn.style.textDecoration = 'none';
-      recipeBtn.style.fontWeight = '500';
-      buttonWrapper.appendChild(recipeBtn);
-
-      innerBox.appendChild(buttonWrapper);
-
-      modalElement.appendChild(innerBox);
-
-      document.body.appendChild(modalElement);
+    const menuIcon = document.createElement('span');
+    menuIcon.className = 'menu-icon';
+    menuIcon.innerHTML = '🔄'; // 새로고침/다시 추천 아이콘
+    menuIcon.title = '다시 추천받기';
+    menuIcon.style.cursor = 'pointer';
+    menuIcon.onclick = () => {
+      this.recommendFoodByCurrentLocation();
+      background.remove();
     };
+
+    menuArea.appendChild(menuName);
+    menuArea.appendChild(menuIcon);
+
+    // 버튼 영역 flex container
+    const buttonArea = document.createElement('div');
+    buttonArea.className = 'btn-area';
+
+    // 맛집 찾기 버튼
+    const findBtn = document.createElement('button');
+    findBtn.className = 'find-restaurant-btn';
+    findBtn.textContent = '맛집 찾기';
+    findBtn.onclick = () => {
+      window.open(`https://map.naver.com/p/search/${encodeURIComponent(recommendation.food)}`, '_blank');
+    };
+
+    // 레시피 보기 버튼
+    const recipeBtn = document.createElement('button');
+    recipeBtn.className = 'view-recipe-btn';
+    recipeBtn.textContent = '레시피 보기';
+    recipeBtn.onclick = () => {
+      window.open(`https://www.10000recipe.com/recipe/list.html?q=${encodeURIComponent(recommendation.food)}`, '_blank');
+    };
+
+    buttonArea.appendChild(findBtn);
+    buttonArea.appendChild(recipeBtn);
+
+    // 모달 구조 조립
+    modal.appendChild(weatherArea);
+    modal.appendChild(message);
+    modal.appendChild(foodImage);
+    modal.appendChild(menuArea);
+    modal.appendChild(buttonArea);
+
+    background.appendChild(modal);
+    document.body.appendChild(background);
   }
 
   // 위치 가져오기 함수
