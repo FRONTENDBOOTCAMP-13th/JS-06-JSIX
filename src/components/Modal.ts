@@ -1,4 +1,9 @@
+import { handleSpin } from './menuManager';
+
 export function openModal(food: string, foodIndex: number, foodCategory: string) {
+  const spinBtn = document.querySelector('#spin') as HTMLButtonElement; // 룰렛 돌리기 버튼
+  const canvas = document.querySelector('#roulette-canvas') as HTMLCanvasElement; // 룰렛 캔버스
+
   const categoryNaming = (category: string) => {
     switch (category) {
       case 'korean':
@@ -39,6 +44,7 @@ export function openModal(food: string, foodIndex: number, foodCategory: string)
   const closeBtn = document.createElement('button');
   closeBtn.classList.add('btn');
   closeBtn.classList.add('btn-close');
+  closeBtn.setAttribute('aria-label', '닫기');
 
   // 오늘의 메뉴는
   const rec = document.createElement('p');
@@ -77,6 +83,17 @@ export function openModal(food: string, foodIndex: number, foodCategory: string)
   recipeBtn.href = `https://www.10000recipe.com/recipe/list.html?q=${encodeURIComponent(food)}`;
   recipeBtn.target = '_blank';
 
+  // 다시 돌리기 버튼
+  const reSpinBtn = document.createElement('button');
+  reSpinBtn.classList.add('btn');
+  reSpinBtn.classList.add('btn-outlined');
+  reSpinBtn.classList.add('btn-basic');
+  reSpinBtn.textContent = '다시 돌리기';
+  reSpinBtn.addEventListener('click', () => {
+    background.remove();
+    handleSpin(canvas, spinBtn);
+  });
+
   background.appendChild(modal);
   modal.appendChild(closeBtn);
   modal.appendChild(rec);
@@ -86,6 +103,7 @@ export function openModal(food: string, foodIndex: number, foodCategory: string)
   modal.appendChild(btnArea);
   btnArea.appendChild(mapBtn);
   btnArea.appendChild(recipeBtn);
+  btnArea.appendChild(reSpinBtn);
 
   document.body.appendChild(background);
 
