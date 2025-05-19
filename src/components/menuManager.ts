@@ -1,18 +1,18 @@
 import { menuList } from '../data/menuList';
-import { drawRoulette } from './RouletteWheel.ts';
-import { spinRoulette } from './RouletteWheel.ts';
+import { drawRoulette, spinRoulette } from './RouletteWheel.ts';
 import { openModal } from './Modal.ts';
+import { updateMenuHistory } from './menuHistory.ts';
 
 let canvas: HTMLCanvasElement;
 let currentMenu: string[] = [];
 let currentCategory: keyof typeof menuList;
 
+// currentMenu 저장소
 export function setCurrentMenu(menu: string[]) {
-  // currentMenu 저장소
   currentMenu = menu;
 }
+// 음식 카테고리 저장소
 export function setCurrentCategory(category: keyof typeof menuList) {
-  // 음식 카테고리 저장소
   currentCategory = category;
 }
 export { currentCategory };
@@ -146,6 +146,8 @@ export function handleSpin(canvas: HTMLCanvasElement, spinBtn: HTMLButtonElement
 
     canvas.removeEventListener('transitionend', handler);
     spinBtn.disabled = false;
+
+    updateMenuHistory(selectedMenu);
   });
 }
 
