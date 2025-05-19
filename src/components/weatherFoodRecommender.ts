@@ -153,7 +153,7 @@ export class WeatherFoodRecommender {
           return data.weather[0].main === 'Rain' && (data.rain?.['1h'] ?? 0) >= 0.5;
         },
         foods: ['김치찌개', '해물파전', '수제비', '칼국수', '부대찌개', '감자전', '닭볶음탕', '뼈해장국', '순두부찌개', '잔치국수'],
-        message: food => `비도 오고 그래서.... <br>${food} 어떠세요?`,
+        message: food => `비도 오고 그래서.... ${food} 어떠세요?`,
         imageMap: {
           김치찌개: rain_1,
           해물파전물회: rain_2,
@@ -213,7 +213,7 @@ export class WeatherFoodRecommender {
           return data.weather[0].main === 'Snow' && (data.snow?.['1h'] ?? 0) >= 1 && data.main.temp <= 5;
         },
         foods: ['곱창전골', '닭한마리', '오뎅', '군고구마', '호빵', '떡볶이', '라면', '팥죽', '어묵국수', '뱅쇼'],
-        message: food => `함박눈이 소복소복 내리는 날엔<br> 따뜻하고 얼큰한 ${food} 못참지!`,
+        message: food => `함박눈이 소복소복 내리는 날엔 따뜻하고 얼큰한 ${food} 못참지!`,
         imageMap: {
           곱창전골: snow_1,
           닭한마리: snow_2,
@@ -233,7 +233,7 @@ export class WeatherFoodRecommender {
           return data.weather[0].main === 'Clear' && data.clouds.all <= 20;
         },
         foods: ['김밥', '주먹밥', '샌드위치', '샐러드', '유부초밥', '닭강정', '과일', '또띠아롤', '치킨', '컵밥'],
-        message: food => `살랑이는 바람 맞으며 즐기는 ${food}!<br> 돗자리 펴고 앉아서 드셔보세요!`,
+        message: food => `살랑이는 바람 맞으며 즐기는 ${food}! 돗자리 펴고 앉아서 드셔보세요!`,
         imageMap: {
           김밥: sunny_1,
           주먹밥: sunny_2,
@@ -274,7 +274,7 @@ export class WeatherFoodRecommender {
           return month >= 9 && month <= 11;
         },
         foods: ['전어구이', '새우튀김', '꽃게탕', '고구마 맛탕', '대하 구이'],
-        message: food => `가을 제철 맞아 더욱 깊어진 풍미의<br> ${food} 어때요?`,
+        message: food => `가을 제철 맞아 더욱 깊어진 풍미의 ${food} 어때요?`,
         imageMap: {
           전어구이: autumn_1,
           새우튀김: autumn_2,
@@ -313,13 +313,15 @@ export class WeatherFoodRecommender {
     // 날씨 아이콘
     const weatherIcon = document.createElement('span');
     weatherIcon.className = 'weather-icon';
+    let weatherIconImg: HTMLImageElement | null = null;
     const weatherIconCode = weatherData.weather[0]?.icon;
+
     // openweathermap 아이콘 사용
     if (weatherIconCode) {
-      const iconImg = document.createElement('img');
-      iconImg.src = `https://openweathermap.org/img/wn/${weatherIconCode}@2x.png`;
-      iconImg.alt = weatherData.weather[0]?.description || '';
-      weatherIcon.appendChild(iconImg);
+      weatherIconImg = document.createElement('img');
+      weatherIconImg.src = `https://openweathermap.org/img/wn/${weatherIconCode}@2x.png`;
+      weatherIconImg.alt = weatherData.weather[0]?.description || '';
+      weatherIcon.appendChild(weatherIconImg);
     } else {
       weatherIcon.textContent = '🌤️'; // fallback
     }
@@ -381,11 +383,12 @@ export class WeatherFoodRecommender {
     // food-image
     const foodImage = document.createElement('div');
     foodImage.className = 'food-img';
+    let foodImg: HTMLImageElement | null = null;
     if (recommendation.image) {
-      const img = document.createElement('img');
-      img.src = recommendation.image;
-      img.alt = recommendation.food;
-      foodImage.appendChild(img);
+      foodImg = document.createElement('img');
+      foodImg.src = recommendation.image;
+      foodImg.alt = recommendation.food;
+      foodImage.appendChild(foodImg);
     }
 
     // 메뉴명+아이콘 flex container
@@ -441,7 +444,32 @@ export class WeatherFoodRecommender {
     modal.appendChild(buttonArea);
 
     background.appendChild(modal);
-    document.body.appendChild(background);
+
+    // 이미지 로딩 대기
+    const imagesToLoad: HTMLImageElement[] = [];
+    if (weatherIconImg) imagesToLoad.push(weatherIconImg);
+    if (foodImg) imagesToLoad.push(foodImg);
+    //모달에 띄울 이미지가 없는 경우(추천 음식에 이미지가 없는 경우, 날씨 데이터에 아이콘 정보가 없는 경우, 에러/예외 상황)
+    if (imagesToLoad.length === 0) {
+      document.body.appendChild(background);
+      return;
+    }
+
+    let loadedCount = 0;
+    imagesToLoad.forEach(img => {
+      // onload, onerror 모두 카운트 증가 (캐시 대응)
+      img.onload = img.onerror = () => {
+        loadedCount++; //로드 성공하면 아이콘, 이미지 별로 +1
+        if (loadedCount === imagesToLoad.length) {
+          //둘다 로딩되면
+          document.body.appendChild(background);
+        }
+      };
+      // 캐시된 이미지도 onload가 바로 발생하지 않을 수 있어서, 이미 complete면 바로 처리
+      if (img.complete) {
+        img.onload!(null as any); //캐시된것도 count 하나 늘려주는 로직
+      }
+    });
   }
 
   // 위치 가져오기 함수
