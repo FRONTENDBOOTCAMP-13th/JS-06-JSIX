@@ -39,7 +39,7 @@ body {
   border-radius: var(--radius-md);
   font-weight: var(--font-weight-regular);
   display: flex;
-  padding: 26px;
+  padding: 0 26px;
   align-items: center;
   cursor: pointer;
 }
@@ -48,9 +48,43 @@ body {
   background: var(--color-hover);
   color: var(--color-text);
 }
+#menu-history {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin: var(--space-md) auto;
+  gap: 8px;
+  justify-content: center;
+}
+
+#menu-history h3 {
+  font-size: 26px;
+  color: var(--color-text);
+}
+
+#menu-history ul {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-sm);
+  list-style: none;
+}
+
+#menu-history li {
+  padding: 6px 14px;
+  border-radius: 20px;
+  border: 1px solid var(--color-primary);
+  font-size: 20px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+}
+
+#menu-history li:hover {
+  transform: scale(1.05);
+}
 
 .menu-box {
   width: 100%;
+  max-width: 678px;
   height: 100%;
   display: flex;
   gap: var(--space-sm);
@@ -122,11 +156,12 @@ body {
   border: none;
   outline: none;
   background: var(--color-white);
-  font-size: var(--font-size-base);
+  font-size: var(--font-size-lg);
   border-radius: var(--radius-md);
   color: var(--color-text);
   font-weight: var(--font-weight-regular);
-  padding: var(--space-md) 400px var(--space-md) var(--space-md);
+  padding: var(--space-md) 40px var(--space-md) var(--space-md);
+  flex: 1;
 }
 
 .input-wrapper .input-remove {
