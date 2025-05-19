@@ -21,8 +21,10 @@ body {
 
 .categories {
   display: flex;
-  width: 730px;
-  height: 74px;
+  width: 100%;
+  height: auto;
+  min-height: 74px;
+  flex-wrap: wrap;
   gap: var(--space-sm);
   justify-content: center;
   margin: 0 auto;
@@ -48,7 +50,7 @@ body {
 }
 
 .menu-box {
-  width: 678px;
+  width: 100%;
   height: 100%;
   display: flex;
   gap: var(--space-sm);
@@ -67,10 +69,8 @@ body {
   display: flex;
   gap: var(--space-md);
   align-items: center;
-  margin: var(--space-md) auto;
+  margin: 0 auto;
   justify-content: center;
-  width: 856px;
-  height: 72px;
 }
 
 .roulette {
