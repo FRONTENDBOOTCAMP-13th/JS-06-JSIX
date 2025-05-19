@@ -159,19 +159,19 @@ export function loadFilteredMenu() {
     return;
   }
 
-  // 종류만 선택된 경우 (예: 한식/전체)
+  // 종류만 선택된 경우
   if (selectedType !== 'all' && selectedSituation === 'all') {
     loadTypeMenus(selectedType);
     return;
   }
 
-  // 상황만 선택된 경우 (예: 전체/데이트)
+  // 상황만 선택된 경우
   if (selectedType === 'all' && selectedSituation !== 'all') {
     loadSituationMenus(selectedSituation);
     return;
   }
 
-  // 둘 다 선택된 경우 (예: 한식/파티)
+  // 둘 다 선택된 경우
   const combinedKey = `${selectedType}_${selectedSituation}` as keyof typeof menuList;
   if (combinedKey in menuList) {
     loadCategory(combinedKey);
@@ -183,7 +183,7 @@ export function loadFilteredMenu() {
   }
 }
 
-// 특정 종류의 모든 메뉴 로드 (예: 한식 전체)
+// 특정 종류의 모든 메뉴
 export function loadTypeMenus(type: string) {
   // 해당 종류의 모든 메뉴를 합치기
   let typeMenus: string[] = [];
@@ -191,33 +191,30 @@ export function loadTypeMenus(type: string) {
   // 해당 종류로 시작하는 모든 카테고리의 메뉴 합치기
   for (const key in menuList) {
     if (key.startsWith(`${type}_`)) {
-      typeMenus = typeMenus.concat(menuList[key as keyof typeof menuList]);
+      // 옵셔널 체이닝
+      const menus = menuList[key as keyof typeof menuList];
+      if (menus?.length) {
+        typeMenus = [...typeMenus, ...menus];
+      }
     }
   }
 
-  // 중복 제거
-  const uniqueMenus: string[] = [];
-  for (let i = 0; i < typeMenus.length; i++) {
-    if (uniqueMenus.indexOf(typeMenus[i]) === -1) {
-      uniqueMenus.push(typeMenus[i]);
-    }
-  }
+  // Set 객체로 중복 제거
+  const uniqueMenus = [...new Set(typeMenus)];
 
   // 섞고 8개 선택
   currentMenu = shuffle(uniqueMenus).slice(0, 8);
 
-  // 카테고리 설정 (첫 번째 발견된 카테고리로)
-  for (const key in menuList) {
-    if (key.startsWith(`${type}_`)) {
-      currentCategory = key as keyof typeof menuList;
-      break;
-    }
+  // 카테고리 설정
+  const matchingKey = Object.keys(menuList).find(key => key.startsWith(`${type}_`));
+  if (matchingKey) {
+    currentCategory = matchingKey as keyof typeof menuList;
   }
 
   renderMenu();
 }
 
-// 특정 상황의 모든 메뉴 로드 (예: 데이트 전체)
+// 특정 상황의 모든 메뉴
 export function loadSituationMenus(situation: string) {
   // 해당 상황의 모든 메뉴를 합치기
   let situationMenus: string[] = [];
@@ -225,56 +222,50 @@ export function loadSituationMenus(situation: string) {
   // 해당 상황으로 끝나는 모든 카테고리의 메뉴 합치기
   for (const key in menuList) {
     if (key.endsWith(`_${situation}`)) {
-      situationMenus = situationMenus.concat(menuList[key as keyof typeof menuList]);
+      // 옵셔널 체이닝
+      const menus = menuList[key as keyof typeof menuList];
+      if (menus?.length) {
+        situationMenus = [...situationMenus, ...menus];
+      }
     }
   }
 
-  // 중복 제거
-  const uniqueMenus: string[] = [];
-  for (let i = 0; i < situationMenus.length; i++) {
-    if (uniqueMenus.indexOf(situationMenus[i]) === -1) {
-      uniqueMenus.push(situationMenus[i]);
-    }
-  }
+  // Set 객체로 중복 제거
+  const uniqueMenus = [...new Set(situationMenus)];
 
   // 섞고 8개 선택
   currentMenu = shuffle(uniqueMenus).slice(0, 8);
 
-  // 카테고리 설정 (첫 번째 발견된 카테고리로)
-  for (const key in menuList) {
-    if (key.endsWith(`_${situation}`)) {
-      currentCategory = key as keyof typeof menuList;
-      break;
-    }
+  // 카테고리 설정
+  const situationKeys = Object.keys(menuList).find(key => key.endsWith(`_${situation}`));
+  if (situationKeys) {
+    currentCategory = situationKeys as keyof typeof menuList;
   }
 
   renderMenu();
 }
 
-// 전체 카테고리 메뉴 로드
+// 전체 카테고리 메뉴
 export function loadAllCategory() {
   // 빈 배열 생성
   let allMenus: string[] = [];
 
   // 모든 카테고리의 메뉴 합치기
   for (const key in menuList) {
-    if (Object.prototype.hasOwnProperty.call(menuList, key)) {
-      allMenus = allMenus.concat(menuList[key as keyof typeof menuList]);
+    // 옵셔널 체이닝 사용
+    const menus = menuList[key as keyof typeof menuList];
+    if (menus?.length) {
+      allMenus = [...allMenus, ...menus];
     }
   }
 
-  // 중복 제거
-  const uniqueMenus: string[] = [];
-  for (let i = 0; i < allMenus.length; i++) {
-    if (uniqueMenus.indexOf(allMenus[i]) === -1) {
-      uniqueMenus.push(allMenus[i]);
-    }
-  }
+  // Set 객체로 중복 제거
+  const uniqueMenus = [...new Set(allMenus)];
 
   // 섞고 8개 선택
   currentMenu = shuffle(uniqueMenus).slice(0, 8);
 
-  // 카테고리 설정 (첫 번째 카테고리로)
+  // 카테고리 설정
   currentCategory = Object.keys(menuList)[0] as keyof typeof menuList;
 
   renderMenu();
@@ -324,7 +315,7 @@ window.addEventListener('DOMContentLoaded', () => {
       // 선택된 상황 저장
       selectedSituation = this.id.replace('situation-', '');
 
-      // 필터링된 메뉴 로드
+      // 필터링된 메뉴
       loadFilteredMenu();
     });
   }
