@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="ko">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
@@ -11,53 +11,62 @@
   </head>
   <body>
     <div class="container">
-      <div class="header">
-        <h2>오늘의 점심메뉴 룰렛</h2>
-      </div>
-      <p class="sub-header">점심 메뉴 고민을 덜어줄 룰렛을 돌려 <br />점심을 골라보세요</p>
-
-      <div class="categories">
-        <p class="cat">종류</p>
-        <button type="button" id="category-all" class="category-button">전체</button>
-        <button type="button" id="category-korean" class="category-button">한식</button>
-        <button type="button" id="category-chinese" class="category-button">중식</button>
-        <button type="button" id="category-japanese" class="category-button">일식</button>
-        <button type="button" id="category-western" class="category-button">양식</button>
-        <button type="button" id="category-snack" class="category-button">분식</button>
-        <button type="button" id="category-dessert" class="category-button">디저트</button>
-      </div>
-      <div class="situations">
-        <p class="sit">상황</p>
-        <button type="button" id="situation-all" class="situation-button">전체</button>
-        <button type="button" id="situation-solo" class="situation-button">혼밥</button>
-        <button type="button" id="situation-date" class="situation-button">데이트</button>
-        <button type="button" id="situation-company" class="situation-button">회식</button>
-        <button type="button" id="situation-party" class="situation-button">파티</button>
-        <button type="button" id="situation-healthy" class="situation-button">건강식</button>
-        <button type="button" id="situation-night" class="situation-button">야식</button>
-      </div>
-      <div class="roulette" id="roulette"></div>
-      <div class="menu-buttons">
-        <button id="mixMenu">메뉴 섞기</button>
-        <button id="spin">룰렛 돌리기</button>
-        <button id="weather">날씨별 메뉴 추천</button>
-      </div>
-
-      <div id="menu-history"></div>
-
-      <div class="menu-box">
-        <ul id="menu-entries">
-          <li class="menu-item">
-            <div class="input-wrapper">
-              <input class="menu-input" placeholder="메뉴 입력" />
-              <button class="input-remove" type="button" aria-label="입력 지우기">x</button>
+      <div class="contents">
+        <header class="header">
+          <h2>오늘의 점심 메뉴 룰렛</h2>
+        </header>
+        <p class="sub-header">지금 룰렛을 돌려 <br /> 오늘의 메뉴를 골라보세요!</p>
+        <div class="category-area">
+          <div id="cat-type" class="categories">
+            <p class="cat-name">종류</p>
+            <div class="cat-btn">
+              <button type="button" id="category-all" class="btn btn-outlined btn-light">전체</button>
+              <button type="button" id="category-korean" class="btn btn-outlined btn-light">한식</button>
+              <button type="button" id="category-chinese" class="btn btn-outlined btn-light">중식</button>
+              <button type="button" id="category-japanese" class="btn btn-outlined btn-light">일식</button>
+              <button type="button" id="category-western" class="btn btn-outlined btn-light">양식</button>
+              <button type="button" id="category-snack" class="btn btn-outlined btn-light">분식</button>
+              <button type="button" id="category-dessert" class="btn btn-outlined btn-light">디저트</button>
             </div>
-          </li>
-        </ul>
-        <div class="add-menu">
-          <button id="addMenu" type="button">추가</button>
-          <button id="resetMenu" type="button">초기화</button>
+          </div>
+          <div id="cat-situation" class="categories">
+            <p class="cat-name">상황</p>
+            <div class="cat-btn"><button type="button" id="situation-all" class="btn btn-outlined btn-light">전체</button>
+            <button type="button" id="situation-solo" class="btn btn-outlined btn-light">혼밥</button>
+            <button type="button" id="situation-date" class="btn btn-outlined btn-light">데이트</button>
+            <button type="button" id="situation-company" class="btn btn-outlined btn-light">회식</button>
+            <button type="button" id="situation-party" class="btn btn-outlined btn-light">파티</button>
+            <button type="button" id="situation-healthy" class="btn btn-outlined btn-light">건강식</button>
+            <button type="button" id="situation-night" class="btn btn-outlined btn-light">야식</button>
+          </div>
         </div>
+        <div id="roulette-container" class="roulette-container">
+          <button class="btn-pointer"></button>
+          <canvas id="roulette-canvas" width="500" height="500"></canvas>
+        </div>
+        <div class="menu-buttons">
+          <button type="button" id="mixMenu" class="btn"> <i data-lucide="shuffle"></i>메뉴 섞기</button>
+          <button type="button" id="spin" class="btn"><i data-lucide="rotate-cw"></i>룰렛 돌리기</button>
+          <button type="button" id="weather" class="btn"><i data-lucide="cloud-sun"></i>날씨별 메뉴 추천</button>
+        </div>
+
+        <div id="menu-history" class="menu-history"></div>
+
+        <div class="menu-box">
+          <ul id="menu-entries" class="menu-entries">
+            <li class="menu-item">
+              <div class="input-wrapper">
+                <input class="menu-input" placeholder="메뉴 입력" />
+                <button class="btn btn-icon" type="button" aria-label="입력 지우기">x</button>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <div class="btn-area">
+          <button id="addMenu" type="button" class="btn btn-outlined btn-light btn-basic btn-sm">추가</button>
+          <button id="resetMenu" type="button" class="btn btn-outlined btn-light btn-basic btn-sm">초기화</button>
+        </div>
+        <footer class="footer">© 2025. 멋쟁이사자처럼 프론트엔드 부트캠프 팀 JSIX</footer>
       </div>
     </div>
   </body>

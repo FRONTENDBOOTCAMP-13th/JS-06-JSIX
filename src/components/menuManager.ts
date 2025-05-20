@@ -256,7 +256,7 @@ export function categoryButtons(categories: string[]) {
   categories.forEach(category => {
     const btn = document.getElementById(`category-${category}`);
     btn?.addEventListener('click', function (this: HTMLElement) {
-      document.querySelectorAll('.category-button').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('#cat-type .btn').forEach(b => b.classList.remove('active'));
       this.classList.add('active');
       setSelectedType(category);
       loadFilteredMenu();
@@ -268,7 +268,7 @@ export function situationButtons(situations: string[]) {
   situations.forEach(situation => {
     const btn = document.getElementById(`situation-${situation}`);
     btn?.addEventListener('click', function (this: HTMLElement) {
-      document.querySelectorAll('.situation-button').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('#cat-situation .btn').forEach(b => b.classList.remove('active'));
       this.classList.add('active');
       setSelectedSituation(situation);
       loadFilteredMenu();
