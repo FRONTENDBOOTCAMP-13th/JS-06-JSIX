@@ -1,14 +1,7 @@
 import './styles/global.css';
 import { menuButtons } from './components/buttonManager';
 import { setCanvas, loadAllCategory } from './components/menuManager';
-
-// DOM 생성
-document.querySelector<HTMLDivElement>('#roulette')!.innerHTML = `
-  <div id="roulette-container" class="roulette-container">
-    <button class="btn-pointer"></button>
-    <canvas id="roulette-canvas" width="500" height="500"></canvas>
-  </div>
-`;
+import { createIcons, CloudSun, Shuffle, RotateCw } from 'lucide';
 
 const canvas = document.getElementById('roulette-canvas') as HTMLCanvasElement;
 setCanvas(canvas);
@@ -25,3 +18,17 @@ menuButtons();
 
 // 메뉴 초기 로딩
 loadAllCategory(); // 추가해줘야 첫 메뉴가 바로 보임
+// Recommended way, to include only the icons you need.
+
+// 아이콘 생성
+createIcons({
+  icons: {
+    CloudSun,
+    Shuffle,
+    RotateCw,
+  },
+  attrs: {
+    class: ['icon'],
+    stroke: '#fff',
+  },
+});

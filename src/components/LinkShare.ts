@@ -53,3 +53,6 @@ export function shareKakaoTalk(food: string) {
     ],
   });
 }
+
+('#cat-type .btn');
+('#cat-situation .btn');
