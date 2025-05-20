@@ -1,5 +1,6 @@
 import { copyLink, shareKakaoTalk } from './LinkShare';
 import { handleSpin } from './menuManager';
+import { createElement, Share2, Link2, Utensils, CookingPot, RotateCw } from 'lucide';
 
 export function openModal(food: string, foodCategory: string) {
   const spinBtn = document.querySelector('#spin') as HTMLButtonElement; // 룰렛 돌리기 버튼
@@ -15,8 +16,15 @@ export function openModal(food: string, foodCategory: string) {
       snack: 'sn',
       dessert: 'ds',
     };
-    return map[base] || '';
+    return map[base] || base;
   };
+
+  // 아이콘 생성
+  const shareIcon = createElement(Share2, { class: 'icon' });
+  const linkIcon = createElement(Link2, { class: 'icon' });
+  const mapIcon = createElement(Utensils, { class: 'icon' });
+  const recipeIcon = createElement(CookingPot, { class: 'icon' });
+  const reSpinIcon = createElement(RotateCw, { class: 'icon' });
 
   // 배경
   const background = document.createElement('div');
@@ -56,11 +64,7 @@ export function openModal(food: string, foodCategory: string) {
   const toolBtn = document.createElement('button');
   toolBtn.classList.add('btn');
   toolBtn.classList.add('btn-icon');
-
-  // 기능 버튼 아이콘
-  const toolBtnIcon = document.createElement('img');
-  toolBtnIcon.src = '/src/assets/icon/icon_share.svg';
-  toolBtnIcon.alt = '기능';
+  toolBtn.ariaLabel = '기능';
 
   // 기능 버튼 영역
   const toolBtnArea = document.createElement('div');
@@ -74,9 +78,6 @@ export function openModal(food: string, foodCategory: string) {
   linkBtn.classList.add('btn-basic');
 
   // 링크 복사 버튼 아이콘
-  const linkBtnIcon = document.createElement('img');
-  linkBtnIcon.src = '/src/assets/icon/icon_link.svg';
-  linkBtnIcon.alt = '링크';
   linkBtn.addEventListener('click', () => {
     copyLink(food, foodCategory);
   });
@@ -108,7 +109,9 @@ export function openModal(food: string, foodCategory: string) {
   // 맛집 찾기 버튼
   const mapBtn = document.createElement('a');
   mapBtn.className = 'btn';
-  mapBtn.textContent = '맛집 찾기';
+
+  // 맛집 찾기 버튼 텍스트
+  const mapBtnText = document.createTextNode('맛집 찾기');
   mapBtn.href = `https://map.naver.com/p/search/${encodeURIComponent(food)}`;
   mapBtn.target = '_blank';
 
@@ -116,20 +119,24 @@ export function openModal(food: string, foodCategory: string) {
   const recipeBtn = document.createElement('a');
   recipeBtn.classList.add('btn');
   recipeBtn.classList.add('btn-outlined');
-  recipeBtn.textContent = '레시피 보기';
   recipeBtn.href = `https://www.10000recipe.com/recipe/list.html?q=${encodeURIComponent(food)}`;
   recipeBtn.target = '_blank';
+
+  // 레시피 보기 버튼 텍스트
+  const recipeBtnText = document.createTextNode('레시피 보기');
 
   // 다시 돌리기 버튼
   const reSpinBtn = document.createElement('button');
   reSpinBtn.classList.add('btn');
   reSpinBtn.classList.add('btn-outlined');
   reSpinBtn.classList.add('btn-basic');
-  reSpinBtn.textContent = '다시 돌리기';
   reSpinBtn.addEventListener('click', () => {
     background.remove();
     handleSpin(canvas, spinBtn);
   });
+
+  // 다시 돌리기 버튼 텍스트
+  const reSpinBtnText = document.createTextNode('다시 돌리기');
 
   // 요소 조립
   background.appendChild(modal);
@@ -139,16 +146,22 @@ export function openModal(food: string, foodCategory: string) {
   foodImgBox.appendChild(foodImg);
   modal.appendChild(foodName);
   foodName.appendChild(toolBtn);
-  toolBtn.appendChild(toolBtnIcon);
-  linkBtn.appendChild(linkBtnIcon);
+  toolBtn.appendChild(shareIcon);
+  linkBtn.appendChild(linkIcon);
   linkBtn.appendChild(linkBtnText);
   toolBtnArea.appendChild(linkBtn);
   katalkBtn.appendChild(katalkBtnIcon);
   katalkBtn.appendChild(katalkBtnText);
   toolBtnArea.appendChild(katalkBtn);
   modal.appendChild(btnArea);
+  mapBtn.appendChild(mapIcon);
+  mapBtn.appendChild(mapBtnText);
   btnArea.appendChild(mapBtn);
+  recipeBtn.appendChild(recipeIcon);
+  recipeBtn.appendChild(recipeBtnText);
   btnArea.appendChild(recipeBtn);
+  reSpinBtn.appendChild(reSpinIcon);
+  reSpinBtn.appendChild(reSpinBtnText);
   btnArea.appendChild(reSpinBtn);
 
   document.body.appendChild(background);

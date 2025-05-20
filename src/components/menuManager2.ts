@@ -1,4 +1,3 @@
-// ✅ 리팩토링된 menuManager.ts
 import { menuList } from '../data/menuList';
 import { drawRoulette, spinRoulette } from './RouletteWheel.ts';
 import { openModal } from './Modal.ts';
@@ -6,10 +5,9 @@ import { updateMenuHistory } from './menuHistory.ts';
 
 let canvas: HTMLCanvasElement;
 let currentMenu: string[] = [];
-let currentTypes: string[] = [];
 let currentCategory: keyof typeof menuList;
-let selectedType: string = 'all';
-let selectedSituation: string = 'all';
+let selectedType: string = 'all'; //종류 버튼
+let selectedSituation: string = 'all'; // 상황 버튼
 
 export function setSelectedType(type: string) {
   selectedType = type;
@@ -20,15 +18,17 @@ export function setSelectedSituation(situation: string) {
 export function setCanvas(el: HTMLCanvasElement) {
   canvas = el;
 }
-
+// currentMenu 저장소
 export function setCurrentMenu(menu: string[]) {
   currentMenu = menu;
 }
+// 음식 카테고리 저장소
 export function setCurrentCategory(category: keyof typeof menuList) {
   currentCategory = category;
 }
 export { currentCategory };
 
+// 동적으로 메뉴 리스트 출력하는 함수
 export function renderMenu() {
   const ul = document.getElementById('menu-entries');
   if (!ul) return;
@@ -38,6 +38,7 @@ export function renderMenu() {
     const li = document.createElement('li');
     li.className = 'menu-item';
 
+    // li 안에 .input-wrapper 구조를 넣음
     const wrapper = document.createElement('div');
     wrapper.className = 'input-wrapper';
 
@@ -53,19 +54,20 @@ export function renderMenu() {
     clearBtn.innerText = 'x';
     clearBtn.setAttribute('aria-label', '입력 지우기');
 
+    // input 수정 동기화
     input.addEventListener('input', e => {
       const target = e.target as HTMLInputElement;
       currentMenu[index] = target.value;
       drawRoulette(canvas, currentMenu);
     });
 
+    // x 버튼 클릭 해당 input삭제
     clearBtn.addEventListener('click', () => {
       if (currentMenu.length <= 2) {
         alert('메뉴는 최소 2개 이상이어야 합니다.');
         return;
       }
       currentMenu.splice(index, 1);
-      currentTypes.splice(index, 1);
       renderMenu();
     });
 
@@ -75,23 +77,22 @@ export function renderMenu() {
     ul.appendChild(li);
   });
 
+  // 룰렛 그리기
   drawRoulette(canvas, currentMenu);
   setCurrentMenu(currentMenu);
 }
 
+// 카테고리 메뉴를 랜덤으로 8개선택
 export function loadCategory(category: keyof typeof menuList) {
   const list = menuList[category];
   if (!list) return;
-
   currentCategory = category;
-
-  const count = currentMenu.length || 8; // 기본 8개
-  currentMenu = shuffle(list).slice(0, count);
-  currentTypes = currentMenu.map(() => category.split('_')[0]);
+  currentMenu = shuffle(list).slice(0, 8);
 
   renderMenu();
 }
 
+// 배열 무작위로 섞는 함수
 export function shuffle<T>(array: T[]): T[] {
   const copied = [...array];
   for (let i = copied.length - 1; i > 0; i--) {
@@ -101,10 +102,66 @@ export function shuffle<T>(array: T[]): T[] {
   return copied;
 }
 
+// 메뉴섞기 버튼
 export function mixMenu() {
-  const combinedKey = `${selectedType}_${selectedSituation}` as keyof typeof menuList;
+  if (!currentCategory) return; // 아무 카테고리도 선택 안 된 상태라면 무시
 
-  // 둘 다 전체면 전체 목록 섞기
+  const list = menuList[currentCategory];
+  const newMenu = shuffle(list).slice(0, currentMenu.length);
+
+  for (let i = 0; i < currentMenu.length; i++) {
+    currentMenu[i] = newMenu[i] || '';
+  }
+
+  renderMenu();
+}
+
+// 메뉴 추가 버튼
+export function addMenu() {
+  currentMenu.push('');
+  if (currentMenu.length >= 20) {
+    alert('메뉴는 최대 20개까지 추가할 수 있습니다.');
+    return;
+  }
+  renderMenu();
+}
+
+// 메뉴 초기화 버튼
+export function resetMenu() {
+  // currentMenu 내부의 텍스트만 모두 빈 문자열로 바꿈
+  currentMenu = currentMenu.map(() => '');
+  renderMenu();
+}
+
+// 룰렛 돌리기 버튼
+export function handleSpin(canvas: HTMLCanvasElement, spinBtn: HTMLButtonElement) {
+  if (currentMenu.length < 2 || currentMenu.every(item => item.trim() === '')) {
+    alert('메뉴를 입력해주세요.');
+    return;
+  }
+  if (currentMenu.some(item => item.trim() === '')) {
+    alert('메뉴를 모두 입력해주세요.');
+    return;
+  }
+
+  const selectedIndex = spinRoulette(canvas, currentMenu);
+  spinBtn.disabled = true;
+
+  canvas.addEventListener('transitionend', function handler() {
+    const selectedMenu = currentMenu[selectedIndex];
+
+    openModal(selectedMenu, currentCategory);
+
+    canvas.removeEventListener('transitionend', handler);
+    spinBtn.disabled = false;
+
+    updateMenuHistory(selectedMenu);
+  });
+}
+
+// 현재 선택된 종류와 상황에 맞는 메뉴 로드
+export function loadFilteredMenu() {
+  // 둘 다 전체인 경우
   if (selectedType === 'all' && selectedSituation === 'all') {
     loadAllCategory();
     return;
@@ -122,133 +179,103 @@ export function mixMenu() {
     return;
   }
 
-  // 종류 + 상황 조합
-  if (combinedKey in menuList) {
-    loadCategory(combinedKey);
-  } else {
-    alert('해당 조합의 메뉴가 없습니다.');
-  }
-}
-
-export function addMenu() {
-  currentMenu.push('');
-  currentTypes.push('kr');
-  if (currentMenu.length >= 20) {
-    alert('메뉴는 최대 20개까지 추가할 수 있습니다.');
-    return;
-  }
-  renderMenu();
-}
-
-export function resetMenu() {
-  currentMenu = currentMenu.map(() => '');
-  currentTypes = currentTypes.map(() => '');
-  renderMenu();
-}
-
-export function handleSpin(canvas: HTMLCanvasElement, spinBtn: HTMLButtonElement) {
-  if (currentMenu.length < 2 || currentMenu.every(item => item.trim() === '')) {
-    alert('메뉴를 입력해주세요.');
-    return;
-  }
-  if (currentMenu.some(item => item.trim() === '')) {
-    alert('메뉴를 모두 입력해주세요.');
-    return;
-  }
-
-  const selectedIndex = spinRoulette(canvas, currentMenu);
-  spinBtn.disabled = true;
-
-  canvas.addEventListener('transitionend', function handler() {
-    const selectedMenu = currentMenu[selectedIndex];
-    const type = currentTypes[selectedIndex] || 'kr';
-    openModal(selectedMenu, `${type}_any`);
-    canvas.removeEventListener('transitionend', handler);
-    spinBtn.disabled = false;
-    updateMenuHistory(selectedMenu);
-  });
-}
-
-export function loadFilteredMenu() {
-  if (selectedType === 'all' && selectedSituation === 'all') {
-    loadAllCategory();
-    return;
-  }
-  if (selectedType !== 'all' && selectedSituation === 'all') {
-    loadTypeMenus(selectedType);
-    return;
-  }
-  if (selectedType === 'all' && selectedSituation !== 'all') {
-    loadSituationMenus(selectedSituation);
-    return;
-  }
+  // 둘 다 선택된 경우
   const combinedKey = `${selectedType}_${selectedSituation}` as keyof typeof menuList;
   if (combinedKey in menuList) {
     loadCategory(combinedKey);
   } else {
+    // 해당 조합이 없는 경우 알림
     alert('해당 조합의 메뉴가 없습니다.');
+    // 종류에 맞는 메뉴 로드
     loadTypeMenus(selectedType);
   }
 }
 
+// 특정 종류의 모든 메뉴
 export function loadTypeMenus(type: string) {
+  // 해당 종류의 모든 메뉴를 합치기
   let typeMenus: string[] = [];
+
+  // 해당 종류로 시작하는 모든 카테고리의 메뉴 합치기
   for (const key in menuList) {
     if (key.startsWith(`${type}_`)) {
+      // 옵셔널 체이닝
       const menus = menuList[key as keyof typeof menuList];
       if (menus?.length) {
         typeMenus = [...typeMenus, ...menus];
       }
     }
   }
+
+  // Set 객체로 중복 제거
   const uniqueMenus = [...new Set(typeMenus)];
-  currentMenu = shuffle(uniqueMenus).slice(0, currentMenu.length || 8);
-  currentTypes = currentMenu.map(() => type);
+
+  // 섞고 8개 선택
+  currentMenu = shuffle(uniqueMenus).slice(0, 8);
+
+  // 카테고리 설정
   const matchingKey = Object.keys(menuList).find(key => key.startsWith(`${type}_`));
   if (matchingKey) {
     currentCategory = matchingKey as keyof typeof menuList;
   }
+
   renderMenu();
 }
 
+// 특정 상황의 모든 메뉴
 export function loadSituationMenus(situation: string) {
-  const allMenus: { name: string; type: string }[] = [];
+  // 해당 상황의 모든 메뉴를 합치기
+  let situationMenus: string[] = [];
+
+  // 해당 상황으로 끝나는 모든 카테고리의 메뉴 합치기
   for (const key in menuList) {
     if (key.endsWith(`_${situation}`)) {
+      // 옵셔널 체이닝
       const menus = menuList[key as keyof typeof menuList];
-      const type = key.split('_')[0];
       if (menus?.length) {
-        for (const name of menus) {
-          allMenus.push({ name, type });
-        }
+        situationMenus = [...situationMenus, ...menus];
       }
     }
   }
-  const selected = shuffle(allMenus).slice(0, currentMenu.length || 8);
-  currentMenu = selected.map(item => item.name);
-  currentTypes = selected.map(item => item.type);
+
+  // Set 객체로 중복 제거
+  const uniqueMenus = [...new Set(situationMenus)];
+
+  // 섞고 8개 선택
+  currentMenu = shuffle(uniqueMenus).slice(0, 8);
+
+  // 카테고리 설정
   const situationKeys = Object.keys(menuList).find(key => key.endsWith(`_${situation}`));
   if (situationKeys) {
     currentCategory = situationKeys as keyof typeof menuList;
   }
+
   renderMenu();
 }
 
+// 전체 카테고리 메뉴
 export function loadAllCategory() {
-  let allMenus: { name: string; type: string }[] = [];
+  // 빈 배열 생성
+  let allMenus: string[] = [];
+
+  // 모든 카테고리의 메뉴 합치기
   for (const key in menuList) {
+    // 옵셔널 체이닝 사용
     const menus = menuList[key as keyof typeof menuList];
-    const type = key.split('_')[0];
     if (menus?.length) {
-      for (const name of menus) {
-        allMenus.push({ name, type });
-      }
+      allMenus = [...allMenus, ...menus];
     }
   }
-  const selected = shuffle(allMenus).slice(0, currentMenu.length || 8);
-  currentMenu = selected.map(item => item.name);
-  currentTypes = selected.map(item => item.type);
+
+  // Set 객체로 중복 제거
+  const uniqueMenus = [...new Set(allMenus)];
+
+  // 섞고 8개 선택
+  currentMenu = shuffle(uniqueMenus).slice(0, 8);
+
+  // 카테고리 설정
   currentCategory = Object.keys(menuList)[0] as keyof typeof menuList;
+
   renderMenu();
 }
 
@@ -256,7 +283,7 @@ export function categoryButtons(categories: string[]) {
   categories.forEach(category => {
     const btn = document.getElementById(`category-${category}`);
     btn?.addEventListener('click', function (this: HTMLElement) {
-      document.querySelectorAll('#cat-type .btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.category-button').forEach(b => b.classList.remove('active'));
       this.classList.add('active');
       setSelectedType(category);
       loadFilteredMenu();
@@ -268,7 +295,7 @@ export function situationButtons(situations: string[]) {
   situations.forEach(situation => {
     const btn = document.getElementById(`situation-${situation}`);
     btn?.addEventListener('click', function (this: HTMLElement) {
-      document.querySelectorAll('#cat-situation .btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.situation-button').forEach(b => b.classList.remove('active'));
       this.classList.add('active');
       setSelectedSituation(situation);
       loadFilteredMenu();
