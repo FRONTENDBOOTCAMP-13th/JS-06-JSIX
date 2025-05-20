@@ -1,0 +1,33 @@
+:root {
+  /* color */
+  --color-primary: #ff6f3f;
+  --color-secondary: #ff8c3f;
+  --color-hover: #ffe6d6;
+  --color-background: #fffaf5;
+  --color-gray: #6c7179;
+  --color-lightgray: #d2d5d6;
+  --color-text: #2e2e2e;
+  --color-white: #fff;
+
+  /* text */
+  --font-family: 'Pretendard', sans-serif;
+  --font-size-lg: 1.5rem;
+  --font-size-base: 1rem;
+  --font-size-sm: 0.875rem;
+
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-bold: 700;
+
+  /* spacing */
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 2rem;
+
+  /* radius */
+  --radius-md: 0.5rem;
+  --radius-lg: 1rem;
+
+  /* shadow */
+  --shadow-basic: 0 6px 20px 0 rgba(0, 0, 0, 0.15);
+}
