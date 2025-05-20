@@ -1,5 +1,6 @@
 @import url(./custom.css);
 @import url(./reset.css);
+@import url(./homePage.css);
 
 :root {
   font-size: var(--font-size-sm);
@@ -34,6 +35,13 @@ a {
   font-size: 1.125rem;
   appearance: none;
   align-content: center;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+
+  img {
+    height: 24px;
+  }
 
   /* 버튼 호버 했을때 색상 추가 */
   &:hover {
@@ -54,6 +62,32 @@ a {
 
   &.btn-basic {
     --btn-color: var(--color-text);
+  }
+
+  &.btn-light {
+    --btn-color: var(--color-lightgray);
+    color: var(--color-text);
+  }
+
+  &.btn-sm {
+    font-size: 14px;
+    padding: 0 1.25rem;
+    height: 40px;
+  }
+
+  &.btn-text {
+    background: transparent;
+    border: 0;
+    height: 36px;
+    padding: 0 0.625rem;
+  }
+
+  &.btn-icon {
+    display: flex;
+    background: transparent;
+    padding: 0;
+    width: 24px;
+    height: 24px;
   }
 
   &.btn-close {
@@ -90,7 +124,7 @@ a {
   align-items: center;
   gap: 1rem;
   background: var(--color-white);
-  box-shadow: 0 6px 20px 0 rgba(0, 0, 0, 0.15);
+  box-shadow: var(--shadow-basic);
   font-size: var(--font-size-sm);
   border-radius: var(--radius-lg);
   padding: 1.5rem;
@@ -169,6 +203,21 @@ a {
 
   .food-name {
     font-weight: var(--font-weight-bold);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    position: relative;
+    .btn-area {
+      width: max-content;
+      position: absolute;
+      top: 100%;
+      left: calc(100% - 24px);
+      flex-direction: column;
+      gap: 0;
+      background: var(--color-white);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-basic);
+    }
   }
 
   .btn-area {
