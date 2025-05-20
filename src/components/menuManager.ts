@@ -9,6 +9,16 @@ let currentCategory: keyof typeof menuList;
 let selectedType: string = 'all'; //종류 버튼
 let selectedSituation: string = 'all'; // 상황 버튼
 
+export function setSelectedType(type: string) {
+  selectedType = type;
+}
+export function setSelectedSituation(situation: string) {
+  selectedSituation = situation;
+}
+export function setCanvas(el: HTMLCanvasElement) {
+  canvas = el;
+}
+
 // currentMenu 저장소
 export function setCurrentMenu(menu: string[]) {
   currentMenu = menu;
@@ -273,59 +283,26 @@ export function loadAllCategory() {
   renderMenu();
 }
 
-// 룰렛 초기화
-window.addEventListener('DOMContentLoaded', () => {
-  canvas = document.getElementById('roulette-canvas') as HTMLCanvasElement;
-
-  if (currentMenu.length === 0) {
-    currentMenu = Array(8).fill('');
-    renderMenu();
-  }
-
-  // 카테고리(종류) 버튼 이벤트 리스너
-  const categoryButtons = document.querySelectorAll('.category-button');
-  for (let i = 0; i < categoryButtons.length; i++) {
-    const btn = categoryButtons[i] as HTMLElement;
-    btn.addEventListener('click', function (this: HTMLElement) {
-      // 버튼 클릭 해제
-      for (let j = 0; j < categoryButtons.length; j++) {
-        (categoryButtons[j] as HTMLElement).classList.remove('active');
-      }
-      // active 추가
+export function categoryButtons(categories: string[]) {
+  categories.forEach(category => {
+    const btn = document.getElementById(`category-${category}`);
+    btn?.addEventListener('click', function (this: HTMLElement) {
+      document.querySelectorAll('.category-button').forEach(b => b.classList.remove('active'));
       this.classList.add('active');
-
-      // 선택된 종류 저장
-      selectedType = this.id.replace('category-', '');
-
-      // 필터링된 메뉴 로드
+      setSelectedType(category);
       loadFilteredMenu();
     });
-  }
+  });
+}
 
-  // 상황 버튼 이벤트 리스너
-  const situationButtons = document.querySelectorAll('.situation-button');
-  for (let i = 0; i < situationButtons.length; i++) {
-    const btn = situationButtons[i] as HTMLElement;
-    btn.addEventListener('click', function (this: HTMLElement) {
-      // 버튼 클릭 해제
-      for (let j = 0; j < situationButtons.length; j++) {
-        (situationButtons[j] as HTMLElement).classList.remove('active');
-      }
-      // active 추가
+export function situationButtons(situations: string[]) {
+  situations.forEach(situation => {
+    const btn = document.getElementById(`situation-${situation}`);
+    btn?.addEventListener('click', function (this: HTMLElement) {
+      document.querySelectorAll('.situation-button').forEach(b => b.classList.remove('active'));
       this.classList.add('active');
-
-      // 선택된 상황 저장
-      selectedSituation = this.id.replace('situation-', '');
-
-      // 필터링된 메뉴
+      setSelectedSituation(situation);
       loadFilteredMenu();
     });
-  }
-
-  // 초기 상태 설정 - 전체 버튼에 active 클래스 추가
-  document.getElementById('category-all')?.classList.add('active');
-  document.getElementById('situation-all')?.classList.add('active');
-
-  // 초기 메뉴 로드
-  loadAllCategory();
-});
+  });
+}

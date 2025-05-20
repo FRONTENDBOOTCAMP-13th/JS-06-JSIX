@@ -1,27 +1,29 @@
-import { mixMenu, addMenu, resetMenu, handleSpin, loadCategory, setCurrentCategory } from './menuManager';
+import { mixMenu, addMenu, resetMenu, handleSpin, categoryButtons, situationButtons } from './menuManager';
 import { WeatherFoodRecommender } from './weatherFoodRecommender';
 
 const OPENWEATHER_API_KEY = import.meta.env.VITE_WEATHER_API_URL;
 const weatherRecommender = new WeatherFoodRecommender(OPENWEATHER_API_KEY);
 
 export function menuButtons() {
-  const categories = ['korean', 'chinese', 'japanese', 'western', 'snack', 'dessert']; // 카테고리 목록
-  const mixBtn = document.querySelector('#mixMenu'); // 메뉴 섞기 버튼
-  const addBtn = document.querySelector('#addMenu'); // 메뉴 추가 버튼
-  const resetBtn = document.querySelector('#resetMenu'); // 메뉴 초기화 버튼
-  const weatherBtn = document.querySelector('#weather'); // 날씨별 추천 버튼
-  const spinBtn = document.querySelector('#spin') as HTMLButtonElement; // 룰렛 돌리기 버튼
-  const canvas = document.querySelector('#roulette-canvas') as HTMLCanvasElement; // 룰렛 캔버스
+  const mixBtn = document.querySelector('#mixMenu');
+  const addBtn = document.querySelector('#addMenu');
+  const resetBtn = document.querySelector('#resetMenu');
+  const weatherBtn = document.querySelector('#weather');
+  const spinBtn = document.querySelector('#spin') as HTMLButtonElement;
+  const canvas = document.querySelector('#roulette-canvas') as HTMLCanvasElement;
+  const categories = ['all', 'korean', 'chinese', 'japanese', 'western', 'snack', 'dessert'];
+  const situations = ['all', 'solo', 'date', 'company', 'party', 'healthy', 'night'];
 
   mixBtn?.addEventListener('click', () => mixMenu());
   addBtn?.addEventListener('click', () => addMenu());
   resetBtn?.addEventListener('click', () => resetMenu());
   weatherBtn?.addEventListener('click', () => weatherRecommender.recommendFoodByCurrentLocation());
   spinBtn?.addEventListener('click', () => handleSpin(canvas, spinBtn));
-  categories.forEach(category => {
-    document.getElementById(`category-${category}`)?.addEventListener('click', () => {
-      loadCategory(category);
-      setCurrentCategory(category);
-    });
-  });
+
+  categoryButtons(categories);
+  situationButtons(situations);
+
+  // defualt 값 all로 설정
+  document.getElementById('category-all')?.classList.add('active');
+  document.getElementById('situation-all')?.classList.add('active');
 }
