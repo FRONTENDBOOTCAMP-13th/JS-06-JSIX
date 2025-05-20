@@ -88,7 +88,7 @@ body {
     .btn-pointer {
       width: 26px;
       height: 21px;
-      background: url(/src/assets/icon/icon_arrow.svg);
+      background: url(/assets/icon/icon_arrow.svg);
       position: absolute;
       left: 50%;
       translate: -50% 0;

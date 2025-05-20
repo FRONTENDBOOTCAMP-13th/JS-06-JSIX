@@ -107,7 +107,7 @@ a {
     background: transparent;
     width: 24px;
     height: 24px;
-    background: url(../assets/icon/icon_close.svg) no-repeat;
+    background: url(/assets/icon/icon_close.svg) no-repeat;
     padding: 0;
     position: absolute;
     top: 1.625rem;
