@@ -1,38 +1,22 @@
 import { copyLink, shareKakaoTalk } from './LinkShare';
 import { handleSpin } from './menuManager';
 
-export function openModal(food: string, foodIndex: number, foodCategory: string) {
+export function openModal(food: string, foodCategory: string) {
   const spinBtn = document.querySelector('#spin') as HTMLButtonElement; // 룰렛 돌리기 버튼
   const canvas = document.querySelector('#roulette-canvas') as HTMLCanvasElement; // 룰렛 캔버스
 
-  const categoryNaming = (category: string) => {
-    switch (category) {
-      case 'korean':
-        return 'kr';
-        break;
-      case 'chinese':
-        return 'ch';
-        break;
-      case 'japanese':
-        return 'jp';
-        break;
-      case 'western':
-        return 'ws';
-        break;
-      case 'snack':
-        return 'sn';
-        break;
-      case 'dessert':
-        return 'ds';
-        break;
-
-      default:
-        return '';
-        break;
-    }
+  const categoryNaming = (categoryKey: string) => {
+    const base = categoryKey.split('_')[0]; // 'korean_solo' → 'korean'
+    const map: Record<string, string> = {
+      korean: 'kr',
+      chinese: 'ch',
+      japanese: 'jp',
+      western: 'ws',
+      snack: 'sn',
+      dessert: 'ds',
+    };
+    return map[base] || '';
   };
-
-  const indexChange = (index: number) => (index < 10 ? '0' + index : index);
 
   // 배경
   const background = document.createElement('div');
@@ -59,8 +43,7 @@ export function openModal(food: string, foodIndex: number, foodCategory: string)
 
   const foodImg = document.createElement('img');
   const category = categoryNaming(foodCategory);
-  const index = indexChange(foodIndex);
-  foodImg.src = `/src/assets/foods/${category}/${category}_${index}_${food}.jpg`;
+  foodImg.src = `/${category}/${category}_${encodeURIComponent(food)}.jpg`;
   foodImg.alt = food;
 
   // 음식 이름

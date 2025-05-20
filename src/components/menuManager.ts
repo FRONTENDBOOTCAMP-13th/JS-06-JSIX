@@ -152,9 +152,9 @@ export function handleSpin(canvas: HTMLCanvasElement, spinBtn: HTMLButtonElement
 
   canvas.addEventListener('transitionend', function handler() {
     const selectedMenu = currentMenu[selectedIndex];
-    const menuIndex = menuList[currentCategory]?.indexOf(selectedMenu) ?? -1;
+    // const menuIndex = menuList[currentCategory]?.indexOf(selectedMenu) ?? -1;
 
-    openModal(selectedMenu, menuIndex + 1, currentCategory);
+    openModal(selectedMenu, currentCategory);
 
     canvas.removeEventListener('transitionend', handler);
     spinBtn.disabled = false;
