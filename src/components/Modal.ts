@@ -15,7 +15,7 @@ export function openModal(food: string, foodCategory: string) {
       snack: 'sn',
       dessert: 'ds',
     };
-    return map[base] || '';
+    return map[base] || base;
   };
 
   // 배경
