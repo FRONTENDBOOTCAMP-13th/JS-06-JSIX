@@ -1,4 +1,4 @@
-const HOME_URL = '';
+const HOME_URL = 'https://menuroulett6.netlify.app/';
 
 // 공유 url 생성
 function createShareUrl(food: string, category: string) {
@@ -38,16 +38,16 @@ export function shareKakaoTalk(food: string) {
       description: '',
       imageUrl: `${URL}/src/assets/thumbnail.jpg`,
       link: {
-        mobileWebUrl: 'http://localhost:5173/',
-        webUrl: 'http://localhost:5173/',
+        mobileWebUrl: HOME_URL,
+        webUrl: HOME_URL,
       },
     },
     buttons: [
       {
         title: '룰렛 돌리러 가기',
         link: {
-          mobileWebUrl: 'http://localhost:5173/',
-          webUrl: 'http://localhost:5173/',
+          mobileWebUrl: HOME_URL,
+          webUrl: HOME_URL,
         },
       },
     ],
