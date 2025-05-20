@@ -93,7 +93,7 @@ async function fetchKakaoAddress(lat: number, lon: number): Promise<string> {
   const address = data.documents?.[0]?.address;
   if (address) {
     // 예: '서울특별시 마포구 상암동'
-    return `${address.region_1depth_name} ${address.region_2depth_name} ${address.region_3depth_name}`;
+    return `${address.region_1depth_name} ${address.region_2depth_name}`;
   } else {
     return '주소 정보 없음';
   }

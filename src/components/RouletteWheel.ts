@@ -21,8 +21,9 @@ export function drawRoulette(canvas: HTMLCanvasElement, food: string[]) {
     ctx?.rotate(arc * (i + 0.5));
     if (ctx) {
       ctx.fillStyle = '#2e2e2e';
-      ctx.font = '16px Pretendard';
+      ctx.font = '24px Pretendard';
       ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
     }
     ctx?.fillText(food[i], cx * 0.6, 0);
     ctx?.restore();
