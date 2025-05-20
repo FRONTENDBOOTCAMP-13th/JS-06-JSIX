@@ -27,4 +27,7 @@
   /* radius */
   --radius-md: 0.5rem;
   --radius-lg: 1rem;
+
+  /* shadow */
+  --shadow-basic: 0 6px 20px 0 rgba(0, 0, 0, 0.15);
 }

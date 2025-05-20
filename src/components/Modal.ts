@@ -1,3 +1,4 @@
+import { copyLink, shareKakaoTalk } from './LinkShare';
 import { handleSpin } from './menuManager';
 
 export function openModal(food: string, foodIndex: number, foodCategory: string) {
@@ -26,6 +27,7 @@ export function openModal(food: string, foodIndex: number, foodCategory: string)
         break;
 
       default:
+        return '';
         break;
     }
   };
@@ -57,13 +59,65 @@ export function openModal(food: string, foodIndex: number, foodCategory: string)
 
   const foodImg = document.createElement('img');
   const category = categoryNaming(foodCategory);
-  foodImg.src = `../assets/foods/${category}/${category}_${indexChange(foodIndex)}_${food}.jpg`;
+  const index = indexChange(foodIndex);
+  foodImg.src = `/src/assets/foods/${category}/${category}_${index}_${food}.jpg`;
   foodImg.alt = food;
 
   // 음식 이름
-  const foodName = document.createElement('p');
+  const foodName = document.createElement('div');
   foodName.className = 'food-name';
+
   foodName.textContent = food;
+
+  // 기능 버튼
+  const toolBtn = document.createElement('button');
+  toolBtn.classList.add('btn');
+  toolBtn.classList.add('btn-icon');
+
+  // 기능 버튼 아이콘
+  const toolBtnIcon = document.createElement('img');
+  toolBtnIcon.src = '/src/assets/icon/icon_share.svg';
+  toolBtnIcon.alt = '기능';
+
+  // 기능 버튼 영역
+  const toolBtnArea = document.createElement('div');
+  toolBtnArea.className = 'btn-area';
+
+  // 링크 복사 버튼
+  const linkBtn = document.createElement('button');
+  linkBtn.classList.add('btn');
+  linkBtn.classList.add('btn-sm');
+  linkBtn.classList.add('btn-text');
+  linkBtn.classList.add('btn-basic');
+
+  // 링크 복사 버튼 아이콘
+  const linkBtnIcon = document.createElement('img');
+  linkBtnIcon.src = '/src/assets/icon/icon_link.svg';
+  linkBtnIcon.alt = '링크';
+  linkBtn.addEventListener('click', () => {
+    copyLink(food, foodCategory);
+  });
+
+  // 링크 복사 버튼 텍스트
+  const linkBtnText = document.createTextNode('링크 복사');
+
+  // 카카오톡 공유 버튼
+  const katalkBtn = document.createElement('button');
+  katalkBtn.classList.add('btn');
+  katalkBtn.classList.add('btn-sm');
+  katalkBtn.classList.add('btn-text');
+  katalkBtn.classList.add('btn-basic');
+  katalkBtn.addEventListener('click', () => {
+    shareKakaoTalk(food);
+  });
+
+  // 카카오톡 공유 버튼 아이콘
+  const katalkBtnIcon = document.createElement('img');
+  katalkBtnIcon.src = '/src/assets/icon/icon_kakaotalk.svg';
+  katalkBtnIcon.alt = '카카오톡';
+
+  // 카카오톡 공유 버튼 텍스트
+  const katalkBtnText = document.createTextNode('카카오톡 공유');
 
   const btnArea = document.createElement('div');
   btnArea.className = 'btn-area';
@@ -94,12 +148,21 @@ export function openModal(food: string, foodIndex: number, foodCategory: string)
     handleSpin(canvas, spinBtn);
   });
 
+  // 요소 조립
   background.appendChild(modal);
   modal.appendChild(closeBtn);
   modal.appendChild(rec);
   modal.appendChild(foodImgBox);
   foodImgBox.appendChild(foodImg);
   modal.appendChild(foodName);
+  foodName.appendChild(toolBtn);
+  toolBtn.appendChild(toolBtnIcon);
+  linkBtn.appendChild(linkBtnIcon);
+  linkBtn.appendChild(linkBtnText);
+  toolBtnArea.appendChild(linkBtn);
+  katalkBtn.appendChild(katalkBtnIcon);
+  katalkBtn.appendChild(katalkBtnText);
+  toolBtnArea.appendChild(katalkBtn);
   modal.appendChild(btnArea);
   btnArea.appendChild(mapBtn);
   btnArea.appendChild(recipeBtn);
@@ -107,8 +170,35 @@ export function openModal(food: string, foodIndex: number, foodCategory: string)
 
   document.body.appendChild(background);
 
-  // 모달 닫기
+  // 모달 닫기: 버튼 클릭 시
   closeBtn.addEventListener('click', () => {
     background.remove();
+  });
+
+  // 모달 닫기: 배경 클릭 시
+  background.addEventListener('click', e => {
+    if (e.target === e.currentTarget) background.remove();
+  });
+
+  let openToolArea = false;
+
+  toolBtn.addEventListener('click', () => {
+    if (openToolArea) {
+      toolBtnArea.remove();
+      openToolArea = false;
+      // 기능 버튼 영역 닫기
+    } else {
+      // 기능 버튼 영역 열기
+      foodName.appendChild(toolBtnArea);
+      openToolArea = true;
+    }
+  });
+
+  // 배경 클릭 시 닫기
+  modal.addEventListener('click', e => {
+    if (openToolArea && e.target === e.currentTarget) {
+      toolBtnArea.remove();
+      openToolArea = false;
+    }
   });
 }
