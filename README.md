@@ -1,30 +1,120 @@
 <h1 align= "center">
-  JSIX - 룰렛돌리기 "점메추"
+  JSIX - 룰렛돌리기 "오늘의 메뉴추천 룰렛"
 </h1>
 
-> - 점심 메뉴 선택이 고민될 때, 룰렛을을 돌려 추천해주는 서비스입니다.
-> - 한식, 중식, 일식, 양식 등의 카테고리와 혼밥, 데이트, 회식 등의 상황별 메뉴를 랜덤으로 추천받을 수 있습니다.
+## 프로젝트 개요
 
-## 주요기능
+오늘의 메뉴 추천 룰렛은 점심 메뉴 선택을 쉽고 재미있게 도와주는 웹 애플리케이션입니다.
+카테고리별와 상황별로 다양한 메뉴를 룰렛으로 돌려 추천받을 수 있으며, 날씨와 계절에 따라 어울리는 음식도 추천해줍니다.
 
-- 카테고리별 메뉴 불러오기
-  - 한식, 중식, 일식, 양식, 분식, 디저트 메뉴를 미리 정의된 리스트에서 불려옴
-  - 클릭 시 해당 카테고리에서 무작위 8개 메뉴 자동으로 선택
-- 룰렛 돌리기
-  - 입력된 메뉴 중 하나를 선택
-  - 선택된 메뉴는 모달로 결과와 함께 이미지로 출력
-- 메뉴 추가 / 초기화 / 섞기
-  - 최대 20개까지 메뉴 입력가능
-  - 초기화 버튼으로 입력값을 비우거나 현재 메뉴를 무작위로 섞을 수 있음
-- 날씨 기반 추천
-  - 위치 기반 날씨 데이터를 받아, 날씨에 맞는 음식 카테고리를 추천합니다.
-- 최근 뽑힌 메뉴 기록
-  - 최근 선택된 메뉴 5개를 한 줄로 저장 및 표시합니다.
+## 프로젝트 플로우차트
 
-<h2 align= "center">
-  ⚙️ 사용 기술 및 협업 도구 ⚙️
-</h2>
-<div align="center">
+  <img src="./public/assets/img/JSIX-workflow.png">
+
+## 프로젝트 구조
+
+```
+JS-06-JSIX/
+├── public/
+│ └── assets/
+│ ├── icon/
+│ └── img/
+
+├── src/ # 소스 코드
+│ ├── components/
+│ │ ├── buttonManager.ts
+│ │ ├── LinkShare.ts
+│ │ ├── menuHistory.ts
+│ │ ├── menuManager.ts
+│ │ ├── Modal.ts
+│ │ ├── RouletteWheel.ts
+│ │ └── weatherFoodRecommender.ts
+
+│ ├── data/
+│ │ └── menuList.ts
+
+│ ├── pages/
+│ │ ├── homePage.html
+│ │ └── modal.html
+
+│ ├── styles/
+│ │ ├── custom.css
+│ │ ├── global.css
+│ │ ├── homePage.css
+│ │ └── reset.css
+
+│ └── main.ts
+
+├── README.md
+├── index.html
+├── .env #
+├── .gitignore
+├── vite.config.js
+├── tsconfig.json
+├── package.json
+├── package-lock.json
+└── 기타 설정 파일들 (.prettier, .eslintrc 등)
+```
+
+## 주요기능 미리보기
+
+### 1. 카테고리별 메뉴 불러오기 🍱
+
+- **종류**: 한식, 중식, 일식 등 미리 정의된 음식 종류에서 선택할 수 있습니다.
+- **상황**: 혼밥, 데이트, 회식 등 다양한 식사 상황에 맞춰 메뉴를 필터링할 수 있습니다.
+- 선택된 종류와 상황 조합에 따라 해당 카테고리에서 무작위로 8개의 메뉴를 자동으로 추천합니다.
+- 사용자가 원하는 메뉴를 임의로 정할 수도 있습니다.
+
+<details>
+<summary><b>카테고리, 상황별 필터 UI</b></summary>
+
+  <img src="./public/assets/img/screenshots/categoryImg.png"/>
+  <img src="./public/assets/img/screenshots/listImg.png"/>
+
+</details>
+
+### 2. 룰렛 돌리기 🎯
+
+- 룰렛 돌리기 버튼을 누르면 미리정해진 리스트 중 메뉴 하나를 선택합니다.
+- 선택된 메뉴는 모달로 결과와 함께 이미지로 출력
+
+<details>
+<summary><b>룰렛돌리기, 모달 UI </b></summary>
+  <img src="./public/assets/img/screenshots/rouletteImg.png"/>
+  <img src="./public/assets/img/screenshots/modalImg.png"/>
+</details>
+
+### 3. 메뉴 섞기 / 메뉴 추가 / 초기화 🔄➕🧹
+
+- 메뉴 섞기 버튼을 누르면 메뉴리스트가 랜덤으로 새롭게 짜여집니다 .
+- 메뉴 추가로 최대 20개의 메뉴추가 가능.
+- 초기화 버튼으로 현재 메뉴의 입력값을 비울 수 있습니다.
+
+<details>
+<summary><b>메뉴 섞기, 추가, 초기화 UI</b></summary>
+  <img src="./public/assets/img/screenshots/addImg.png"/>
+  <img src="./public/assets/img/screenshots/buttonImg.png"/>
+</details>
+
+### 4. 날씨 기반 추천 🌦️
+
+- 위치 기반 날씨 데이터를 받아, 현재 지역의 날씨와 맞는 음식메뉴를 추천합니다.
+
+<details>
+<summary><b>날씨 기반 추천 UI</b></summary>
+    <img src="./public/assets/img/screenshots/weatherImg.png"/>
+</details>
+
+### 5. 최근 뽑힌 메뉴 기록 🕘
+
+- 최근 선택된 메뉴 5개를 저장 및 표시합니다.
+<details>
+<summary><b>최근 뽑힌 메뉴 기록 UI</b></summary>
+  <img src="./public/assets/img/screenshots/recentMenuImg.png"/>
+</details>
+
+## ⚙️ 사용 기술 및 협업 도구 ⚙️
+
   <table>
     <tr>
       <th>분류</th>
@@ -65,10 +155,9 @@
       </td>
     </tr>
   </table>
-</div>
 
-<h3 align="center">JSIX 구성원</h3>
-<div align="center">
+## JSIX 구성원
+
 <table>
   <tr>
     <td align="center"><img src="" width="200"></td>
@@ -103,4 +192,27 @@
     </td>
   </tr>
 </table>
-</table>
+
+## 💭 프로젝트 소감
+
+  <table>
+    <tr>
+      <th>팀원</th>
+      <th>소감</th>
+    </tr>
+    <tr>
+      <td > 희정</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td > 현욱</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td > 한솔</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td > 형주</td></td>
+    </tr>
+  </table>
