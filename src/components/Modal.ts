@@ -55,6 +55,7 @@ export function openModal(food: string, foodCategory: string) {
   foodImg.onerror = () => {
     console.log(`이미지를 찾을 수 없음: ${food}`);
     foodImg.src = '/assets/img/food/default.jpg';
+    foodImg.alt = '이미지를 찾을 수 없음';
   };
   foodImg.src = `/assets/img/food/${category}/${category}_${encodeURIComponent(food)}.jpg`;
   foodImg.alt = food;
@@ -62,7 +63,6 @@ export function openModal(food: string, foodCategory: string) {
   // 음식 이름
   const foodName = document.createElement('div');
   foodName.className = 'food-name';
-
   foodName.textContent = food;
 
   // 기능 버튼
@@ -97,7 +97,7 @@ export function openModal(food: string, foodCategory: string) {
   katalkBtn.classList.add('btn-text');
   katalkBtn.classList.add('btn-basic');
   katalkBtn.addEventListener('click', () => {
-    shareKakaoTalk(food);
+    shareKakaoTalk(food, category);
   });
 
   // 카카오톡 공유 버튼 아이콘
@@ -143,14 +143,27 @@ export function openModal(food: string, foodCategory: string) {
   // 다시 돌리기 버튼 텍스트
   const reSpinBtnText = document.createTextNode('다시 돌리기');
 
+  // 로딩 애니메이션 요소
+  const loader = document.createElement('div');
+  loader.className = 'loader';
+
+  // 이미지 로딩 후 모달 띄우기
+  foodImg.addEventListener('load', () => {
+    background.appendChild(modal);
+    loader?.remove();
+  });
+
+  document.body.appendChild(background);
+  background.appendChild(loader);
+
   // 요소 조립
-  background.appendChild(modal);
   closeBtn.appendChild(closeIcon);
   modal.appendChild(closeBtn);
   modal.appendChild(rec);
   modal.appendChild(foodImgBox);
-  foodImgBox.appendChild(foodImg);
   modal.appendChild(foodName);
+  modal.appendChild(btnArea);
+  foodImgBox.appendChild(foodImg);
   foodName.appendChild(toolBtn);
   toolBtn.appendChild(shareIcon);
   linkBtn.appendChild(linkIcon);
@@ -159,7 +172,6 @@ export function openModal(food: string, foodCategory: string) {
   katalkBtn.appendChild(katalkBtnIcon);
   katalkBtn.appendChild(katalkBtnText);
   toolBtnArea.appendChild(katalkBtn);
-  modal.appendChild(btnArea);
   mapBtn.appendChild(mapIcon);
   mapBtn.appendChild(mapBtnText);
   btnArea.appendChild(mapBtn);
@@ -169,8 +181,6 @@ export function openModal(food: string, foodCategory: string) {
   reSpinBtn.appendChild(reSpinIcon);
   reSpinBtn.appendChild(reSpinBtnText);
   btnArea.appendChild(reSpinBtn);
-
-  document.body.appendChild(background);
 
   // 모달 닫기: 버튼 클릭 시
   closeBtn.addEventListener('click', () => {

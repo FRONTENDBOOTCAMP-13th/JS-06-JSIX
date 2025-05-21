@@ -388,6 +388,16 @@ export class WeatherFoodRecommender {
     buttonArea.appendChild(recipeBtn);
     buttonArea.appendChild(reSpinBtn);
 
+    // 로딩 애니메이션 요소
+    const loader = document.createElement('div');
+    loader.className = 'loader';
+
+    // 이미지 로딩 후 모달 띄우기
+    foodImg?.addEventListener('load', () => {
+      background.appendChild(modal);
+      loader?.remove();
+    });
+
     // 모달 구조 조립
     modal.appendChild(closeBtn);
     modal.appendChild(weatherArea);
@@ -397,6 +407,7 @@ export class WeatherFoodRecommender {
     modal.appendChild(buttonArea);
 
     background.appendChild(modal);
+    background.appendChild(loader);
 
     // 모달 닫기: 버튼 클릭 시
     closeBtn.addEventListener('click', () => {
