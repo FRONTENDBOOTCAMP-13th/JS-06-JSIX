@@ -190,8 +190,11 @@ a {
         scale: 1.5;
       }
       .location {
-        font-size: 1.75rem;
+        font-size: 1.35rem;
         font-weight: var(--font-weight-bold);
+        @media screen and (min-width: 430px) {
+          font-size: 1.75rem;
+        }
       }
     }
     .weather-info {

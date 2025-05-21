@@ -409,17 +409,28 @@ export class WeatherFoodRecommender {
     background.appendChild(modal);
     background.appendChild(loader);
 
-    // 모달 닫기: 버튼 클릭 시
+    // 모달 열 때 스크롤바 너비 빼기
+    const scrollbarWidth = window.innerWidth - document.documentElement.offsetWidth;
+    document.body.style.paddingRight = scrollbarWidth + 'px';
+
+    // 모달 열려있을 시 배경 스크롤 방지
+    document.body.style.overflow = 'hidden';
+
+    // 모달: 버튼 클릭 시 닫기
     closeBtn.addEventListener('click', () => {
       background.remove();
+      document.body.style.overflow = 'initial';
+      document.body.style.paddingRight = '0';
     });
 
-    // 모달 닫기: 배경 클릭 시
+    // 모달: 배경 클릭 시 닫기
     background.addEventListener('click', e => {
       if (e.target === e.currentTarget) background.remove();
+      document.body.style.overflow = 'initial';
+      document.body.style.paddingRight = '0';
     });
 
-    // 배경 클릭 시 닫기
+    // 기능 버튼 영역: 모달 배경 클릭 시 닫기
     modal.addEventListener('click', e => {
       if (openToolArea && e.target === e.currentTarget) {
         toolBtnArea.remove();
@@ -427,7 +438,7 @@ export class WeatherFoodRecommender {
       }
     });
 
-    // 기능 버튼 영역 열기/닫기
+    // 기능 버튼 영역: 버튼 클릭 시 열기/닫기
     let openToolArea = false;
 
     toolBtn.addEventListener('click', () => {
