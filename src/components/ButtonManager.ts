@@ -1,5 +1,5 @@
-import { mixMenu, addMenu, resetMenu, handleSpin, categoryButtons, situationButtons } from './menuManager';
-import { WeatherFoodRecommender } from './weatherFoodRecommender';
+import { mixMenu, addMenu, resetMenu, handleSpin, categoryButtons, situationButtons } from './MenuManager';
+import { WeatherFoodRecommender } from './WeatherFoodRecommender';
 
 const OPENWEATHER_API_KEY = import.meta.env.VITE_WEATHER_API_URL;
 const weatherRecommender = new WeatherFoodRecommender(OPENWEATHER_API_KEY);

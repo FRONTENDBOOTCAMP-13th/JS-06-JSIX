@@ -94,6 +94,8 @@ a {
 
   &.btn-icon {
     display: flex;
+    justify-content: center;
+    align-content: center;
     background: transparent;
     padding: 0;
     width: 24px;
@@ -107,11 +109,14 @@ a {
     background: transparent;
     width: 24px;
     height: 24px;
-    background: url(../assets/icon/icon_close.svg) no-repeat;
     padding: 0;
     position: absolute;
     top: 1.625rem;
     right: 1.625rem;
+    font-size: var(--font-size-lg);
+    .icon {
+      stroke: var(--color-text);
+    }
   }
 
   @media screen and (min-width: 412px) {
@@ -265,7 +270,7 @@ a {
   }
 
   /* 반응형 */
-  @media screen and (min-width: 450px) {
+  @media screen and (min-width: 472px) {
     > .btn-area .btn .icon {
       display: block;
     }

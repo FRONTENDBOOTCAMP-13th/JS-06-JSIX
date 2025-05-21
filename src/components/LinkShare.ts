@@ -1,3 +1,5 @@
+import { openModal } from './Modal';
+
 const HOME_URL = 'https://menuroulett6.netlify.app/';
 
 // 공유 url 생성
@@ -9,24 +11,21 @@ function createShareUrl(food: string, category: string) {
 }
 
 // url 파라미터와 일치하는 모달 띄우기
-// function openParamsModal() {
-//   const params = new URLSearchParams(window.location.search);
-//   const sharedFood = params.get('food');
-//   const sharedCategory = params.get('category');
+export function openParamsModal() {
+  const params = new URLSearchParams(window.location.search);
+  const sharedFood = params.get('food');
+  const sharedCategory = params.get('category');
 
-//   if (sharedFood && sharedCategory) {
-//     openModal(sharedFood, sharedCategory);
-//   }
-//   console.log(sharedFood, currentCategory);
-// }
-
-// openParamsModal();
+  if (sharedFood && sharedCategory) {
+    openModal(sharedFood, sharedCategory);
+  }
+}
 
 // 링크 복사
 export function copyLink(food: string, category: string) {
   navigator.clipboard.writeText(`오늘 메뉴는 ${food} 어때요?
 👉 ${createShareUrl(food, category)}`);
-  alert('복사 완료');
+  alert('주소가 복사되었습니다.');
 }
 
 // 카카오톡 공유
@@ -36,7 +35,7 @@ export function shareKakaoTalk(food: string) {
     content: {
       title: `오늘 메뉴는 ${food} 어때요?`,
       description: '',
-      imageUrl: `${URL}/src/assets/thumbnail.jpg`,
+      imageUrl: `${HOME_URL}/assets/img/thumbnail.jpg`,
       link: {
         mobileWebUrl: HOME_URL,
         webUrl: HOME_URL,
@@ -53,6 +52,3 @@ export function shareKakaoTalk(food: string) {
     ],
   });
 }
-
-('#cat-type .btn');
-('#cat-situation .btn');

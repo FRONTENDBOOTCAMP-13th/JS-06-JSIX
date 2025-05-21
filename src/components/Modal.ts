@@ -1,6 +1,6 @@
 import { copyLink, shareKakaoTalk } from './LinkShare';
-import { handleSpin } from './menuManager';
-import { createElement, Share2, Link2, Utensils, CookingPot, RotateCw } from 'lucide';
+import { handleSpin } from './MenuManager';
+import { createElement, Share2, Link2, Utensils, CookingPot, RotateCw, X } from 'lucide';
 
 export function openModal(food: string, foodCategory: string) {
   const spinBtn = document.querySelector('#spin') as HTMLButtonElement; // 룰렛 돌리기 버튼
@@ -25,6 +25,7 @@ export function openModal(food: string, foodCategory: string) {
   const mapIcon = createElement(Utensils, { class: 'icon' });
   const recipeIcon = createElement(CookingPot, { class: 'icon' });
   const reSpinIcon = createElement(RotateCw, { class: 'icon' });
+  const closeIcon = createElement(X, { class: 'icon' });
 
   // 배경
   const background = document.createElement('div');
@@ -51,7 +52,11 @@ export function openModal(food: string, foodCategory: string) {
 
   const foodImg = document.createElement('img');
   const category = categoryNaming(foodCategory);
-  foodImg.src = `/${category}/${category}_${encodeURIComponent(food)}.jpg`;
+  foodImg.onerror = () => {
+    console.log(`이미지를 찾을 수 없음: ${food}`);
+    foodImg.src = '/assets/img/food/default.jpg';
+  };
+  foodImg.src = `/assets/img/food/${category}/${category}_${encodeURIComponent(food)}.jpg`;
   foodImg.alt = food;
 
   // 음식 이름
@@ -97,7 +102,7 @@ export function openModal(food: string, foodCategory: string) {
 
   // 카카오톡 공유 버튼 아이콘
   const katalkBtnIcon = document.createElement('img');
-  katalkBtnIcon.src = '/src/assets/icon/icon_kakaotalk.svg';
+  katalkBtnIcon.src = '/assets/icon/icon_kakaotalk.svg';
   katalkBtnIcon.alt = '카카오톡';
 
   // 카카오톡 공유 버튼 텍스트
@@ -140,6 +145,7 @@ export function openModal(food: string, foodCategory: string) {
 
   // 요소 조립
   background.appendChild(modal);
+  closeBtn.appendChild(closeIcon);
   modal.appendChild(closeBtn);
   modal.appendChild(rec);
   modal.appendChild(foodImgBox);
@@ -176,25 +182,24 @@ export function openModal(food: string, foodCategory: string) {
     if (e.target === e.currentTarget) background.remove();
   });
 
+  // 배경 클릭 시 닫기
+  modal.addEventListener('click', e => {
+    if (openToolArea && e.target === e.currentTarget) {
+      toolBtnArea.remove();
+      openToolArea = false;
+    }
+  });
+
+  // 기능 버튼 영역 열기/닫기
   let openToolArea = false;
 
   toolBtn.addEventListener('click', () => {
     if (openToolArea) {
       toolBtnArea.remove();
       openToolArea = false;
-      // 기능 버튼 영역 닫기
     } else {
-      // 기능 버튼 영역 열기
       foodName.appendChild(toolBtnArea);
       openToolArea = true;
-    }
-  });
-
-  // 배경 클릭 시 닫기
-  modal.addEventListener('click', e => {
-    if (openToolArea && e.target === e.currentTarget) {
-      toolBtnArea.remove();
-      openToolArea = false;
     }
   });
 }

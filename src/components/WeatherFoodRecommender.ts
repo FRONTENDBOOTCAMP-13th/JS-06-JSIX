@@ -1,3 +1,14 @@
+import { createElement, Share2, Link2, Utensils, CookingPot, RotateCw, X } from 'lucide';
+import { copyLink, shareKakaoTalk } from './LinkShare';
+
+// 아이콘 생성
+const shareIcon = createElement(Share2, { class: 'icon' });
+const linkIcon = createElement(Link2, { class: 'icon' });
+const mapIcon = createElement(Utensils, { class: 'icon' });
+const recipeIcon = createElement(CookingPot, { class: 'icon' });
+const reSpinIcon = createElement(RotateCw, { class: 'icon' });
+const closeIcon = createElement(X, { class: 'icon' });
+
 // 비오는 날 이미지 목록
 export const rainFoods = ['김치찌개', '해물파전', '수제비', '칼국수', '부대찌개', '감자전', '닭볶음탕', '뼈해장국', '순두부찌개', '잔치국수'];
 
@@ -21,7 +32,7 @@ export const autumnFoods = ['전어구이', '새우튀김', '꽃게탕', '고구
 
 // 이미지 경로를 반환하는 함수 (공통적으로 사용)
 export function getFoodImagePath(category: string, food: string): string {
-  return `/${category}/${category}_${encodeURIComponent(food)}.jpg`;
+  return `/assets/img/food/${category}/${category}_${encodeURIComponent(food)}.jpg`;
 }
 
 //kakao 역 지오코딩 코드
@@ -213,6 +224,7 @@ export class WeatherFoodRecommender {
     closeBtn.classList.add('btn-close');
     closeBtn.setAttribute('aria-label', '닫기');
     closeBtn.onclick = () => background.remove();
+    closeBtn.appendChild(closeIcon);
 
     weatherHeader.appendChild(weatherIcon);
     weatherHeader.appendChild(location);
@@ -267,59 +279,153 @@ export class WeatherFoodRecommender {
       foodImage.appendChild(foodImg);
     }
 
-    // 메뉴명+아이콘 flex container
-    const menuArea = document.createElement('div');
-    menuArea.className = 'menu-area';
+    // 음식 이름
+    const foodName = document.createElement('div');
+    foodName.className = 'food-name';
 
-    const menuName = document.createElement('span');
-    menuName.className = 'food-name';
-    menuName.textContent = recommendation.food;
+    foodName.textContent = recommendation.food;
 
-    const menuIcon = document.createElement('span');
-    menuIcon.className = 'menu-icon';
-    menuIcon.innerHTML = '🔄'; // 새로고침/다시 추천 아이콘
-    menuIcon.title = '다시 추천받기';
-    menuIcon.style.cursor = 'pointer';
-    menuIcon.onclick = () => {
-      this.recommendFoodByCurrentLocation();
-      background.remove();
-    };
+    // 기능 버튼
+    const toolBtn = document.createElement('button');
+    toolBtn.classList.add('btn');
+    toolBtn.classList.add('btn-icon');
+    toolBtn.ariaLabel = '기능';
 
-    menuArea.appendChild(menuName);
-    menuArea.appendChild(menuIcon);
+    // 기능 버튼 영역
+    const toolBtnArea = document.createElement('div');
+    toolBtnArea.className = 'btn-area';
+
+    // 링크 복사 버튼
+    const linkBtn = document.createElement('button');
+    linkBtn.classList.add('btn');
+    linkBtn.classList.add('btn-sm');
+    linkBtn.classList.add('btn-text');
+    linkBtn.classList.add('btn-basic');
+
+    // 링크 복사 버튼 아이콘
+    linkBtn.addEventListener('click', () => {
+      copyLink(recommendation.food, recommendation.image.split('/')[4]);
+    });
+
+    // 링크 복사 버튼 텍스트
+    const linkBtnText = document.createTextNode('링크 복사');
+
+    // 카카오톡 공유 버튼
+    const katalkBtn = document.createElement('button');
+    katalkBtn.classList.add('btn');
+    katalkBtn.classList.add('btn-sm');
+    katalkBtn.classList.add('btn-text');
+    katalkBtn.classList.add('btn-basic');
+    katalkBtn.addEventListener('click', () => {
+      shareKakaoTalk(recommendation.food);
+    });
+
+    // 카카오톡 공유 버튼 아이콘
+    const katalkBtnIcon = document.createElement('img');
+    katalkBtnIcon.src = '/assets/icon/icon_kakaotalk.svg';
+    katalkBtnIcon.alt = '카카오톡';
+
+    // 카카오톡 공유 버튼 텍스트
+    const katalkBtnText = document.createTextNode('카카오톡 공유');
+
+    foodName.appendChild(toolBtn);
+    toolBtn.appendChild(shareIcon);
+    linkBtn.appendChild(linkIcon);
+    linkBtn.appendChild(linkBtnText);
+    toolBtnArea.appendChild(linkBtn);
+    katalkBtn.appendChild(katalkBtnIcon);
+    katalkBtn.appendChild(katalkBtnText);
+    toolBtnArea.appendChild(katalkBtn);
 
     // 버튼 영역 flex container
     const buttonArea = document.createElement('div');
     buttonArea.className = 'btn-area';
 
     // 맛집 찾기 버튼
-    const findBtn = document.createElement('button');
-    findBtn.className = 'btn';
-    findBtn.textContent = '맛집 찾기';
-    findBtn.onclick = () => {
-      window.open(`https://map.naver.com/p/search/${encodeURIComponent(recommendation.food)}`, '_blank');
-    };
+    const mapBtn = document.createElement('a');
+    mapBtn.className = 'btn';
+
+    // 맛집 찾기 버튼 텍스트
+    const mapBtnText = document.createTextNode('맛집 찾기');
+    mapBtn.href = `https://map.naver.com/p/search/${encodeURIComponent(recommendation.food)}`;
+    mapBtn.target = '_blank';
+
+    mapBtn.appendChild(mapIcon);
+    mapBtn.appendChild(mapBtnText);
 
     // 레시피 보기 버튼
-    const recipeBtn = document.createElement('button');
-    recipeBtn.className = 'btn btn-outlined';
-    recipeBtn.textContent = '레시피 보기';
-    recipeBtn.onclick = () => {
-      window.open(`https://www.10000recipe.com/recipe/list.html?q=${encodeURIComponent(recommendation.food)}`, '_blank');
+    const recipeBtn = document.createElement('a');
+    recipeBtn.classList.add('btn');
+    recipeBtn.classList.add('btn-outlined');
+    recipeBtn.href = `https://www.10000recipe.com/recipe/list.html?q=${encodeURIComponent(recommendation.food)}`;
+    recipeBtn.target = '_blank';
+
+    // 레시피 보기 버튼 텍스트
+    const recipeBtnText = document.createTextNode('레시피 보기');
+
+    recipeBtn.appendChild(recipeIcon);
+    recipeBtn.appendChild(recipeBtnText);
+
+    // 다시 추천 받기 버튼
+    const reSpinBtn = document.createElement('button');
+    reSpinBtn.classList.add('btn');
+    reSpinBtn.classList.add('btn-outlined');
+    reSpinBtn.classList.add('btn-basic');
+    reSpinBtn.onclick = () => {
+      this.recommendFoodByCurrentLocation();
+      background.remove();
     };
 
-    buttonArea.appendChild(findBtn);
+    // 다시 추천 받기 버튼 텍스트
+    const reSpinBtnText = document.createTextNode('다시 추천 받기');
+
+    reSpinBtn.appendChild(reSpinIcon);
+    reSpinBtn.appendChild(reSpinBtnText);
+
+    buttonArea.appendChild(mapBtn);
     buttonArea.appendChild(recipeBtn);
+    buttonArea.appendChild(reSpinBtn);
 
     // 모달 구조 조립
     modal.appendChild(closeBtn);
     modal.appendChild(weatherArea);
     modal.appendChild(message);
     modal.appendChild(foodImage);
-    modal.appendChild(menuArea);
+    modal.appendChild(foodName);
     modal.appendChild(buttonArea);
 
     background.appendChild(modal);
+
+    // 모달 닫기: 버튼 클릭 시
+    closeBtn.addEventListener('click', () => {
+      background.remove();
+    });
+
+    // 모달 닫기: 배경 클릭 시
+    background.addEventListener('click', e => {
+      if (e.target === e.currentTarget) background.remove();
+    });
+
+    // 배경 클릭 시 닫기
+    modal.addEventListener('click', e => {
+      if (openToolArea && e.target === e.currentTarget) {
+        toolBtnArea.remove();
+        openToolArea = false;
+      }
+    });
+
+    // 기능 버튼 영역 열기/닫기
+    let openToolArea = false;
+
+    toolBtn.addEventListener('click', () => {
+      if (openToolArea) {
+        toolBtnArea.remove();
+        openToolArea = false;
+      } else {
+        foodName.appendChild(toolBtnArea);
+        openToolArea = true;
+      }
+    });
 
     // 이미지 로딩 대기
     const imagesToLoad: HTMLImageElement[] = [];
