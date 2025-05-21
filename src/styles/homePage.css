@@ -12,6 +12,7 @@ body {
   .contents {
     margin: 0 auto;
     width: 90%;
+    max-width: 678px;
 
     @media screen and (min-width: 768px) {
       width: 60%;
@@ -191,13 +192,8 @@ body {
           }
         }
 
-        .input-remove {
-          background: none;
-          border: none;
-          color: gray;
-          cursor: pointer;
-          border-radius: var(--radius-md);
-          z-index: 1;
+        .btn {
+          stroke: var(--color-text);
         }
       }
     }

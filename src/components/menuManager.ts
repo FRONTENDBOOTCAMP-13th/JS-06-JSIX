@@ -3,6 +3,7 @@ import { menuList } from '../data/menuList';
 import { drawRoulette, spinRoulette } from './RouletteWheel.ts';
 import { openModal } from './Modal.ts';
 import { updateMenuHistory } from './menuHistory.ts';
+import { createElement, X } from 'lucide';
 
 let canvas: HTMLCanvasElement;
 let currentMenu: string[] = [];
@@ -48,9 +49,10 @@ export function renderMenu() {
     input.value = item;
 
     const clearBtn = document.createElement('button');
-    clearBtn.className = 'input-remove';
+    const closeIcon = createElement(X, { class: 'icon' });
+    clearBtn.className = 'btn btn-icon';
     clearBtn.type = 'button';
-    clearBtn.innerText = 'x';
+    clearBtn.appendChild(closeIcon);
     clearBtn.setAttribute('aria-label', '입력 지우기');
 
     input.addEventListener('input', e => {
