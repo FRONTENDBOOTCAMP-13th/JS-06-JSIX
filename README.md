@@ -203,7 +203,7 @@ JS-06-JSIX/
 
   <table>
     <tr>
-      <th>팀원</th>
+      <th>팀원 width="60" </th>
       <th>소감</th>
     </tr>
     <tr>
