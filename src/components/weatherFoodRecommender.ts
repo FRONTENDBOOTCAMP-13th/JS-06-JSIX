@@ -21,7 +21,7 @@ export const autumnFoods = ['전어구이', '새우튀김', '꽃게탕', '고구
 
 // 이미지 경로를 반환하는 함수 (공통적으로 사용)
 export function getFoodImagePath(category: string, food: string): string {
-  return `/${category}/${category}_${encodeURIComponent(food)}.jpg`;
+  return `/assets/img/food/${category}/${category}_${encodeURIComponent(food)}.jpg`;
 }
 
 //kakao 역 지오코딩 코드

@@ -51,7 +51,7 @@ export function openModal(food: string, foodCategory: string) {
 
   const foodImg = document.createElement('img');
   const category = categoryNaming(foodCategory);
-  foodImg.src = `/${category}/${category}_${encodeURIComponent(food)}.jpg`;
+  foodImg.src = `/assets/img/food/${category}/${category}_${encodeURIComponent(food)}.jpg`;
   foodImg.alt = food;
 
   // 음식 이름
@@ -97,7 +97,7 @@ export function openModal(food: string, foodCategory: string) {
 
   // 카카오톡 공유 버튼 아이콘
   const katalkBtnIcon = document.createElement('img');
-  katalkBtnIcon.src = '/src/assets/icon/icon_kakaotalk.svg';
+  katalkBtnIcon.src = '/assets/icon/icon_kakaotalk.svg';
   katalkBtnIcon.alt = '카카오톡';
 
   // 카카오톡 공유 버튼 텍스트
