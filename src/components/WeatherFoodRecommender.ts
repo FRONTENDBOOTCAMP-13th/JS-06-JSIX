@@ -302,9 +302,11 @@ export class WeatherFoodRecommender {
     linkBtn.classList.add('btn-text');
     linkBtn.classList.add('btn-basic');
 
+    const foodCategory = recommendation.image.split('/')[4];
+
     // 링크 복사 버튼 아이콘
     linkBtn.addEventListener('click', () => {
-      copyLink(recommendation.food, recommendation.image.split('/')[4]);
+      copyLink(recommendation.food, foodCategory);
     });
 
     // 링크 복사 버튼 텍스트
@@ -317,7 +319,7 @@ export class WeatherFoodRecommender {
     katalkBtn.classList.add('btn-text');
     katalkBtn.classList.add('btn-basic');
     katalkBtn.addEventListener('click', () => {
-      shareKakaoTalk(recommendation.food);
+      shareKakaoTalk(recommendation.food, foodCategory);
     });
 
     // 카카오톡 공유 버튼 아이콘
