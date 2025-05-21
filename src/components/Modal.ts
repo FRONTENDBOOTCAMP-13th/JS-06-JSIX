@@ -1,6 +1,6 @@
 import { copyLink, shareKakaoTalk } from './LinkShare';
 import { handleSpin } from './menuManager';
-import { createElement, Share2, Link2, Utensils, CookingPot, RotateCw } from 'lucide';
+import { createElement, Share2, Link2, Utensils, CookingPot, RotateCw, X } from 'lucide';
 
 export function openModal(food: string, foodCategory: string) {
   const spinBtn = document.querySelector('#spin') as HTMLButtonElement; // 룰렛 돌리기 버튼
@@ -25,6 +25,7 @@ export function openModal(food: string, foodCategory: string) {
   const mapIcon = createElement(Utensils, { class: 'icon' });
   const recipeIcon = createElement(CookingPot, { class: 'icon' });
   const reSpinIcon = createElement(RotateCw, { class: 'icon' });
+  const closeIcon = createElement(X, { class: 'icon' });
 
   // 배경
   const background = document.createElement('div');
@@ -140,6 +141,7 @@ export function openModal(food: string, foodCategory: string) {
 
   // 요소 조립
   background.appendChild(modal);
+  closeBtn.appendChild(closeIcon);
   modal.appendChild(closeBtn);
   modal.appendChild(rec);
   modal.appendChild(foodImgBox);
