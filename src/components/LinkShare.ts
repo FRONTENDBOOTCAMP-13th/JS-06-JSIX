@@ -25,7 +25,7 @@ export function openParamsModal() {
 export function copyLink(food: string, category: string) {
   navigator.clipboard.writeText(`오늘 메뉴는 ${food} 어때요?
 👉 ${createShareUrl(food, category)}`);
-  alert('복사 완료');
+  alert('주소가 복사되었습니다.');
 }
 
 // 카카오톡 공유
