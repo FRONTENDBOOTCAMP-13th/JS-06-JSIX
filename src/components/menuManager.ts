@@ -85,7 +85,7 @@ export function loadCategory(category: keyof typeof menuList) {
 
   currentCategory = category;
 
-  const count = currentMenu.length || 8; // 기본 8개
+  const count = Math.min(list.length, 8);
   currentMenu = shuffle(list).slice(0, count);
   currentTypes = currentMenu.map(() => category.split('_')[0]);
 
@@ -202,7 +202,7 @@ export function loadTypeMenus(type: string) {
     }
   }
   const uniqueMenus = [...new Set(typeMenus)];
-  currentMenu = shuffle(uniqueMenus).slice(0, currentMenu.length || 8);
+  currentMenu = shuffle(uniqueMenus).slice(0, 8);
   currentTypes = currentMenu.map(() => type);
   const matchingKey = Object.keys(menuList).find(key => key.startsWith(`${type}_`));
   if (matchingKey) {
@@ -224,7 +224,7 @@ export function loadSituationMenus(situation: string) {
       }
     }
   }
-  const selected = shuffle(allMenus).slice(0, currentMenu.length || 8);
+  const selected = shuffle(allMenus).slice(0, 8);
   currentMenu = selected.map(item => item.name);
   currentTypes = selected.map(item => item.type);
   const situationKeys = Object.keys(menuList).find(key => key.endsWith(`_${situation}`));
@@ -245,7 +245,7 @@ export function loadAllCategory() {
       }
     }
   }
-  const selected = shuffle(allMenus).slice(0, currentMenu.length || 8);
+  const selected = shuffle(allMenus).slice(0, 8);
   currentMenu = selected.map(item => item.name);
   currentTypes = selected.map(item => item.type);
   currentCategory = Object.keys(menuList)[0] as keyof typeof menuList;

@@ -51,6 +51,10 @@ export function openModal(food: string, foodCategory: string) {
 
   const foodImg = document.createElement('img');
   const category = categoryNaming(foodCategory);
+  foodImg.onerror = () => {
+    console.log(`이미지를 찾을 수 없음: ${food}`);
+    foodImg.src = '/assets/img/food/default.jpg';
+  };
   foodImg.src = `/assets/img/food/${category}/${category}_${encodeURIComponent(food)}.jpg`;
   foodImg.alt = food;
 
