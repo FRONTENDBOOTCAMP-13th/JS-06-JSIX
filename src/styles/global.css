@@ -270,7 +270,7 @@ a {
   }
 
   /* 반응형 */
-  @media screen and (min-width: 450px) {
+  @media screen and (min-width: 472px) {
     > .btn-area .btn .icon {
       display: block;
     }

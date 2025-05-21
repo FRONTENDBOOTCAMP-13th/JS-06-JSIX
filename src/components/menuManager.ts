@@ -1,8 +1,8 @@
 // ✅ 리팩토링된 menuManager.ts
-import { menuList } from '../data/menuList';
+import { menuList } from '../data/menuList.ts';
 import { drawRoulette, spinRoulette } from './RouletteWheel.ts';
 import { openModal } from './Modal.ts';
-import { updateMenuHistory } from './menuHistory.ts';
+import { updateMenuHistory } from './MenuHistory.ts';
 import { createElement, X } from 'lucide';
 
 let canvas: HTMLCanvasElement;

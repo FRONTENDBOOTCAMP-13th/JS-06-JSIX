@@ -1,5 +1,5 @@
 import { copyLink, shareKakaoTalk } from './LinkShare';
-import { handleSpin } from './menuManager';
+import { handleSpin } from './MenuManager';
 import { createElement, Share2, Link2, Utensils, CookingPot, RotateCw, X } from 'lucide';
 
 export function openModal(food: string, foodCategory: string) {
@@ -182,25 +182,24 @@ export function openModal(food: string, foodCategory: string) {
     if (e.target === e.currentTarget) background.remove();
   });
 
+  // 배경 클릭 시 닫기
+  modal.addEventListener('click', e => {
+    if (openToolArea && e.target === e.currentTarget) {
+      toolBtnArea.remove();
+      openToolArea = false;
+    }
+  });
+
+  // 기능 버튼 영역 열기/닫기
   let openToolArea = false;
 
   toolBtn.addEventListener('click', () => {
     if (openToolArea) {
       toolBtnArea.remove();
       openToolArea = false;
-      // 기능 버튼 영역 닫기
     } else {
-      // 기능 버튼 영역 열기
       foodName.appendChild(toolBtnArea);
       openToolArea = true;
-    }
-  });
-
-  // 배경 클릭 시 닫기
-  modal.addEventListener('click', e => {
-    if (openToolArea && e.target === e.currentTarget) {
-      toolBtnArea.remove();
-      openToolArea = false;
     }
   });
 }
