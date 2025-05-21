@@ -1,6 +1,6 @@
 import './styles/global.css';
-import { menuButtons } from './components/buttonManager';
-import { setCanvas, loadAllCategory } from './components/menuManager';
+import { menuButtons } from './components/ButtonManager';
+import { setCanvas, loadAllCategory } from './components/MenuManager';
 import { createIcons, CloudSun, Shuffle, RotateCw, X } from 'lucide';
 import { openParamsModal } from './components/LinkShare';
 
