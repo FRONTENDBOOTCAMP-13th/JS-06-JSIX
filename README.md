@@ -19,29 +19,25 @@
 
 ```
 JS-06-JSIX/
-├── public/
-│ └── assets/
-│ ├── icon/
-│ └── img/
+├──📁 public/
+│ └──📁 assets/
+│ ├── 📁 icon/
+│ └── 📁 img/
 
 ├── src/ # 소스 코드
-│ ├── components/
-│ │ ├── buttonManager.ts
+│ ├── 📁 components/
+│ │ ├── ButtonManager.ts
 │ │ ├── LinkShare.ts
-│ │ ├── menuHistory.ts
-│ │ ├── menuManager.ts
+│ │ ├── MenuHistory.ts
+│ │ ├── MenuManager.ts
 │ │ ├── Modal.ts
 │ │ ├── RouletteWheel.ts
-│ │ └── weatherFoodRecommender.ts
+│ │ └── WeatherFoodRecommender.ts
 
-│ ├── data/
+│ ├── 📁 data/
 │ │ └── menuList.ts
 
-│ ├── pages/
-│ │ ├── homePage.html
-│ │ └── modal.html
-
-│ ├── styles/
+│ ├── 📁 styles/
 │ │ ├── custom.css
 │ │ ├── global.css
 │ │ ├── homePage.css
@@ -51,7 +47,7 @@ JS-06-JSIX/
 
 ├── README.md
 ├── index.html
-├── .env #
+├── .env
 ├── .gitignore
 ├── vite.config.js
 ├── tsconfig.json
@@ -203,7 +199,7 @@ JS-06-JSIX/
 
   <table>
     <tr>
-      <th>팀원 width="60" </th>
+      <th>팀원</th>
       <th>소감</th>
     </tr>
     <tr>
