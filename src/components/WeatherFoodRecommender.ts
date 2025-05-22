@@ -405,7 +405,7 @@ export class WeatherFoodRecommender {
     modal.appendChild(foodName);
     modal.appendChild(buttonArea);
 
-    background.appendChild(modal);
+    document.body.appendChild(background);
     background.appendChild(loader);
 
     // 모달 열 때 스크롤바 너비 빼기
@@ -466,7 +466,8 @@ export class WeatherFoodRecommender {
     if (foodImg) imagesToLoad.push(foodImg);
     //모달에 띄울 이미지가 없는 경우(추천 음식에 이미지가 없는 경우, 날씨 데이터에 아이콘 정보가 없는 경우, 에러/예외 상황)
     if (imagesToLoad.length === 0) {
-      document.body.appendChild(background);
+      background.appendChild(modal);
+      loader?.remove();
       return;
     }
 
@@ -477,7 +478,8 @@ export class WeatherFoodRecommender {
         loadedCount++; //로드 성공하면 아이콘, 이미지 별로 +1
         if (loadedCount === imagesToLoad.length) {
           //둘다 로딩되면
-          document.body.appendChild(background);
+          background.appendChild(modal);
+          loader?.remove();
         }
       };
       // 캐시된 이미지도 onload가 바로 발생하지 않을 수 있어서, 이미 complete면 바로 처리
