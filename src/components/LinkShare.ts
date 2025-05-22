@@ -36,6 +36,8 @@ export function shareKakaoTalk(food: string, category: string) {
       title: `오늘 메뉴는 ${food} 어때요?`,
       description: '',
       imageUrl: `${HOME_URL}/assets/img/thumbnail.jpg`,
+      imageWidth: 400,
+      imageHeight: 300,
       link: {
         mobileWebUrl: createShareUrl(food, category),
         webUrl: createShareUrl(food, category),
