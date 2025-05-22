@@ -38,7 +38,6 @@ export function getFoodImagePath(category: string, food: string): string {
 //kakao 역 지오코딩 코드
 const KAKAO_REST_API_KEY = import.meta.env.VITE_KAKAO_MAP_API_KEY;
 // 환경 변수가 제대로 로드되었는지 확인
-console.log('API Key:', KAKAO_REST_API_KEY);
 
 // 키가 비어있는지 확인
 if (!KAKAO_REST_API_KEY) {
@@ -425,9 +424,11 @@ export class WeatherFoodRecommender {
 
     // 모달: 배경 클릭 시 닫기
     background.addEventListener('click', e => {
-      if (e.target === e.currentTarget) background.remove();
-      document.body.style.overflow = 'initial';
-      document.body.style.paddingRight = '0';
+      if (e.target === e.currentTarget) {
+        background.remove();
+        document.body.style.overflow = 'initial';
+        document.body.style.paddingRight = '0';
+      }
     });
 
     // 기능 버튼 영역: 모달 배경 클릭 시 닫기
