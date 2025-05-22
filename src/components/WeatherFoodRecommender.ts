@@ -302,9 +302,11 @@ export class WeatherFoodRecommender {
     linkBtn.classList.add('btn-text');
     linkBtn.classList.add('btn-basic');
 
+    const foodCategory = recommendation.image.split('/')[4];
+
     // 링크 복사 버튼 아이콘
     linkBtn.addEventListener('click', () => {
-      copyLink(recommendation.food, recommendation.image.split('/')[4]);
+      copyLink(recommendation.food, foodCategory);
     });
 
     // 링크 복사 버튼 텍스트
@@ -317,7 +319,7 @@ export class WeatherFoodRecommender {
     katalkBtn.classList.add('btn-text');
     katalkBtn.classList.add('btn-basic');
     katalkBtn.addEventListener('click', () => {
-      shareKakaoTalk(recommendation.food);
+      shareKakaoTalk(recommendation.food, foodCategory);
     });
 
     // 카카오톡 공유 버튼 아이콘
@@ -386,6 +388,16 @@ export class WeatherFoodRecommender {
     buttonArea.appendChild(recipeBtn);
     buttonArea.appendChild(reSpinBtn);
 
+    // 로딩 애니메이션 요소
+    const loader = document.createElement('div');
+    loader.className = 'loader';
+
+    // 이미지 로딩 후 모달 띄우기
+    foodImg?.addEventListener('load', () => {
+      background.appendChild(modal);
+      loader?.remove();
+    });
+
     // 모달 구조 조립
     modal.appendChild(closeBtn);
     modal.appendChild(weatherArea);
@@ -395,18 +407,30 @@ export class WeatherFoodRecommender {
     modal.appendChild(buttonArea);
 
     background.appendChild(modal);
+    background.appendChild(loader);
 
-    // 모달 닫기: 버튼 클릭 시
+    // 모달 열 때 스크롤바 너비 빼기
+    const scrollbarWidth = window.innerWidth - document.documentElement.offsetWidth;
+    document.body.style.paddingRight = scrollbarWidth + 'px';
+
+    // 모달 열려있을 시 배경 스크롤 방지
+    document.body.style.overflow = 'hidden';
+
+    // 모달: 버튼 클릭 시 닫기
     closeBtn.addEventListener('click', () => {
       background.remove();
+      document.body.style.overflow = 'initial';
+      document.body.style.paddingRight = '0';
     });
 
-    // 모달 닫기: 배경 클릭 시
+    // 모달: 배경 클릭 시 닫기
     background.addEventListener('click', e => {
       if (e.target === e.currentTarget) background.remove();
+      document.body.style.overflow = 'initial';
+      document.body.style.paddingRight = '0';
     });
 
-    // 배경 클릭 시 닫기
+    // 기능 버튼 영역: 모달 배경 클릭 시 닫기
     modal.addEventListener('click', e => {
       if (openToolArea && e.target === e.currentTarget) {
         toolBtnArea.remove();
@@ -414,7 +438,7 @@ export class WeatherFoodRecommender {
       }
     });
 
-    // 기능 버튼 영역 열기/닫기
+    // 기능 버튼 영역: 버튼 클릭 시 열기/닫기
     let openToolArea = false;
 
     toolBtn.addEventListener('click', () => {

@@ -29,7 +29,7 @@ export function copyLink(food: string, category: string) {
 }
 
 // 카카오톡 공유
-export function shareKakaoTalk(food: string) {
+export function shareKakaoTalk(food: string, category: string) {
   window.Kakao.Share.sendDefault({
     objectType: 'feed',
     content: {
@@ -37,16 +37,16 @@ export function shareKakaoTalk(food: string) {
       description: '',
       imageUrl: `${HOME_URL}/assets/img/thumbnail.jpg`,
       link: {
-        mobileWebUrl: HOME_URL,
-        webUrl: HOME_URL,
+        mobileWebUrl: createShareUrl(food, category),
+        webUrl: createShareUrl(food, category),
       },
     },
     buttons: [
       {
         title: '룰렛 돌리러 가기',
         link: {
-          mobileWebUrl: HOME_URL,
-          webUrl: HOME_URL,
+          mobileWebUrl: createShareUrl(food, category),
+          webUrl: createShareUrl(food, category),
         },
       },
     ],
