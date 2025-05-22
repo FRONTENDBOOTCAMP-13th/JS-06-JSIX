@@ -8,7 +8,7 @@ export function menuButtons() {
   const mixBtn = document.querySelector('#mixMenu');
   const addBtn = document.querySelector('#addMenu');
   const resetBtn = document.querySelector('#resetMenu');
-  const weatherBtn = document.querySelector('#weather');
+  const weatherBtn = document.querySelector('#weather') as HTMLButtonElement;
   const spinBtn = document.querySelector('#spin') as HTMLButtonElement;
   const canvas = document.querySelector('#roulette-canvas') as HTMLCanvasElement;
   const categories = ['all', 'korean', 'chinese', 'japanese', 'western', 'snack', 'dessert'];
@@ -17,7 +17,13 @@ export function menuButtons() {
   mixBtn?.addEventListener('click', () => mixMenu());
   addBtn?.addEventListener('click', () => addMenu());
   resetBtn?.addEventListener('click', () => resetMenu());
-  weatherBtn?.addEventListener('click', () => weatherRecommender.recommendFoodByCurrentLocation());
+  weatherBtn?.addEventListener('click', () => {
+    if (weatherBtn) {
+      spinBtn.disabled = true;
+      weatherBtn.disabled = true;
+    }
+    weatherRecommender.recommendFoodByCurrentLocation();
+  });
   spinBtn?.addEventListener('click', () => handleSpin(canvas, spinBtn));
 
   categoryButtons(categories);
