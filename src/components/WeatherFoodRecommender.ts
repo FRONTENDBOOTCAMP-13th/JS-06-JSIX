@@ -424,9 +424,11 @@ export class WeatherFoodRecommender {
 
     // 모달: 배경 클릭 시 닫기
     background.addEventListener('click', e => {
-      if (e.target === e.currentTarget) background.remove();
-      document.body.style.overflow = 'initial';
-      document.body.style.paddingRight = '0';
+      if (e.target === e.currentTarget) {
+        background.remove();
+        document.body.style.overflow = 'initial';
+        document.body.style.paddingRight = '0';
+      }
     });
 
     // 기능 버튼 영역: 모달 배경 클릭 시 닫기
