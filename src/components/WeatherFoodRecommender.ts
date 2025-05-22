@@ -412,6 +412,10 @@ export class WeatherFoodRecommender {
     const scrollbarWidth = window.innerWidth - document.documentElement.offsetWidth;
     document.body.style.paddingRight = scrollbarWidth + 'px';
 
+    // 룰렛 돌리기, 날씨 추천 버튼
+    const spinBtn = document.querySelector('#spin') as HTMLButtonElement;
+    const weatherBtn = document.querySelector('#weather') as HTMLButtonElement;
+
     // 모달 열려있을 시 배경 스크롤 방지
     document.body.style.overflow = 'hidden';
 
@@ -420,6 +424,8 @@ export class WeatherFoodRecommender {
       background.remove();
       document.body.style.overflow = 'initial';
       document.body.style.paddingRight = '0';
+      spinBtn.disabled = false;
+      weatherBtn.disabled = false;
     });
 
     // 모달: 배경 클릭 시 닫기
@@ -428,6 +434,8 @@ export class WeatherFoodRecommender {
         background.remove();
         document.body.style.overflow = 'initial';
         document.body.style.paddingRight = '0';
+        spinBtn.disabled = false;
+        weatherBtn.disabled = false;
       }
     });
 
