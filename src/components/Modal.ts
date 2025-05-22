@@ -34,6 +34,7 @@ export function openModal(food: string, foodCategory: string) {
   // 모달
   const modal = document.createElement('div');
   modal.className = 'modal';
+  modal.id = 'modal';
 
   // 닫기 버튼
   const closeBtn = document.createElement('button');
@@ -55,6 +56,7 @@ export function openModal(food: string, foodCategory: string) {
   foodImg.onerror = () => {
     console.log(`이미지를 찾을 수 없음: ${food}`);
     foodImg.src = '/assets/img/food/default.jpg';
+    foodImg.alt = '이미지를 찾을 수 없음';
   };
   foodImg.src = `/assets/img/food/${category}/${category}_${encodeURIComponent(food)}.jpg`;
   foodImg.alt = food;
@@ -62,7 +64,6 @@ export function openModal(food: string, foodCategory: string) {
   // 음식 이름
   const foodName = document.createElement('div');
   foodName.className = 'food-name';
-
   foodName.textContent = food;
 
   // 기능 버튼
@@ -97,7 +98,7 @@ export function openModal(food: string, foodCategory: string) {
   katalkBtn.classList.add('btn-text');
   katalkBtn.classList.add('btn-basic');
   katalkBtn.addEventListener('click', () => {
-    shareKakaoTalk(food);
+    shareKakaoTalk(food, category);
   });
 
   // 카카오톡 공유 버튼 아이콘
@@ -143,14 +144,27 @@ export function openModal(food: string, foodCategory: string) {
   // 다시 돌리기 버튼 텍스트
   const reSpinBtnText = document.createTextNode('다시 돌리기');
 
+  // 로딩 애니메이션 요소
+  const loader = document.createElement('div');
+  loader.className = 'loader';
+
+  // 이미지 로딩 후 모달 띄우기
+  foodImg.addEventListener('load', () => {
+    background.appendChild(modal);
+    loader?.remove();
+  });
+
+  document.body.appendChild(background);
+  background.appendChild(loader);
+
   // 요소 조립
-  background.appendChild(modal);
   closeBtn.appendChild(closeIcon);
   modal.appendChild(closeBtn);
   modal.appendChild(rec);
   modal.appendChild(foodImgBox);
-  foodImgBox.appendChild(foodImg);
   modal.appendChild(foodName);
+  modal.appendChild(btnArea);
+  foodImgBox.appendChild(foodImg);
   foodName.appendChild(toolBtn);
   toolBtn.appendChild(shareIcon);
   linkBtn.appendChild(linkIcon);
@@ -159,7 +173,6 @@ export function openModal(food: string, foodCategory: string) {
   katalkBtn.appendChild(katalkBtnIcon);
   katalkBtn.appendChild(katalkBtnText);
   toolBtnArea.appendChild(katalkBtn);
-  modal.appendChild(btnArea);
   mapBtn.appendChild(mapIcon);
   mapBtn.appendChild(mapBtnText);
   btnArea.appendChild(mapBtn);
@@ -170,19 +183,28 @@ export function openModal(food: string, foodCategory: string) {
   reSpinBtn.appendChild(reSpinBtnText);
   btnArea.appendChild(reSpinBtn);
 
-  document.body.appendChild(background);
+  // 모달 열 때 스크롤바 너비 빼기
+  const scrollbarWidth = window.innerWidth - document.documentElement.offsetWidth;
+  document.body.style.paddingRight = scrollbarWidth + 'px';
 
-  // 모달 닫기: 버튼 클릭 시
+  // 모달 열려있을 시 배경 스크롤 방지
+  document.body.style.overflow = 'hidden';
+
+  // 모달: 버튼 클릭 시 닫기
   closeBtn.addEventListener('click', () => {
     background.remove();
+    document.body.style.overflow = 'initial';
+    document.body.style.paddingRight = '0';
   });
 
-  // 모달 닫기: 배경 클릭 시
+  // 모달: 배경 클릭 시 닫기
   background.addEventListener('click', e => {
     if (e.target === e.currentTarget) background.remove();
+    document.body.style.overflow = 'initial';
+    document.body.style.paddingRight = '0';
   });
 
-  // 배경 클릭 시 닫기
+  // 기능 버튼 영역: 모달 배경 클릭 시 닫기
   modal.addEventListener('click', e => {
     if (openToolArea && e.target === e.currentTarget) {
       toolBtnArea.remove();
@@ -190,7 +212,7 @@ export function openModal(food: string, foodCategory: string) {
     }
   });
 
-  // 기능 버튼 영역 열기/닫기
+  // 기능 버튼 영역: 버튼 클릭 시 열기/닫기
   let openToolArea = false;
 
   toolBtn.addEventListener('click', () => {

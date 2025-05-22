@@ -159,15 +159,24 @@ export function handleSpin(canvas: HTMLCanvasElement, spinBtn: HTMLButtonElement
   }
 
   const selectedIndex = spinRoulette(canvas, currentMenu);
+  const reSpinBtn = spinBtn.previousElementSibling as HTMLButtonElement;
+  const weatherBtn = spinBtn.nextElementSibling as HTMLButtonElement;
+
   spinBtn.disabled = true;
+  reSpinBtn.disabled = true;
+  weatherBtn.disabled = true;
 
   canvas.addEventListener('transitionend', function handler() {
     const selectedMenu = currentMenu[selectedIndex];
     const type = currentTypes[selectedIndex] || 'kr';
-    openModal(selectedMenu, `${type}_any`);
-    canvas.removeEventListener('transitionend', handler);
-    spinBtn.disabled = false;
-    updateMenuHistory(selectedMenu);
+    setTimeout(() => {
+      openModal(selectedMenu, `${type}_any`);
+      canvas.removeEventListener('transitionend', handler);
+      spinBtn.disabled = false;
+      reSpinBtn.disabled = false;
+      weatherBtn.disabled = false;
+      updateMenuHistory(selectedMenu);
+    }, 200);
   });
 }
 
