@@ -104,32 +104,23 @@ export function shuffle<T>(array: T[]): T[] {
 }
 
 export function mixMenu() {
-  const combinedKey = `${selectedType}_${selectedSituation}` as keyof typeof menuList;
+  const prevLength = currentMenu.length;
 
-  // 둘 다 전체면 전체 목록 섞기
-  if (selectedType === 'all' && selectedSituation === 'all') {
-    loadAllCategory();
-    return;
+  let candidates: { name: string; type: string }[] = [];
+
+  for (const key in menuList) {
+    if ((selectedType === 'all' || key.startsWith(`${selectedType}_`)) && (selectedSituation === 'all' || key.endsWith(`_${selectedSituation}`))) {
+      const type = key.split('_')[0];
+      const menus = menuList[key as keyof typeof menuList];
+      menus.forEach(name => candidates.push({ name, type }));
+    }
   }
 
-  // 종류만 선택된 경우
-  if (selectedType !== 'all' && selectedSituation === 'all') {
-    loadTypeMenus(selectedType);
-    return;
-  }
+  const selected = shuffle(candidates).slice(0, prevLength);
+  currentMenu = selected.map(item => item.name);
+  currentTypes = selected.map(item => item.type);
 
-  // 상황만 선택된 경우
-  if (selectedType === 'all' && selectedSituation !== 'all') {
-    loadSituationMenus(selectedSituation);
-    return;
-  }
-
-  // 종류 + 상황 조합
-  if (combinedKey in menuList) {
-    loadCategory(combinedKey);
-  } else {
-    alert('해당 조합의 메뉴가 없습니다.');
-  }
+  renderMenu();
 }
 
 export function addMenu() {
